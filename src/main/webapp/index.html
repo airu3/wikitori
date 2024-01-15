@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Wiki しりとり AI</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+		/>
+		<link rel="stylesheet" href="css/chat_UI.css" />
+	</head>
+
+	<body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<div id="chat-box">
+			<div class="kaiwa">
+				<figure class="kaiwa-img-left">
+					<img src="https://via.placeholder.com/150" alt="no-img2" />
+					<figcaption class="kaiwa-img-description">しりとり AI</figcaption>
+				</figure>
+				<div class="kaiwa-text-right">
+					<p class="kaiwa-text">
+						「Wiki しりとりAI」は、<br />
+						gooラボの<a
+							href="https://labs.goo.ne.jp/api/jp/hiragana-translation/"
+							>ひらがな化API</a
+						>を使用しています。
+					</p>
+				</div>
+			</div>
+			<div class="kaiwa">
+				<figure class="kaiwa-img-left">
+					<img src="https://via.placeholder.com/150" alt="no-img2" />
+					<figcaption class="kaiwa-img-description">しりとり AI</figcaption>
+				</figure>
+				<div class="kaiwa-text-right">
+					<p class="kaiwa-text">
+						Wikipediaから集めたデータを使ってしりとりができます。<br />
+						漢字の読み間違いは許してください。
+					</p>
+				</div>
+			</div>
+			<div class="kaiwa">
+				<figure class="kaiwa-img-left">
+					<img src="https://via.placeholder.com/150" alt="no-img2" />
+					<figcaption class="kaiwa-img-description">しりとり AI</figcaption>
+				</figure>
+				<div class="kaiwa-text-right">
+					<p class="kaiwa-text">仕様</p>
+					<ul>
+						<li>
+							末尾の
+							<a
+								href="https://ja.wikipedia.org/wiki/%E6%8D%A8%E3%81%A6%E4%BB%AE%E5%90%8D"
+							>
+								捨て仮名
+							</a>
+							(「ぁ」など)は
+							<a
+								href="https://ja.wikipedia.org/wiki/%E4%BB%AE%E5%90%8D_(%E6%96%87%E5%AD%97)"
+							>
+								仮名
+							</a>
+							(「あ」)に変換されます。
+						</li>
+						<li>発音出来る最後の文字でしりとりを続けます。</li>
+					</ul>
+				</div>
+			</div>
+			<div class="kaiwa">
+				<figure class="kaiwa-img-left">
+					<img src="https://via.placeholder.com/150" alt="no-img2" />
+					<figcaption class="kaiwa-img-description">しりとり AI</figcaption>
+				</figure>
+				<div class="kaiwa-text-right">
+					<p class="kaiwa-text">「しりとり」</p>
+				</div>
+			</div>
+		</div>
+		<div id="form">
+			<form id="shiritoriForm" action="chat" method="post">
+				<textarea
+					id="input_text"
+					name="word"
+					cols="30"
+					rows="3"
+					placeholder="「り」から始まる言葉"
+				></textarea>
+				<div id="buttons">
+					<button type="submit" id="submit_btn">
+						<i class="far fa-paper-plane"></i>
+						<span id="submit_btn_text">送信</span>
+					</button>
+					<button type="button" id="record_btn">
+						<i class="fas fa-microphone"></i>
+						<span id="record_btn_text">マイク</span>
+					</button>
+					<input type="checkbox" id="check" />CPU読み上げ
+					<label class="check" for="check"> </label>
+				</div>
+			</form>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+		<script src="js/siritori.js"></script>
+		<script>
+			// テキストエリアでエンターキーが押されたときにフォームを送信
+			$("#input_text").on("keydown", function (e) {
+				if (e.keyCode === 13) {
+					// エンターキーのキーコードは13
+					$("#shiritoriForm").submit(); // フォームを送信
+				}
+			});
+
+			// フォームの送信を検知
+			$("#shiritoriForm").on("submit", function (e) {
+				e.preventDefault(); // フォームのデフォルトの送信動作をキャンセル
+
+				$.ajax({
+					url: $(this).attr("action"), // フォームのaction属性からURLを取得
+					type: "POST", // リクエストのタイプをPOSTに設定
+					data: $(this).serialize(), // フォームのデータをシリアライズ
+					success: function (data) {
+						// リクエストが成功したときの処理をここに書く
+						console.log(data);
+					},
+					error: function (xhr, status, error) {
+						// リクエストが失敗したときの処理をここに書く
+						console.error(error);
+					},
+					complete: function () {
+						// リクエストが完了したとき（成功・失敗に関わらず）の処理をここに書く
+						// テキストエリアの内容を空にする
+						//$("#input_text").val("");
+
+						// 送信ボタンを再度有効化
+						$("#submit_btn").prop("disabled", false);
+					},
+				});
+			});
+
+			// マイクボタンを押したときの処理
+		</script>
+	</body>
+</html>
