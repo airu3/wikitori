@@ -1,270 +1,213 @@
 <html class="dark" style="color-scheme: dark" lang="ja-JP">
-	<head>
-		<meta charset="utf-8" />
 
-		<link rel="preconnect" href="https://cdn.oaistatic.com" />
-		<meta
-			name="title"
-			content="ChatGPT: Get instant answers, find inspiration, learn something new"
-		/>
-		<!-- SERP 検索エンジン結果ページのスニペット -->
-		<meta
-			name="description"
-			content="shiritoriは、Wikipediaから集めたデータを使ってしりとりができます。読み間違いは許してください。
-		/>
-		<meta
-			property="og:description"
-			content="shiritoriは、Wikipediaから集めたデータを使ってしりとりができます。読み間違いは許してください。"
-		/>
-		<meta name="robots" content="index, follow" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<meta property="og:title" content="ChatGPT" />
-		<meta
-			property="og:image"
-			content="https://cdn.oaistatic.com/_next/static/media/chatgpt-share-og.49cbbffe.png"
-		/>
-		<meta property="og:url" content="https://chat.openai.com" />
-		<meta name="apple-itunes-app" content="app-id=6448311069" />
-		<title>shiritori</title>
-		<meta
-			name="description"
-			content="ChatGPT is an AI-powered language model developed by OpenAI, capable of generating human-like text based on context and past conversations."
-		/>
-		<meta name="next-head-count" content="18" />
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-buch.13189857.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-halbfett.977f1845.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-mono-buch.de677af1.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-mono-halbfett.b082e8e2.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link data-next-font="" rel="preconnect" href="/" crossorigin="anonymous" />
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/css/02f82e43283187c3.css"
-			as="style"
-		/>
-		<link
-			rel="stylesheet"
-			href="https://cdn.oaistatic.com/_next/static/css/02f82e43283187c3.css"
-			data-n-g=""
-		/>
-		<style>
-			.username-input {
-				width: 100%;
-				padding: 10px;
-				font-size: 16px;
-				border: 3px solid #3c46ff;
-				border-radius: 5px;
-				background-color: white;
-				color: black;
-				transition: border 0.3s;
-			}
+<head>
+	<meta charset="utf-8" />
 
-			.username-input:focus {
-				border-color: #0000ff;
-				outline: none;
-			}
-		</style>
+	<link rel="preconnect" href="https://cdn.oaistatic.com" />
+	<meta name="title" content="ChatGPT: Get instant answers, find inspiration, learn something new" />
+	<!-- SERP 検索エンジン結果ページのスニペット -->
+	<meta name="description" content="shiritoriは、Wikipediaから集めたデータを使ってしりとりができます。読み間違いは許してください。
+		/>
+		<meta
+			property=" og:description" content="shiritoriは、Wikipediaから集めたデータを使ってしりとりができます。読み間違いは許してください。" />
+	<meta name="robots" content="index, follow" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta property="og:title" content="ChatGPT" />
+	<meta property="og:image" content="https://cdn.oaistatic.com/_next/static/media/chatgpt-share-og.49cbbffe.png" />
+	<meta property="og:url" content="https://chat.openai.com" />
+	<meta name="apple-itunes-app" content="app-id=6448311069" />
+	<title>shiritori</title>
+	<meta name="description"
+		content="ChatGPT is an AI-powered language model developed by OpenAI, capable of generating human-like text based on context and past conversations." />
+	<meta name="next-head-count" content="18" />
+	<link rel="preload" href="https://cdn.oaistatic.com/_next/static/media/soehne-buch.13189857.woff2" as="font"
+		crossorigin="" />
+	<link rel="preload" href="https://cdn.oaistatic.com/_next/static/media/soehne-halbfett.977f1845.woff2" as="font"
+		crossorigin="" />
+	<link rel="preload" href="https://cdn.oaistatic.com/_next/static/media/soehne-mono-buch.de677af1.woff2" as="font"
+		crossorigin="" />
+	<link rel="preload" href="https://cdn.oaistatic.com/_next/static/media/soehne-mono-halbfett.b082e8e2.woff2"
+		as="font" crossorigin="" />
+	<link data-next-font="" rel="preconnect" href="/" crossorigin="anonymous" />
+	<link rel="preload" href="https://cdn.oaistatic.com/_next/static/css/02f82e43283187c3.css" as="style" />
+	<link rel="stylesheet" href="https://cdn.oaistatic.com/_next/static/css/02f82e43283187c3.css" data-n-g="" />
+	<style>
+		.username-input {
+			width: 100%;
+			padding: 10px;
+			font-size: 16px;
+			border: 3px solid #3c46ff;
+			border-radius: 5px;
+			background-color: white;
+			color: black;
+			transition: border 0.3s;
+		}
 
-		<meta name="react-scroll-to-bottom:version" content="4.2.0" />
-	</head>
-	<body class="antialiased" style="background-color: rgb(0, 0, 46)">
-		<div id="__next">
-			<script>
-				!(function () {
-					try {
-						var d = document.documentElement,
-							c = d.classList;
-						c.remove("light", "dark");
-						var e = localStorage.getItem("theme");
-						if ("system" === e || (!e && true)) {
-							var t = "(prefers-color-scheme: dark)",
-								m = window.matchMedia(t);
-							if (m.media !== t || m.matches) {
-								d.style.colorScheme = "dark";
-								c.add("dark");
-							} else {
-								d.style.colorScheme = "light";
-								c.add("light");
-							}
-						} else if (e) {
-							c.add(e || "");
+		.username-input:focus {
+			border-color: #0000ff;
+			outline: none;
+		}
+	</style>
+
+	<meta name="react-scroll-to-bottom:version" content="4.2.0" />
+</head>
+
+<body class="antialiased" style="background-color: rgb(0, 0, 46)">
+	<div id="__next">
+		<script>
+			!(function () {
+				try {
+					var d = document.documentElement,
+						c = d.classList;
+					c.remove("light", "dark");
+					var e = localStorage.getItem("theme");
+					if ("system" === e || (!e && true)) {
+						var t = "(prefers-color-scheme: dark)",
+							m = window.matchMedia(t);
+						if (m.media !== t || m.matches) {
+							d.style.colorScheme = "dark";
+							c.add("dark");
+						} else {
+							d.style.colorScheme = "light";
+							c.add("light");
 						}
-						if (e === "light" || e === "dark") d.style.colorScheme = e;
-					} catch (e) {}
-				})();
-			</script>
+					} else if (e) {
+						c.add(e || "");
+					}
+					if (e === "light" || e === "dark") d.style.colorScheme = e;
+				} catch (e) { }
+			})();
+		</script>
+		<div
+			class="flex min-h-full w-screen flex-col sm:supports-[min-height:100dvh]:min-h-[100dvh] md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]">
 			<div
-				class="flex min-h-full w-screen flex-col sm:supports-[min-height:100dvh]:min-h-[100dvh] md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]"
-			>
-				<div
-					class="relative hidden flex-1 flex-col justify-center px-5 pt-8 text-[#FE7600] dark:text-[#D292FF] md:flex md:px-6 md:py-[22px] lg:px-8"
-				>
-					<nav
-						class="left-0 top-8 flex w-full px-6 sm:absolute md:top-[22px] md:px-6 lg:px-8"
-					>
-						<h1 aria-label="OpenAIのChatGPT">
-							<div
-								class="flex cursor-default items-center text-[20px] font-bold leading-none lg:text-[22px]"
-							>
-								<div>Shiritori <span class="font-circle">●</span></div>
-							</div>
-						</h1>
-					</nav>
-					<div
-						class="flex flex-col text-[32px] leading-[1.2] md:text-[40px]"
-						aria-hidden="true"
-					>
-						<div
-							class="absolute left-0 top-1/2 flex w-full flex-col px-5 transition-[transform,opacity] duration-500 md:pl-6 md:pr-8 lg:pl-8 lg:pr-10 opacity-100 translate-y-[calc(-50%-1em)] delay-[500ms]"
-						>
-							<div class="relative font-bold">しりとり</div>
-							<div class="relative">
-								<div
-									class="absolute left-0 top-0 max-w-[650px] transition-opacity duration-300"
-								>
-									<span class="inline transition-opacity duration-300">りんご</span>
-									<span class="inline transition-opacity duration-300"></span>ゴリラ</span>
-									<span class="inline transition-opacity duration-300">ラッパ</span>
-									<span class="inline transition-opacity duration-300">パンダ</span>
-									<span class="inline transition-opacity duration-300">ダチョウ</span>
-									<span class="inline transition-opacity duration-300">ウサギ</span>
-									<span class="inline-block font-circle delay-[300ms]">●</span>
-								</div>
-							</div>
+				class="relative hidden flex-1 flex-col justify-center px-5 pt-8 text-[#FE7600] dark:text-[#D292FF] md:flex md:px-6 md:py-[22px] lg:px-8">
+				<nav class="left-0 top-8 flex w-full px-6 sm:absolute md:top-[22px] md:px-6 lg:px-8">
+					<h1 aria-label="OpenAIのChatGPT">
+						<div class="flex cursor-default items-center text-[20px] font-bold leading-none lg:text-[22px]">
+							<div>Shiritori <span class="font-circle">●</span></div>
 						</div>
-					</div>
-				</div>
-				<div
-					class="relative flex grow flex-col items-center justify-between bg-white px-5 py-8 text-black dark:bg-black dark:text-white sm:rounded-t-[30px] md:rounded-none md:px-6"
-				>
-					<nav
-						class="flex w-full justify-start px-6 pb-8 md:hidden md:px-6 lg:px-8"
-					>
-						<h1 aria-label="OpenAIのChatGPT">
-							<div
-								class="flex cursor-default items-center text-[20px] font-bold leading-none lg:text-[22px]"
-							>
-								<div>ChatGPT <span class="font-circle">●</span></div>
-							</div>
-						</h1>
-					</nav>
+					</h1>
+				</nav>
+				<div class="flex flex-col text-[32px] leading-[1.2] md:text-[40px]" aria-hidden="true">
 					<div
-						class="relative flex w-full grow flex-col items-center justify-center"
-					>
-						<h2
-							class="text-center text-[20px] leading-[1.2] md:text-[32px] md:leading-8"
-						>
-							しりとりを始めましょう
-						</h2>
-						<div class="mt-5 w-full max-w-[440px]">
-							<div class="grid gap-x-3 gap-y-2 sm:grid-cols-2 sm:gap-y-0">
-								<input type="text" class="username-input" 
-								maxlength="8"
-								placeholder="name" />
-								<button
-									class="relative flex h-12 items-center justify-center rounded-md text-center text-base font-medium bg-[#3C46FF] text-[#fff] hover:bg-[#0000FF]"
-								>
-									<div class="relative -top-[1px]">始める</div>
-								</button>
+						class="absolute left-0 top-1/2 flex w-full flex-col px-5 transition-[transform,opacity] duration-500 md:pl-6 md:pr-8 lg:pl-8 lg:pr-10 opacity-100 translate-y-[calc(-50%-1em)] delay-[500ms]">
+						<div class="relative font-bold">しりとり</div>
+						<div class="relative">
+							<div class="absolute left-0 top-0 max-w-[650px] transition-opacity duration-300">
+								<span class="inline transition-opacity duration-300">りんご</span>
+								<span class="inline transition-opacity duration-300"></span>ゴリラ</span>
+								<span class="inline transition-opacity duration-300">ラッパ</span>
+								<span class="inline transition-opacity duration-300">パンダ</span>
+								<span class="inline transition-opacity duration-300">ダチョウ</span>
+								<span class="inline transition-opacity duration-300">ウサギ</span>
+								<span class="inline-block font-circle delay-[300ms]">●</span>
 							</div>
-						</div>
-					</div>
-					<div class="mt-10 flex flex-col justify-center">
-						<div class="flex justify-center text-gray-300 md:mb-3"></div>
-						<div class="flex gap-3 py-3 text-xs text-gray-500">
-							<a>Sato</a><span class="text-gray-600">|</span><a>Yoshida</a>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="absolute left-0 right-0 top-0 z-[2]"></div>
+			<div
+				class="relative flex grow flex-col items-center justify-between bg-white px-5 py-8 text-black dark:bg-black dark:text-white sm:rounded-t-[30px] md:rounded-none md:px-6">
+				<nav class="flex w-full justify-start px-6 pb-8 md:hidden md:px-6 lg:px-8">
+					<h1 aria-label="OpenAIのChatGPT">
+						<div class="flex cursor-default items-center text-[20px] font-bold leading-none lg:text-[22px]">
+							<div>ChatGPT <span class="font-circle">●</span></div>
+						</div>
+					</h1>
+				</nav>
+				<div class="relative flex w-full grow flex-col items-center justify-center">
+					<h2 class="text-center text-[20px] leading-[1.2] md:text-[32px] md:leading-8">
+						しりとりを始めましょう
+					</h2>
+					<div class="mt-5 w-full max-w-[440px]">
+						<form action="chat" method="post" class="grid gap-x-3 gap-y-2 sm:grid-cols-2 sm:gap-y-0">
+							<input type="text" class="username-input" maxlength="8" placeholder="name" />
+							<button
+								class="relative flex h-12 items-center justify-center rounded-md text-center text-base font-medium bg-[#3C46FF] text-[#fff] hover:bg-[#0000FF]">
+								<div class="relative -top-[1px]">始める</div>
+							</button>
+						</form>
+					</div>
+				</div>
+				<div class="mt-10 flex flex-col justify-center">
+					<div class="flex justify-center text-gray-300 md:mb-3"></div>
+					<div class="flex gap-3 py-3 text-xs text-gray-500">
+						<a>Sato</a><span class="text-gray-600">|</span><a>Yoshida「かかってこいよ」</a>
+					</div>
+				</div>
+			</div>
 		</div>
-		<script>
-			// プレースホルダーを管理するクラス
-			class PlaceholderManager {
-				constructor(element, placeholders) {
-					this.element = element;
-					this.placeholders = placeholders;
-					this.currentIndex = null;
-				}
-
-				// ランダムなインデックスを取得するメソッド
-				getRandomIndex() {
-					let newIndex;
-					do {
-						newIndex = Math.floor(Math.random() * this.placeholders.length);
-					} while (newIndex === this.currentIndex);
-					return newIndex;
-				}
-
-				// プレースホルダーを設定するメソッド
-				setPlaceholder() {
-					this.currentIndex = this.getRandomIndex();
-					this.element.placeholder = this.placeholders[this.currentIndex];
-				}
-
-				// プレースホルダーを定期的に更新するメソッド
-				startUpdatingPlaceholder(interval) {
-					setInterval(() => this.setPlaceholder(), interval);
-				}
+		<div class="absolute left-0 right-0 top-0 z-[2]"></div>
+	</div>
+	<script>
+		// プレースホルダーを管理するクラス
+		class PlaceholderManager {
+			constructor(element, placeholders) {
+				this.element = element;
+				this.placeholders = placeholders;
+				this.currentIndex = null;
 			}
 
-			// 使用例
-			let inputElement = document.querySelector(".username-input");
-			let placeholders = [
-				"Your Name.",
-				"君の名は。",
-				"お名前は？",
-				"お名前をどうぞ。",
-				"名前を入力してください。",
-				"名前を入力してね。",
-				"あなたの名前は？",
-				"なまえを いれてください",
-				"なまえを いれてね",
-				"なまえは？",
-				"おなまえは？",
-				"おなまえを どうぞ",
-				"おなまえを いれてください",
-				"おなまえを いれてね",
-				"おなまえを おしえて",
-				"おなまえを おしえてね",
-				"おなまえを おしえてください",
-				"おなまえを おしえてくれる？",
-				"贅沢な名だね。",
-				"きょうからお前の名前は「ハゲ」だ。",
-				"お前の名前は「ハゲ」だ。",
-				"お前の名前は「ハゲ」だな。",
-				"お前の名前は「ハゲ」だな？",
-				"今からお前の名前は",
-			];
+			// ランダムなインデックスを取得するメソッド
+			getRandomIndex() {
+				let newIndex;
+				do {
+					newIndex = Math.floor(Math.random() * this.placeholders.length);
+				} while (newIndex === this.currentIndex);
+				return newIndex;
+			}
 
-			let placeholderManager = new PlaceholderManager(
-				inputElement,
-				placeholders
-			);
+			// プレースホルダーを設定するメソッド
+			setPlaceholder() {
+				this.currentIndex = this.getRandomIndex();
+				this.element.placeholder = this.placeholders[this.currentIndex];
+			}
 
-			placeholderManager.setPlaceholder();
-			placeholderManager.startUpdatingPlaceholder(5000);
-		</script>
-	</body>
+			// プレースホルダーを定期的に更新するメソッド
+			startUpdatingPlaceholder(interval) {
+				setInterval(() => this.setPlaceholder(), interval);
+			}
+		}
+
+		// 使用例
+		let inputElement = document.querySelector(".username-input");
+		let placeholders = [
+			"Your Name.",
+			"君の名は。",
+			"お名前は？",
+			"お名前をどうぞ。",
+			"名前を入力してください。",
+			"名前を入力してね。",
+			"あなたの名前は？",
+			"なまえを いれてください",
+			"なまえを いれてね",
+			"なまえは？",
+			"おなまえは？",
+			"おなまえを どうぞ",
+			"おなまえを いれてください",
+			"おなまえを いれてね",
+			"おなまえを おしえて",
+			"おなまえを おしえてね",
+			"おなまえを おしえてください",
+			"おなまえを おしえてくれる？",
+			"贅沢な名だね。",
+			"きょうからお前の名前は「ハゲ」だ。",
+			"お前の名前は「ハゲ」だ。",
+			"お前の名前は「ハゲ」だな。",
+			"お前の名前は「ハゲ」だな？",
+			"今からお前の名前は",
+		];
+
+		let placeholderManager = new PlaceholderManager(
+			inputElement,
+			placeholders
+		);
+
+		placeholderManager.setPlaceholder();
+		placeholderManager.startUpdatingPlaceholder(5000);
+	</script>
+</body>
+
 </html>
