@@ -102,12 +102,16 @@ function disableButtonsDuringProcessing() {
 	submitButtonText.text("処理中");
 }
 
+// ローカルストレージからユーザー名を取得
+let username = localStorage.getItem("username");
+
 function displayUserChat(text) {
 	const userChatHtml = `
 		<div class="kaiwa">
 			<figure class="kaiwa-img-right">
 				<img src="https://via.placeholder.com/150" alt="no-img1">
-				<figcaption class="kaiwa-img-description">あなた</figcaption>
+				<!-- ユーザー名を表示 -->
+				<figcaption class="kaiwa-img-description">${username}</figcaption>
 			</figure>
 			<div class="kaiwa-text-left">
 				<p class="kaiwa-text">「${text}」</p>
@@ -288,11 +292,11 @@ function siritori(user_msg) {
 	return new Promise(function (resolve, reject) {
 		words = [];
 		links = [];
-		var changes = strChange(user_msg, -1);
-		var taskA = new Promise(function (resolve) {
+		let changes = strChange(user_msg, -1);
+		let taskA = new Promise(function (resolve) {
 			fetchWordsFromWikipedia(changes[0], resolve);
 		});
-		var taskB = new Promise(function (resolve) {
+		let taskB = new Promise(function (resolve) {
 			fetchWordsFromWikipedia(changes[1], resolve);
 		});
 		Promise.all([taskA, taskB]).then(function () {
