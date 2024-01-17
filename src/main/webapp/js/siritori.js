@@ -60,89 +60,40 @@ const submitButtonText = $("#submit_btn_text");
 const inputText = $("#input_text");
 const chatBox = $("#chat-box");
 
-//inputTextがEnterキーでsubmitButtonを押す
-inputText.keypress(function (e) {
-	if (e.which === 13) {
-		SubmitButtonClick();
+$("#input_text").on("keydown", function (e) {
+	if (e.keyCode === 13) {
+		// エンターキーのキーコードは13
+		SubmitButtonClick(); // SubmitButtonClick関数を呼び出す
+		$("#shiritoriForm").submit(); // フォームを送信
 	}
 });
 
-// Function to initialize speech recognition
-function initializeSpeechRecognition() {
-	if (window.SpeechRecognition !== undefined) {
-		// Browser supports speech recognition
-		const speech = new SpeechRecognition();
-		speech.lang = "ja-JP";
-		speech.interimResults = true;
+// フォームの送信を検知
+$("#shiritoriForm").on("submit", function (e) {
+	e.preventDefault(); // フォームのデフォルトの送信動作をキャンセル
 
-		// Function to handle speech recognition start
-		const handleSpeechRecognitionStart = function () {
-			if (!IsWork) {
-				IsWork = true;
-				recordButton.prop("disabled", true);
-				submitButton.prop("disabled", true);
-				recordButtonText.text("マイクで録音中");
-				recordButton.css("background-color", "#ff0000");
-				speech.start();
-			}
-		};
+	$.ajax({
+		url: $(this).attr("action"), // フォームのaction属性からURLを取得
+		type: "POST", // リクエストのタイプをPOSTに設定
+		data: $(this).serialize(), // フォームのデータをシリアライズ
+		success: function (data) {
+			// リクエストが成功したときの処理をここに書く
+			console.log(data);
+		},
+		error: function (xhr, status, error) {
+			// リクエストが失敗したときの処理をここに書く
+			console.error(error);
+		},
+		complete: function () {
+			// リクエストが完了したとき（成功・失敗に関わらず）の処理をここに書く
+			// テキストエリアの内容を空にする
+			//$("#input_text").val("");
 
-		// Event listener for record button click to start speech recognition
-		recordButton.click(handleSpeechRecognitionStart);
-
-		// Event handling for speech recognition errors
-		const handleSpeechRecognitionError = function () {
-			console.log("認識できませんでした");
-			say("認識できませんでした", chatBox);
-			resetUIAfterSpeechRecognition();
-		};
-
-		speech.onnomatch = handleSpeechRecognitionError;
-		speech.onerror = handleSpeechRecognitionError;
-
-		// Event handling for speech recognition results
-		speech.onresult = function (e) {
-			if (!e.results[0].isFinal) {
-				const speechText = e.results[0][0].transcript;
-				console.log(speechText);
-				inputText.attr("readonly", true);
-				inputText.val(speechText);
-				return;
-			}
-
-			recordButtonText.text("処理中");
-			submitButtonText.text("処理中");
-			submitButton.css("background-color", "#999999");
-			recordButton.css("background-color", "#999999");
-			console.log("リザルト");
-			speech.stop();
-
-			if (e.results[0].isFinal) {
-				console.log("聞き取り成功！");
-				const autoText = e.results[0][0].transcript;
-				console.log(autoText);
-				inputText.val(autoText);
-				Submit(autoText);
-			}
-		};
-	} else {
-		// Browser doesn't support speech recognition
-		recordButton.click(function () {
-			alert("このブラウザは音声認識に対応していません");
-		});
-		recordButton.prop("disabled", true);
-		recordButtonText.text("非対応");
-	}
-}
-
-// Function to reset UI after speech recognition
-function resetUIAfterSpeechRecognition() {
-	IsWork = false;
-	inputText.attr("readonly", false);
-}
-
-// Call the function to initialize speech recognition
-initializeSpeechRecognition();
+			// 送信ボタンを再度有効化
+			$("#submit_btn").prop("disabled", false);
+		},
+	});
+});
 
 function disableButtonsDuringProcessing() {
 	recordButton.prop("disabled", true);
@@ -252,6 +203,83 @@ function ResetUI() {
 }
 
 submitButton.click(SubmitButtonClick);
+
+// Function to initialize speech recognition
+function initializeSpeechRecognition() {
+	if (window.SpeechRecognition !== undefined) {
+		// Browser supports speech recognition
+		const speech = new SpeechRecognition();
+		speech.lang = "ja-JP";
+		speech.interimResults = true;
+
+		// Function to handle speech recognition start
+		const handleSpeechRecognitionStart = function () {
+			if (!IsWork) {
+				IsWork = true;
+				recordButton.prop("disabled", true);
+				submitButton.prop("disabled", true);
+				recordButtonText.text("マイクで録音中");
+				recordButton.css("background-color", "#ff0000");
+				speech.start();
+			}
+		};
+
+		// Event listener for record button click to start speech recognition
+		recordButton.click(handleSpeechRecognitionStart);
+
+		// Event handling for speech recognition errors
+		const handleSpeechRecognitionError = function () {
+			console.log("認識できませんでした");
+			say("認識できませんでした", chatBox);
+			resetUIAfterSpeechRecognition();
+		};
+
+		speech.onnomatch = handleSpeechRecognitionError;
+		speech.onerror = handleSpeechRecognitionError;
+
+		// Event handling for speech recognition results
+		speech.onresult = function (e) {
+			if (!e.results[0].isFinal) {
+				const speechText = e.results[0][0].transcript;
+				console.log(speechText);
+				inputText.attr("readonly", true);
+				inputText.val(speechText);
+				return;
+			}
+
+			recordButtonText.text("処理中");
+			submitButtonText.text("処理中");
+			submitButton.css("background-color", "#999999");
+			recordButton.css("background-color", "#999999");
+			console.log("リザルト");
+			speech.stop();
+
+			if (e.results[0].isFinal) {
+				console.log("聞き取り成功！");
+				const autoText = e.results[0][0].transcript;
+				console.log(autoText);
+				inputText.val(autoText);
+				Submit(autoText);
+			}
+		};
+	} else {
+		// Browser doesn't support speech recognition
+		recordButton.click(function () {
+			alert("このブラウザは音声認識に対応していません");
+		});
+		recordButton.prop("disabled", true);
+		recordButtonText.text("非対応");
+	}
+}
+
+// Function to reset UI after speech recognition
+function resetUIAfterSpeechRecognition() {
+	IsWork = false;
+	inputText.attr("readonly", false);
+}
+
+// Call the function to initialize speech recognition
+initializeSpeechRecognition();
 
 let words;
 let links;
