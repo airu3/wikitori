@@ -57,8 +57,8 @@ const recordButton = $("#record_btn");
 const recordButtonText = $("#record_btn_text");
 const submitButton = $("#submit_btn");
 const submitButtonText = $("#submit_btn_text");
-const inputText = $("#input_text");
-const chatBox = $("#chat-box");
+const inputText = $("#word");
+const chatBox = $("#chat-content-area");
 
 $("#input_text").on("keydown", function (e) {
 	if (e.keyCode === 13) {
@@ -105,18 +105,36 @@ function disableButtonsDuringProcessing() {
 // ローカルストレージからユーザー名を取得
 let username = localStorage.getItem("username");
 
-function displayUserChat(text) {
-	const userChatHtml = `
-		<div class="kaiwa">
-			<figure class="kaiwa-img-right">
-				<img src="https://via.placeholder.com/150" alt="no-img1">
-				<!-- ユーザー名を表示 -->
-				<figcaption class="kaiwa-img-description">${username}</figcaption>
-			</figure>
-			<div class="kaiwa-text-left">
-				<p class="kaiwa-text">「${text}」</p>
+// function displayUserChat(text) {
+// 	const userChatHtml = `
+// 		<div class="kaiwa">
+// 			<figure class="kaiwa-img-right">
+// 				<img src="https://via.placeholder.com/150" alt="no-img1">
+// 				<!-- ユーザー名を表示 -->
+// 				<figcaption class="kaiwa-img-description">${username}</figcaption>
+// 			</figure>
+// 			<div class="kaiwa-text-left">
+// 				<p class="kaiwa-text">「${text}」</p>
+// 			</div>
+// 		</div>`;
+// 	chatBox.append(userChatHtml);
+// 	obj.scrollTop = obj.scrollHeight;
+// }
+
+function createUserChatHtml(text) {
+	return `
+		<!-- START USER CHAT -->
+		<div class="row user-chat-box">
+			<div class="chat-icon">
+				<img class="chatgpt-icon" src="images/user-icon.png" />
 			</div>
-		</div>`;
+			<div class="chat-txt">「${text}」</div>
+		</div>
+	`;
+}
+
+function displayUserChat(text) {
+	const userChatHtml = createUserChatHtml(text);
 	chatBox.append(userChatHtml);
 	obj.scrollTop = obj.scrollHeight;
 }
@@ -474,26 +492,41 @@ function strChange(str, ran) {
 	return r;
 }
 
-function createChatBubble(text, link) {
-	const imageUrl = "https://via.placeholder.com/150";
-	const imageAlt = "no-img2";
-	const caption = "しりとり AI";
+// function createChatBubble(text, link) {
+// 	const imageUrl = "https://via.placeholder.com/150";
+// 	const imageAlt = "no-img2";
+// 	const caption = "しりとり AI";
 
-	let messageText = `<p class="kaiwa-text">${text}</p>`;
-	if (link) {
-		messageText = `<p class="kaiwa-text"><a href="${link}">${text}</a></p>`;
-	}
+// 	let messageText = `<p class="kaiwa-text">${text}</p>`;
+// 	if (link) {
+// 		messageText = `<p class="kaiwa-text"><a href="${link}">${text}</a></p>`;
+// 	}
 
+// 	return `
+// 		<div class="kaiwa">
+// 			<figure class="kaiwa-img-left">
+// 				<img src="${imageUrl}" alt="${imageAlt}">
+// 				<figcaption class="kaiwa-img-description">${caption}</figcaption>
+// 			</figure>
+// 			<div class="kaiwa-text-right">
+// 				${messageText}
+// 			</div>
+// 		</div>`;
+// }
+
+function createChatBubbleHtml(text, link) {
 	return `
-		<div class="kaiwa">
-			<figure class="kaiwa-img-left">
-				<img src="${imageUrl}" alt="${imageAlt}">
-				<figcaption class="kaiwa-img-description">${caption}</figcaption>
-			</figure>
-			<div class="kaiwa-text-right">
-				${messageText}
-			</div>
-		</div>`;
+	<!-- START GPT CHAT -->
+	<div class="row gpt-chat-box">
+		<div class="chat-icon">
+			<img class="chatgpt-icon" src="images/chatgpt-icon.png" />
+		</div>
+		<div class="chat-txt"><a href="${link}">${text}</a></div>
+	</div>`;
+}
+
+function createChatBubble(text, link) {
+	return createChatBubbleHtml(text, link);
 }
 
 function say(text, element, link) {
