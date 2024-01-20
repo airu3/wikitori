@@ -412,9 +412,9 @@ function convertSmallToLarge(char, map) {
 
 /**
  * 引数ran
- 1 先頭切り出し
- -1 末尾切り出し
- **/
+	1 先頭切り出し
+	-1 末尾切り出し
+**/
 function strChange(str, ran) {
 	let range = ran;
 	if (range === 1) {
@@ -449,7 +449,7 @@ function strChange(str, ran) {
 		//カタカナ
 		r.push(hiragana[katakana.indexOf(word.slice(range[0], range[1]))]);
 		r.push(word.slice(range[0], range[1]));
-		console.log(r);
+		console.log(r); //check["ん","ン"]
 	} else {
 		//漢字
 		$.ajax({
@@ -486,9 +486,7 @@ function strChange(str, ran) {
 	}
 	r[0] = convertSmallToLarge(r[0], hiraganaSmallToLarge);
 	r[1] = convertSmallToLarge(r[1], katakanaSmallToLarge);
-
-	console.log(r);
-
+	console.log(r); //check//["ん","ン"]
 	return r;
 }
 
