@@ -513,13 +513,14 @@ function strChange(str, ran) {
 // }
 
 function createChatBubbleHtml(text, link) {
+	let textHtml = link ? `<a href="${link}">${text}</a>` : text;
 	return `
 	<!-- START GPT CHAT -->
 	<div class="row gpt-chat-box">
 		<div class="chat-icon">
 			<img class="chatgpt-icon" src="images/chatgpt-icon.png" />
 		</div>
-		<div class="chat-txt"><a href="${link}">${text}</a></div>
+		<div class="chat-txt">${textHtml}</div>
 	</div>`;
 }
 
