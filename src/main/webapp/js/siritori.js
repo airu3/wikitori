@@ -42,7 +42,7 @@ window.addEventListener("online", handleOnline);
 window.addEventListener("offline", handleOffline);
 
 //音声認識/合成の準備
-const obj = document.getElementById("chat-box");
+const obj = document.getElementById("chat-content-area");
 const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
 let speech;
 const msg = new SpeechSynthesisUtterance();
@@ -57,7 +57,7 @@ const recordButton = $("#record_btn");
 const recordButtonText = $("#record_btn_text");
 const submitButton = $("#submit_btn");
 const submitButtonText = $("#submit_btn_text");
-const inputText = $("#word");
+const inputText = $("#input_text");
 const chatBox = $("#chat-content-area");
 
 $("#input_text").on("keydown", function (e) {
