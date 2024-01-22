@@ -96,7 +96,7 @@ input[type="range"]::-webkit-slider-thumb {
 	max-height: 100vh;
 }
 
-.chat-content-area {
+#chat-content-area {
 	overflow: auto;
 	height: 100vh;
 	overflow-x: hidden;
