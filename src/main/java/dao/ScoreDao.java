@@ -23,4 +23,6 @@ public class ScoreDao {
             e.printStackTrace();
         }
     }
+
+    //後で消す
 }
