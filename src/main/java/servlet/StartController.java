@@ -23,7 +23,7 @@ public class StartController extends HttpServlet {
         } else {
             // ユーザーが未ログインの場合、通常の処理に進む
             request.getRequestDispatcher("start.html").forward(request, response);
-        }
+        }	
     }
 
     @Override
