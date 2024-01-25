@@ -21,14 +21,13 @@ public class ChatController extends HttpServlet {
 		// index.htmlにフォワード
 		request.getRequestDispatcher("chat.html").forward(request, response);
 	}
-
-  @Override
+@Override
 protected void doPost(
-    HttpServletRequest request,
-    HttpServletResponse response
-  ) throws ServletException, IOException {
-    // リクエストパラメータを取得
-    String word = request.getParameter("word");
+		HttpServletRequest request,
+		HttpServletResponse response
+	) throws ServletException, IOException {
+		// リクエストパラメータを取得
+		String word = request.getParameter("word");
 		System.out.println(word);
 
 		// セッションからしりとりの単語リストを取得
@@ -36,19 +35,25 @@ protected void doPost(
 		List<String> words = (List<String>) session.getAttribute("words");
 
 		if (words == null) {
-			// 初めての単語の場合、新しいリストを作成
-			words = new ArrayList<>();
+				// 初めての単語の場合、新しいリストを作成
+				words = new ArrayList<>();
 		}
 
 		// 単語をリストに追加
 		words.add(word);
 
-		// リストをセッションに保存
+		//ボットが返す単語を取得
+		String botWord = "test";
+
+		// ボットの単語をリストに追加
+		words.add(botWord);
+
+		// セッションに単語リストを保存
 		session.setAttribute("words", words);
 
-		// ページをリダイレクトせずに、JSON形式で成功を返す
+		// チャット画面にボットの単語を画面遷移なしで送信
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write("{\"success\": true}");
-	}
+		response.getWriter().write("{\"word\": \"" + botWord + "\"}");
+}
 }
