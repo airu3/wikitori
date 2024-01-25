@@ -16,14 +16,12 @@ public class ChatController extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-  @Override
-protected void doGet(
-    HttpServletRequest request,
-    HttpServletResponse response
-  ) throws ServletException, IOException {
-    // index.htmlにフォワード
-    request.getRequestDispatcher("index.html").forward(request, response);
-  }
+	protected void doGet(
+			HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		// index.htmlにフォワード
+		request.getRequestDispatcher("chat.html").forward(request, response);
+	}
 
   @Override
 protected void doPost(
