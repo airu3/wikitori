@@ -42,7 +42,7 @@ window.addEventListener("online", handleOnline);
 window.addEventListener("offline", handleOffline);
 
 //音声認識/合成の準備
-const obj = document.getElementById("chat-box");
+const obj = document.getElementById("chat-content-area");
 const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
 let speech;
 const msg = new SpeechSynthesisUtterance();
@@ -57,7 +57,7 @@ const recordButton = $("#record_btn");
 const recordButtonText = $("#record_btn_text");
 const submitButton = $("#submit_btn");
 const submitButtonText = $("#submit_btn_text");
-const inputText = $("#word");
+const inputText = $("#input_text");
 const chatBox = $("#chat-content-area");
 
 $("#input_text").on("keydown", function (e) {
@@ -412,9 +412,9 @@ function convertSmallToLarge(char, map) {
 
 /**
  * 引数ran
- 1 先頭切り出し
- -1 末尾切り出し
- **/
+	1 先頭切り出し
+	-1 末尾切り出し
+**/
 function strChange(str, ran) {
 	let range = ran;
 	if (range === 1) {
@@ -449,7 +449,7 @@ function strChange(str, ran) {
 		//カタカナ
 		r.push(hiragana[katakana.indexOf(word.slice(range[0], range[1]))]);
 		r.push(word.slice(range[0], range[1]));
-		console.log(r);
+		console.log(r); //check["ん","ン"]
 	} else {
 		//漢字
 		$.ajax({
@@ -486,9 +486,7 @@ function strChange(str, ran) {
 	}
 	r[0] = convertSmallToLarge(r[0], hiraganaSmallToLarge);
 	r[1] = convertSmallToLarge(r[1], katakanaSmallToLarge);
-
-	console.log(r);
-
+	console.log(r); //check//["ん","ン"]
 	return r;
 }
 
@@ -515,13 +513,14 @@ function strChange(str, ran) {
 // }
 
 function createChatBubbleHtml(text, link) {
+	let textHtml = link ? `<a href="${link}">${text}</a>` : text;
 	return `
 	<!-- START GPT CHAT -->
 	<div class="row gpt-chat-box">
 		<div class="chat-icon">
 			<img class="chatgpt-icon" src="images/chatgpt-icon.png" />
 		</div>
-		<div class="chat-txt"><a href="${link}">${text}</a></div>
+		<div class="chat-txt">${textHtml}</div>
 	</div>`;
 }
 
