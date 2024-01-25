@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/chat")
 public class ChatController extends HttpServlet {
-
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(
@@ -30,6 +29,7 @@ protected void doPost(
   ) throws ServletException, IOException {
     // リクエストパラメータを取得
     String word = request.getParameter("word");
+		System.out.println(word);
 
 		// セッションからしりとりの単語リストを取得
 		HttpSession session = request.getSession();
