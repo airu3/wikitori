@@ -12,7 +12,8 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/start")
 public class StartController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    @Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // 初回アクセス時の処理
         // 例: ユーザーがログインしていれば直接チャット画面にリダイレクトするなど
@@ -25,7 +26,8 @@ public class StartController extends HttpServlet {
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    @Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // フォームから名前を取得
         String user = request.getParameter("user");
@@ -43,4 +45,3 @@ public class StartController extends HttpServlet {
         }
     }
 }
-	
