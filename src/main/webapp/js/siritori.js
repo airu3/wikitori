@@ -322,6 +322,7 @@ function siritori(user_msg) {
 		});
 		Promise.all([taskA, taskB]).then(function () {
 			console.log(words);
+			console.log(links);
 			if (words.length === 0) {
 				say("負けました", chatBox);
 				console.error("強すぎException");
@@ -365,21 +366,28 @@ function fetchWordsFromWikipedia(searchTerm, callback) {
 	});
 
 	function processWord(value) {
+		//console.log("Processing word: ", value.title);
+
 		if (value.title !== searchTerm) {
 			let word = value.title.replace(/ *\([^)]*\) */g, "");
+			//console.log("Word after: ", word);
+
 			if (
 				NG_word.indexOf(word.slice(-1)) === -1 &&
 				wordHistory.indexOf(word) === -1
 			) {
 				words.push(word);
 				links.push(`http://ja.wikipedia.org/?curid=${value.pageid}`);
+			} else {
+				console.log(
+					"Word is in NG_word or wordHistory, not adding to words and links"
+				);
 			}
+		} else {
+			console.log("Word is the same as searchTerm, not processing");
 		}
 	}
 }
-
-//正規表現
-const regex = /(?!\p{Lm})\p{L}|\p{N}/u;
 
 const hiraganaSmallToLarge = {
 	ぁ: "あ",
@@ -413,19 +421,26 @@ function convertSmallToLarge(char, map) {
 	return map[char] || char;
 }
 
+//正規表現
+const regex = /(?!\p{Lm})\p{L}|\p{N}/u;
+
 /**
- * 引数ran
-	1 先頭切り出し
-	-1 末尾切り出し
-**/
-function strChange(str, ran) {
-	let range = ran;
-	if (range === 1) {
+ * 文字列の一部を変換する関数
+ *
+ * @param {*} inputWord - 変換対象の文字列
+ * @param {*} flag - 変換する範囲を指定するパラメータ
+ * @returns {Array} - 変換後の結果を格納した配列 [ひらがな, カタカナ]
+ */
+function strChange(inputWord, flag) {
+	// 範囲のデフォルト値を設定
+	let range;
+	if (flag === 1) {
 		range = [0, 1];
 	} else {
 		range = [-1, undefined];
 	}
 
+	// 指定された範囲の文字を生成する関数
 	function generateCharRange(start, end) {
 		const range = [];
 		for (let i = start.charCodeAt(0); i <= end.charCodeAt(0); i++) {
@@ -434,27 +449,28 @@ function strChange(str, ran) {
 		return range;
 	}
 
+	// ひらがなとカタカナの文字を生成
 	const hiragana = generateCharRange("\u3041", "\u3096"); // ひらがな
 	const katakana = generateCharRange("\u30a1", "\u30f6"); // カタカナ
 
 	let r = [];
-	let word = str;
-
-	//しりとり処理除外対象が二回連続でも対応
-	//const del_str =func_str.slice(range[0], range[1]) != "ー" && func_str.slice(range[0], range[1]) != "-" && func_str.slice(range[0], range[1]) != "!" && func_str.slice(range[0], range[1]) != "?" && func_str.slice(range[0], range[1]) != "！" && func_str.slice(range[0], range[1]) != "？" && func_str.slice(range[0], range[1]) != "〜" && func_str.slice(range[0], range[1]) != "、"&&func_str.slice(range[0], range[1]) != "。"&&func_str.slice(range[0], range[1]) != "."
-
+	let word = inputWord;
+	console.log("Before processing, word is: ", word);
+	// ひらがなの
+	console.log("word.slice(range[0], range[1])", word.slice(range[0], range[1]));
+	//最初の文字がひらがなかカタカナか漢字かを判定
 	if (hiragana.indexOf(word.slice(range[0], range[1])) !== -1) {
-		//ひらがな
+		// ひらがなの場合
 		r.push(word.slice(range[0], range[1]));
 		r.push(katakana[hiragana.indexOf(word.slice(range[0], range[1]))]);
-		console.log(r);
-	} else if (katakana.indexOf(str.slice(range[0], range[1])) !== -1) {
-		//カタカナ
+		console.log("After processing hiragana, r is: ", r);
+	} else if (katakana.indexOf(word.slice(range[0], range[1])) !== -1) {
+		// カタカナの場合
 		r.push(hiragana[katakana.indexOf(word.slice(range[0], range[1]))]);
 		r.push(word.slice(range[0], range[1]));
-		console.log(r); //check["ん","ン"]
+		console.log("After processing katakana, r is: ", r);
 	} else {
-		//漢字
+		// 漢字の場合
 		$.ajax({
 			type: "POST",
 			timeout: 10000,
@@ -472,6 +488,7 @@ function strChange(str, ran) {
 		}).done(function (data) {
 			word = data.converted;
 			if (range[0] === -1) {
+				// 範囲が後ろからの場合、正規表現を用いて条件に合致するまで文字を削る
 				if (!regex.test(word.slice(-1))) {
 					do {
 						word = word.slice(0, word.length - 1);
@@ -482,14 +499,16 @@ function strChange(str, ran) {
 				}
 			}
 
-			r.push(word.slice(range[0], range[1])); // ひらがなを rに追加
-			r.push(katakana[hiragana.indexOf(word.slice(range[0], range[1]))]); //カタカナをr に追加
-			console.log(r);
+			r.push(word.slice(range[0], range[1])); // ひらがなを r に追加
+			r.push(katakana[hiragana.indexOf(word.slice(range[0], range[1]))]); // カタカナを r に追加
+			console.log("After processing kanji, r is: ", r);
 		});
 	}
+
+	// 小文字を大文字に変換する関数を適用
 	r[0] = convertSmallToLarge(r[0], hiraganaSmallToLarge);
 	r[1] = convertSmallToLarge(r[1], katakanaSmallToLarge);
-	console.log(r); //check//["ん","ン"]
+	console.log("Final state of r is: ", r);
 	return r;
 }
 
