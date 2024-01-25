@@ -20,7 +20,7 @@ public class ChatController extends HttpServlet {
 			HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// index.htmlにフォワード
-		request.getRequestDispatcher("index.html").forward(request, response);
+		request.getRequestDispatcher("chat.html").forward(request, response);
 	}
 
 	protected void doPost(
