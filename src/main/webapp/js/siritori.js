@@ -79,6 +79,9 @@ $("#shiritoriForm").on("submit", function (e) {
 		success: function (data) {
 			// リクエストが成功したときの処理をここに書く
 			console.log(data);
+			// ボットの単語をHTML要素に反映させる
+			$("#botWord").text(data.word);
+			say(data.word, chatBox, "data.link");
 		},
 		error: function (xhr, status, error) {
 			// リクエストが失敗したときの処理をここに書く
