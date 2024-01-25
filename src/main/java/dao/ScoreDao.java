@@ -10,13 +10,13 @@ public class ScoreDao {
     final String USER = "root";
     final String PASSWORD = "";
 
-    public void registerScore(int score) {
-        String sql = "INSERT INTO score_table (score) VALUES (?)";
+    public void registerUser(String name) {
+        String sql = "INSERT INTO user (name) VALUES (?)";
 
         try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-            pstmt.setInt(1, score);
+            pstmt.setString(1, name);
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -24,5 +24,18 @@ public class ScoreDao {
         }
     }
 
-    //後で消す
+    public void registerScore(int userId, int score) {
+        String sql = "INSERT INTO score (user_id, score) VALUES (?, ?)";
+    
+        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+    
+            pstmt.setInt(1, userId);
+            pstmt.setInt(2, score);
+            pstmt.executeUpdate();
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
