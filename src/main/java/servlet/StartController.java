@@ -26,22 +26,21 @@ public class StartController extends HttpServlet {
         }	
     }
 
-    @Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // フォームから名前を取得
         String user = request.getParameter("user");
 
-        if (user != null && !user.isEmpty()) {
-            // セッションにユーザー名を保存
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
+		if (user != null && !user.isEmpty()) {
+			// セッションにユーザー名を保存
+			HttpSession session = request.getSession();
+			session.setAttribute("user", user);
 
-            // チャット画面にリダイレクト
-            response.sendRedirect(request.getContextPath() + "/chat");
-        } else {
-            // 名前が入力されていない場合エラー処理などを実装する
-            response.sendRedirect(request.getContextPath() + "/start.html");
-        }
-    }
+			// チャット画面にリダイレクト
+			response.sendRedirect(request.getContextPath() + "/chat");
+		} else {
+			// 名前が入力されていない場合エラー処理などを実装する
+			response.sendRedirect(request.getContextPath() + "/start.html");
+		}
+	}
 }
