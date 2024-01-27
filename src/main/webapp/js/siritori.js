@@ -476,17 +476,26 @@ function strChange(inputWord, flag) {
 		}).done(function (data) {
 			word = data.converted;
 			console.log("Converted word: ", word); // Add logging
+
 			if (range[0] === -1) {
 				// 検索範囲が後ろからの場合、正規表現を用いて条件に合致するまで文字を削る
-				if (!regex.test(word.slice(-1))) {
+				let lastChar = word.slice(-1);
+				console.log("Initial last character: ", lastChar); // Add logging
+
+				if (!regex.test(lastChar)) {
 					do {
 						word = word.slice(0, word.length - 1);
 						console.log("Trimmed word: ", word); // Add logging
-					} while (!regex.test(word.slice(-1)));
-					word = word.slice(-1);
+
+						lastChar = word.slice(-1);
+						console.log("New last character: ", lastChar); // Add logging
+					} while (!regex.test(lastChar));
+
+					word = lastChar;
 				} else {
-					word = word.slice(-1);
+					word = lastChar;
 				}
+
 				console.log("Final word: ", word); // Add logging
 			}
 
