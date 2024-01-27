@@ -36,14 +36,4 @@ public class ShiritoriModel {
         return cpuWord + "," + wikiLink;
     }
 
-    private void fetchWordsFromWikipedia(String searchTerm, List<String> words, List<String> links) {
-        // TODO: Wikipedia API の呼び出しと単語の取得処理を実装
-        // ...
-
-        // 取得した単語とリンクをリストに追加
-        // words.add(word);
-        // links.add(link);
-    }
-
-    // 他のメソッドや必要な処理を追加
 }

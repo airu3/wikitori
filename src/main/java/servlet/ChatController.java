@@ -50,8 +50,7 @@ public class ChatController extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.print(jsonResponse);
 		} else {
-			// エラー処理: ユーザーからの入力が無効
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			
 		}
 	}
 
