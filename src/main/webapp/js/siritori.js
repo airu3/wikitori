@@ -477,7 +477,7 @@ function strChange(inputWord, flag) {
 			word = data.converted;
 			console.log("Converted word: ", word); // Add logging
 			if (range[0] === -1) {
-				// 範囲が後ろからの場合、正規表現を用いて条件に合致するまで文字を削る
+				// 検索範囲が後ろからの場合、正規表現を用いて条件に合致するまで文字を削る
 				if (!regex.test(word.slice(-1))) {
 					do {
 						word = word.slice(0, word.length - 1);
