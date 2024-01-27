@@ -43,31 +43,27 @@ public class StringUtil {
 		}
 	};
 
+	/**
+	 * 小文字を大文字に変換
+	 * 
+	 * @param character 文字
+	 * @param map       変換マップ
+	 * @return 変換後の文字
+	 */
+	private static String convertSmallToLarge(String character, Map<String, String> map) {
+		return map.getOrDefault(character, character);
+	}
+
 	// 修飾文字ではない任意の文字または数字の正規表現
 	private static final String REGEX_NOT_MODIFIER = "(?:(?!\\p{Lm})\\p{L})|\\p{N}";
 
-	// 文字列の最初を抽出
-	public static String extractFirstChar(String str) {
-		return str.substring(0, 1);
-	}
-
-	// 文字列の最後を抽出
-	public static String extractLastChar(String str) {
-		if (str.length() == 0) {
-			return "";
-		}
-		return str.substring(str.length() - 1);
-	}
-
-	// 文字列の最後を削除
-	public static String removeLastChar(String str) {
-		if (str.length() == 0) {
-			return "";
-		}
-		return str.substring(0, str.length() - 1);
-	}
-
-	// 指定した正規表現に一致するまで文字列の最後を削る
+	/**
+	 * 指定した正規表現に一致するまで文字列の最後を削る
+	 * 
+	 * @param str 文字列
+	 * @param p   正規表現
+	 * @return 正規表現に一致するまで文字列の最後を削った文字列
+	 */
 	public static String trimWordFromEnd(String str, Pattern p) {
 		while (str.length() > 0 && !p.matcher(extractLastChar(str)).matches()) {
 			str = removeLastChar(str);
@@ -76,8 +72,50 @@ public class StringUtil {
 		return str;
 	}
 
-	//
-	public static String[] strChange(String inputWord, int flag) {
+	/**
+	 * 文字列の最初を抽出
+	 * 
+	 * @param str 文字列
+	 * @return 文字列の最初
+	 */
+	public static String extractFirstChar(String str) {
+		return str.substring(0, 1);
+	}
+
+	/**
+	 * 文字列の最後を抽出
+	 * 
+	 * @param str 文字列
+	 * @return 文字列の最後
+	 */
+	public static String extractLastChar(String str) {
+		if (str.length() == 0) {
+			return "";
+		}
+		return str.substring(str.length() - 1);
+	}
+
+	/**
+	 * 文字列の最後を削除
+	 * 
+	 * @param str 文字列
+	 * @return 最後を削除した文字列
+	 */
+	public static String removeLastChar(String str) {
+		if (str.length() == 0) {
+			return "";
+		}
+		return str.substring(0, str.length() - 1);
+	}
+
+	/**
+	 * しりとりの単語を処理する
+	 * 
+	 * @param inputWord しりとりの単語
+	 * @param flag      しりとりの単語の最初か最後かを表すフラグ
+	 * @return 処理後の単語
+	 */
+	public static String[] processJapaneseWord(String inputWord, int flag) {
 		// flag = 1: しりとりの単語の最初を取得
 		// flag = -1: しりとりの単語の最後を取得
 		String inputChar;
@@ -121,10 +159,6 @@ public class StringUtil {
 
 		System.out.println("Final state of resultChar is: " + Arrays.toString(resultChar));
 		return resultChar;
-	}
-
-	private static String convertSmallToLarge(String character, Map<String, String> map) {
-		return map.getOrDefault(character, character);
 	}
 
 }
