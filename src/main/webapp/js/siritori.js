@@ -45,13 +45,16 @@ window.addEventListener("offline", handleOffline);
 const obj = document.getElementById("chat-content-area");
 const SpeechRecognition = window.SpeechRecognition || webkitSpeechRecognition;
 let speech;
-const msg = new SpeechSynthesisUtterance();
-msg.lang = "ja-JP"; //言語
+const ssu = new SpeechSynthesisUtterance();
+ssu.lang = "ja-JP"; //言語
+ssu.rate = 1; // 速度を設定
+ssu.pitch = 1; // 高さを設定
+ssu.volume = 1; // 音量を設定
 
 let wordHistory = ["しりとり"];
-let cpu_word = "";
-let next_word = "り";
-let IsWork = false;
+let cpuWord = "";
+let nextWord = "り";
+let isWork = false;
 const switchButton = $("#check");
 const recordButton = $("#record_btn");
 const recordButtonText = $("#record_btn_text");
@@ -105,9 +108,6 @@ function disableButtonsDuringProcessing() {
 	submitButtonText.text("処理中");
 }
 
-// ローカルストレージからユーザー名を取得
-let username = localStorage.getItem("username");
-
 // function displayUserChat(text) {
 // 	const userChatHtml = `
 // 		<div class="kaiwa">
@@ -143,8 +143,8 @@ function displayUserChat(text) {
 }
 
 function processResultText(text) {
-	if (next_word !== strChange(text, 1)[0]) {
-		say("「" + next_word + "」から言葉を始めてね！", chatBox);
+	if (nextWord !== strChange(text, 1)[0]) {
+		say("「" + nextWord + "」から言葉を始めてね！", chatBox);
 		ResetUI();
 	} else if (wordHistory.indexOf(text) !== -1) {
 		say("「" + text + "」は、もう使われた言葉だよ！", chatBox);
@@ -164,24 +164,25 @@ function handleSiritoriResult(text) {
 			handleSiritoriError(error);
 		})
 		.finally(function () {
-			IsWork = false;
+			isWork = false;
 		});
 }
 
 function handleSiritoriSuccess(values) {
 	let value = values[0];
 	let link = values[1];
-	console.log(value);
+	console.log("選んだ単語", value);
 	const startWord = strChange(value, -1)[0];
 	inputText.attr("placeholder", "「" + startWord + "」から始まる言葉");
-	next_word = startWord;
+	nextWord = startWord;
 	say("「" + value + "」", chatBox, link);
 	wordHistory.push(value);
 	obj.scrollTop = obj.scrollHeight;
 
-	if (switchButton.checked) {
-		msg.text = value;
-		speechSynthesis.speak(msg);
+	if (switchButton.prop("checked")) {
+		ssu.text = value;
+		console.log("読み上げ", ssu.text);
+		window.speechSynthesis.speak(ssu);
 	}
 
 	console.log("処理終了");
@@ -219,6 +220,7 @@ function SubmitButtonClick() {
 
 function ResetUI() {
 	inputText.val("");
+	inputText.attr("readonly", false);
 	recordButton.prop("disabled", false);
 	submitButton.prop("disabled", false);
 	recordButtonText.text("マイク");
@@ -229,83 +231,70 @@ function ResetUI() {
 
 submitButton.click(SubmitButtonClick);
 
-// Function to initialize speech recognition
-function initializeSpeechRecognition() {
-	if (window.SpeechRecognition !== undefined) {
-		// Browser supports speech recognition
-		const speech = new SpeechRecognition();
-		speech.lang = "ja-JP";
-		speech.interimResults = true;
+if (SpeechRecognition !== undefined) {
+	// ユーザのブラウザは音声認識に対応しています。
+	speech = new SpeechRecognition();
+	speech.lang = "ja-JP";
+	speech.interimResults = true;
+	recordButton.click(function () {
+		// 音声認識をスタート
+		if (!isWork) {
+			isWork = true;
+			recordButton.prop("disabled", true);
+			submitButton.prop("disabled", true);
+			recordButtonText.text("マイクで録音中");
+			recordButton.css("background-color", "#ff0000");
+			speech.start();
+		}
+	});
+	speech.onnomatch = function () {
+		console.log("認識できませんでした");
+		say("認識できませんでした", chatBox);
+		ResetUI();
+		isWork = false;
+		inputText.attr("readonly", false);
+	};
+	speech.onerror = function () {
+		console.log("認識できませんでした");
+		say("認識できませんでした", chatBox);
+		ResetUI();
+		isWork = false;
+		inputText.attr("readonly", false);
+	};
+	//音声自動文字起こし機能
+	speech.onresult = function (e) {
+		if (!e.results[0].isFinal) {
+			var speechtext = e.results[0][0].transcript;
+			console.log(speechtext);
+			inputText.attr("readonly", true);
+			inputText.val(speechtext);
 
-		// Function to handle speech recognition start
-		const handleSpeechRecognitionStart = function () {
-			if (!IsWork) {
-				IsWork = true;
-				recordButton.prop("disabled", true);
-				submitButton.prop("disabled", true);
-				recordButtonText.text("マイクで録音中");
-				recordButton.css("background-color", "#ff0000");
-				speech.start();
-			}
-		};
+			return;
+		}
 
-		// Event listener for record button click to start speech recognition
-		recordButton.click(handleSpeechRecognitionStart);
+		recordButtonText.text("処理中");
+		submitButtonText.text("処理中");
+		submitButton.css("background-color", "#999999");
+		recordButton.css("background-color", "#999999");
+		console.log("リザルト");
+		speech.stop();
 
-		// Event handling for speech recognition errors
-		const handleSpeechRecognitionError = function () {
-			console.log("認識できませんでした");
-			say("認識できませんでした", chatBox);
-			resetUIAfterSpeechRecognition();
-		};
-
-		speech.onnomatch = handleSpeechRecognitionError;
-		speech.onerror = handleSpeechRecognitionError;
-
-		// Event handling for speech recognition results
-		speech.onresult = function (e) {
-			if (!e.results[0].isFinal) {
-				const speechText = e.results[0][0].transcript;
-				console.log(speechText);
-				inputText.attr("readonly", true);
-				inputText.val(speechText);
-				return;
-			}
-
-			recordButtonText.text("処理中");
-			submitButtonText.text("処理中");
-			submitButton.css("background-color", "#999999");
-			recordButton.css("background-color", "#999999");
-			console.log("リザルト");
-			speech.stop();
-
-			if (e.results[0].isFinal) {
-				console.log("聞き取り成功！");
-				const autoText = e.results[0][0].transcript;
-				console.log(autoText);
-				inputText.val(autoText);
-				Submit(autoText);
-			}
-		};
-	} else {
-		// Browser doesn't support speech recognition
-		recordButton.click(function () {
-			alert("このブラウザは音声認識に対応していません");
-		});
-		recordButton.prop("disabled", true);
-		recordButtonText.text("非対応");
-	}
+		if (e.results[0].isFinal) {
+			console.log("聞き取り成功！");
+			var autotext = e.results[0][0].transcript;
+			console.log(e);
+			console.log(autotext); //autotextが結果
+			inputText.val(autotext);
+			Submit(autotext);
+		}
+	};
+} else {
+	recordButton.click(function () {
+		alert("このブラウザは音声認識に対応していません");
+	});
+	recordButton.prop("disabled", true);
+	recordButtonText.text("非対応");
 }
-
-// Function to reset UI after speech recognition
-function resetUIAfterSpeechRecognition() {
-	IsWork = false;
-	inputText.attr("readonly", false);
-}
-
-// Call the function to initialize speech recognition
-initializeSpeechRecognition();
-
 let words;
 let links;
 
@@ -315,10 +304,10 @@ function siritori(user_msg) {
 		links = [];
 		let changes = strChange(user_msg, -1);
 		let taskA = new Promise(function (resolve) {
-			fetchWordsFromWikipedia(changes[0], resolve);
+			fetchWordsFromWikipedia(changes[0], 50, resolve);
 		});
 		let taskB = new Promise(function (resolve) {
-			fetchWordsFromWikipedia(changes[1], resolve);
+			fetchWordsFromWikipedia(changes[1], 50, resolve);
 		});
 		Promise.all([taskA, taskB]).then(function () {
 			console.log(words);
@@ -329,28 +318,27 @@ function siritori(user_msg) {
 				return;
 			}
 			let random = Math.floor(Math.random() * words.length);
-			cpu_word = words[random];
+			cpuWord = words[random];
 			let wikiLink = links[random];
-			if (strChange(cpu_word, -1)[0] === "ん") {
+			if (strChange(cpuWord, -1)[0] === "ん") {
 				do {
-					words.splice(words.indexOf(cpu_word), words.indexOf(cpu_word));
+					words.splice(words.indexOf(cpuWord), words.indexOf(cpuWord));
 					random = Math.floor(Math.random() * words.length);
-					cpu_word = words[random];
+					cpuWord = words[random];
 					wikiLink = links[random];
-				} while (strChange(cpu_word, -1)[0] === "ん");
-				resolve([cpu_word, wikiLink]);
+				} while (strChange(cpuWord, -1)[0] === "ん");
+				resolve([cpuWord, wikiLink]);
 			} else {
-				resolve([cpu_word, wikiLink]);
+				resolve([cpuWord, wikiLink]);
 			}
 		});
 	});
 }
 
 let NG_word = [""];
-
-function fetchWordsFromWikipedia(searchTerm, callback) {
+function fetchWordsFromWikipedia(searchTerm, limit, callback) {
 	console.log(searchTerm);
-	const url = `https://ja.wikipedia.org/w/api.php?format=json&action=query&list=prefixsearch&pssearch=${searchTerm}&pslimit=200&psnamespace=0`;
+	const url = `https://ja.wikipedia.org/w/api.php?format=json&action=query&list=prefixsearch&pssearch=${searchTerm}&pslimit=${limit}&psnamespace=0`;
 
 	$.ajax({
 		type: "GET",
@@ -470,7 +458,7 @@ function strChange(inputWord, flag) {
 		r.push(word.slice(range[0], range[1]));
 		console.log("After processing katakana, r is: ", r);
 	} else {
-		// 漢字の場合
+		// 漢字, 数字, 記号の場合
 		$.ajax({
 			type: "POST",
 			timeout: 10000,
@@ -487,16 +475,19 @@ function strChange(inputWord, flag) {
 			}),
 		}).done(function (data) {
 			word = data.converted;
+			console.log("Converted word: ", word); // Add logging
 			if (range[0] === -1) {
 				// 範囲が後ろからの場合、正規表現を用いて条件に合致するまで文字を削る
 				if (!regex.test(word.slice(-1))) {
 					do {
 						word = word.slice(0, word.length - 1);
+						console.log("Trimmed word: ", word); // Add logging
 					} while (!regex.test(word.slice(-1)));
 					word = word.slice(-1);
 				} else {
 					word = word.slice(-1);
 				}
+				console.log("Final word: ", word); // Add logging
 			}
 
 			r.push(word.slice(range[0], range[1])); // ひらがなを r に追加
