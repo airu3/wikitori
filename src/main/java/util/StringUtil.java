@@ -1,17 +1,13 @@
 package util;
 
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class StringUtil {
 
+	// 捨て仮名をひらがなに変換
 	private static final Map<String, String> HIRAGANA_SMALL_TO_LARGE = new HashMap<>() {
 		{
 			put("ぁ", "あ");
@@ -19,6 +15,8 @@ public class StringUtil {
 			put("ぅ", "う");
 			put("ぇ", "え");
 			put("ぉ", "お");
+			put("ゕ", "か");
+			put("ゖ", "け");
 			put("っ", "つ");
 			put("ゃ", "や");
 			put("ゅ", "ゆ");
@@ -27,6 +25,7 @@ public class StringUtil {
 		}
 	};
 
+	// 捨て仮名をカタカナに変換
 	private static final Map<String, String> KATAKANA_SMALL_TO_LARGE = new HashMap<>() {
 		{
 			put("ァ", "ア");
@@ -44,24 +43,48 @@ public class StringUtil {
 		}
 	};
 
+	// 修飾文字ではない任意の文字または数字の正規表現
+	private static final String REGEX_NOT_MODIFIER = "(?:(?!\\p{Lm})\\p{L})|\\p{N}";
+
 	// 文字列の最初を抽出
-	public static String getFirstChar(String inputWord) {
-		return inputWord.substring(0, 1);
+	public static String extractFirstChar(String str) {
+		return str.substring(0, 1);
 	}
 
 	// 文字列の最後を抽出
-	public static String getLastChar(String inputWord) {
-		return inputWord.substring(inputWord.length() - 1);
+	public static String extractLastChar(String str) {
+		if (str.length() == 0) {
+			return "";
+		}
+		return str.substring(str.length() - 1);
 	}
 
+	// 文字列の最後を削除
+	public static String removeLastChar(String str) {
+		if (str.length() == 0) {
+			return "";
+		}
+		return str.substring(0, str.length() - 1);
+	}
+
+	// 指定した正規表現に一致するまで文字列の最後を削る
+	public static String trimWordFromEnd(String str, Pattern p) {
+		while (str.length() > 0 && !p.matcher(extractLastChar(str)).matches()) {
+			str = removeLastChar(str);
+			System.out.println("T " + str); // ログ出力
+		}
+		return str;
+	}
+
+	//
 	public static String[] strChange(String inputWord, int flag) {
 		// flag = 1: しりとりの単語の最初を取得
 		// flag = -1: しりとりの単語の最後を取得
 		String inputChar;
 		if (flag == 1) {
-			inputChar = getFirstChar(inputWord);
+			inputChar = extractFirstChar(inputWord);
 		} else {
-			inputChar = getLastChar(inputWord);
+			inputChar = extractLastChar(inputWord);
 		}
 
 		System.out.println("Before processing, word is: " + inputWord);
@@ -69,8 +92,7 @@ public class StringUtil {
 		// ひらがなとカタカナを
 		String[] resultChar = new String[2];
 
-		// ひらがな、カタカナ、漢字の場合に分けて処理
-
+		// ひらがな、カタカナ、漢字,数字,記号の場合に分けて処理
 		if (JapaneseCharConverter.isHiragana(inputChar)) {
 			// ひらがなの場合
 			resultChar[0] = inputChar;
@@ -83,7 +105,10 @@ public class StringUtil {
 			System.out.println("After processing katakana, resultChar is: " + Arrays.toString(resultChar));
 		} else {
 			// 漢字, 数字, 記号の場合
-			String hiragana = KanjiToHiraganaConverter.convertToHiragana(inputWord);
+			// 音読可能な部分までを抽出
+			Pattern p = Pattern.compile(REGEX_NOT_MODIFIER);
+			String trimmedWord = trimWordFromEnd(inputWord, p);
+			String hiragana = KanjiToHiraganaConverter.convertToHiragana(trimmedWord);
 
 			resultChar[0] = hiragana;
 			resultChar[1] = JapaneseCharConverter.convertH2K(hiragana);
@@ -95,64 +120,11 @@ public class StringUtil {
 		resultChar[1] = convertSmallToLarge(resultChar[1], KATAKANA_SMALL_TO_LARGE);
 
 		System.out.println("Final state of resultChar is: " + Arrays.toString(resultChar));
-		return new String[] { Character.toString(resultChar[0]), Character.toString(resultChar[1]) };
+		return resultChar;
 	}
 
-	private static String convertKanjiToHiragana(String word, int[] range) {
-		try {
-			URL url = new URL("https://labs.goo.ne.jp/api/hiragana");
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("POST");
-			connection.setConnectTimeout(10000);
-			connection.setRequestProperty("Content-Type", "application/json");
-			connection.setDoOutput(true);
-
-			String requestBody = String.format("{\"app_id\":\"%s\", \"sentence\":\"%s\", \"output_type\":\"hiragana\"}",
-					"d5b86171fcdc098cd38e9b056f8c46c84ec367c171b29ec686f3307e0f3030ef", word);
-
-			try (OutputStream os = connection.getOutputStream()) {
-				byte[] input = requestBody.getBytes(StandardCharsets.UTF_8);
-				os.write(input, 0, input.length);
-			}
-
-			int responseCode = connection.getResponseCode();
-			if (responseCode == HttpURLConnection.HTTP_OK) {
-				// API呼び出し成功時の処理
-				// APIのレスポンスを解析してひらがなに変換
-				// ここでは仮に固定のひらがなを返すようにしています
-				return "ひらがな";
-			} else {
-				// API呼び出し失敗時の処理
-				System.err.println("API call failed with response code: " + responseCode);
-				return word; // エラーが発生した場合は元の文字列を返す
-			}
-		} catch (Exception e) {
-			// 例外が発生した場合の処理
-			e.printStackTrace();
-			return word; // エラーが発生した場合は元の文字列を返す
-		}
-	}
-
-	// ... (後続のコードも省略)
-
-	private static char convertSmallToLarge(char character, Map<Character, Character> map) {
+	private static String convertSmallToLarge(String character, Map<String, String> map) {
 		return map.getOrDefault(character, character);
 	}
 
-	// !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~
-	private static final String SYMBOLS_REGEX = "[!\"#$%&'()*+,-./:;<=>?@[\\\\]^_`{|}~]";
-
-	public static String sanitizeSymbols(String input) {
-		// \b \t \n \f \r \" \' \\
-		return input
-				.replaceAll(SYMBOLS_REGEX, "")
-				.replace("\b", "")
-				.replace("\t", "")
-				.replace("\n", "")
-				.replace("\f", "")
-				.replace("\r", "")
-				.replace("\"", "")
-				.replace("'", "")
-				.replace("\\", "");
-	}
 }
