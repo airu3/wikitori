@@ -63,14 +63,29 @@ const submitButtonText = $("#submit_btn_text");
 const inputText = $("#input_text");
 const chatBox = $("#chat-content-area");
 
+let isProcessing = false;
+
 $("#input_text").on("keydown", function (e) {
 	if (e.keyCode === 13) {
 		// エンターキーのキーコードは13
-		SubmitButtonClick(); // SubmitButtonClick関数を呼び出す
+		if (isProcessing) {
+			// 処理中の場合、キーイベントを無視する
+			e.preventDefault();
+			return;
+		}
+
+		isProcessing = true; // 処理開始をマークする
+
+		submitButtonClick(); // SubmitButtonClick関数を呼び出す
 		$("#shiritoriForm").submit(); // フォームを送信
+
+		// 処理が終わったら、再度キーイベントを有効にする
+		// ここでは、例として1秒後に有効にするようにしています
+		setTimeout(function () {
+			isProcessing = false;
+		}, 1000);
 	}
 });
-
 // フォームの送信を検知
 $("#shiritoriForm").on("submit", function (e) {
 	e.preventDefault(); // フォームのデフォルトの送信動作をキャンセル
@@ -81,10 +96,11 @@ $("#shiritoriForm").on("submit", function (e) {
 		data: $(this).serialize(), // フォームのデータをシリアライズ
 		success: function (data) {
 			// リクエストが成功したときの処理をここに書く
-			console.log(data);
+			console.log("response data is", data);
 			// ボットの単語をHTML要素に反映させる
-			$("#botWord").text(data.word);
-			say(data.word, chatBox, "data.link");
+			//$("#botWord").text(data.title);
+			let link = `http://ja.wikipedia.org/?curid=${data.pageid}`;
+			displayBotChat(data.title, chatBox, link);
 		},
 		error: function (xhr, status, error) {
 			// リクエストが失敗したときの処理をここに書く
@@ -101,81 +117,40 @@ $("#shiritoriForm").on("submit", function (e) {
 	});
 });
 
-function disableButtonsDuringProcessing() {
-	recordButton.prop("disabled", true);
-	recordButtonText.text("処理中");
-	submitButton.prop("disabled", true);
-	submitButtonText.text("処理中");
-}
-
-// function displayUserChat(text) {
-// 	const userChatHtml = `
-// 		<div class="kaiwa">
-// 			<figure class="kaiwa-img-right">
-// 				<img src="https://via.placeholder.com/150" alt="no-img1">
-// 				<!-- ユーザー名を表示 -->
-// 				<figcaption class="kaiwa-img-description">${username}</figcaption>
-// 			</figure>
-// 			<div class="kaiwa-text-left">
-// 				<p class="kaiwa-text">「${text}」</p>
-// 			</div>
-// 		</div>`;
-// 	chatBox.append(userChatHtml);
-// 	obj.scrollTop = obj.scrollHeight;
-// }
-
-function createUserChatHtml(text) {
-	return `
-		<!-- START USER CHAT -->
-		<div class="row user-chat-box">
-			<div class="chat-icon">
-				<img class="chatgpt-icon" src="images/user-icon.png" />
-			</div>
-			<div class="chat-txt">「${text}」</div>
-		</div>
-	`;
-}
-
-function displayUserChat(text) {
-	const userChatHtml = createUserChatHtml(text);
-	chatBox.append(userChatHtml);
-	obj.scrollTop = obj.scrollHeight;
-}
-
 function processResultText(text) {
 	if (nextWord !== strChange(text, 1)[0]) {
-		say("「" + nextWord + "」から言葉を始めてね！", chatBox);
+		displayBotChat("「" + nextWord + "」から言葉を始めてね！", chatBox);
 		ResetUI();
 	} else if (wordHistory.indexOf(text) !== -1) {
-		say("「" + text + "」は、もう使われた言葉だよ！", chatBox);
+		displayBotChat("「" + text + "」は、もう使われた言葉だよ！", chatBox);
 		ResetUI();
 	} else {
-		handleSiritoriResult(text);
+		handleShiritoriResult(text);
 	}
 }
 
-function handleSiritoriResult(text) {
+function handleShiritoriResult(text) {
 	wordHistory.push(text);
-	siritori(text)
+	shiritori(text)
 		.then(function (values) {
-			handleSiritoriSuccess(values);
+			handleShiritoriSuccess(values);
 		})
 		.catch(function (error) {
-			handleSiritoriError(error);
+			handleShiritoriError(error);
 		})
 		.finally(function () {
 			isWork = false;
 		});
 }
 
-function handleSiritoriSuccess(values) {
+function handleShiritoriSuccess(values) {
 	let value = values[0];
 	let link = values[1];
 	console.log("選んだ単語", value);
 	const startWord = strChange(value, -1)[0];
 	inputText.attr("placeholder", "「" + startWord + "」から始まる言葉");
 	nextWord = startWord;
-	say("「" + value + "」", chatBox, link);
+	displayBotChat("「" + value + "」", chatBox, link);
 	wordHistory.push(value);
 	obj.scrollTop = obj.scrollHeight;
 
@@ -189,33 +164,29 @@ function handleSiritoriSuccess(values) {
 	ResetUI();
 }
 
-function handleSiritoriError(error) {
+function handleShiritoriError(error) {
 	alert("error:Wikipedia api\n" + error);
 	console.log(error);
-	say("エラーが起きました", chatBox);
+	displayBotChat("エラーが起きました", chatBox);
 	ResetUI();
 }
 
-function Submit(text) {
-	disableButtonsDuringProcessing();
-	console.log("リザルト");
-	console.log(text); //textが結果
-	//chatBox.html("");
-	displayUserChat(text);
-	obj.scrollTop = obj.scrollHeight;
-
-	processResultText(text);
-}
-
-function SubmitButtonClick() {
-	submitButton.css("background-color", "#999999");
-	recordButton.css("background-color", "#999999");
+function submitButtonClick() {
 	let text = inputText.val();
 	if (text === "") {
 		ResetUI();
 		return; //何もないなら関数を終了させる
+	} else {
+		recordButton.prop("disabled", true);
+		submitButton.prop("disabled", true);
+
+		console.log("input word", text);
+
+		displayUserChat(text);
+		obj.scrollTop = obj.scrollHeight;
+
+		processResultText(text);
 	}
-	Submit(text);
 }
 
 function ResetUI() {
@@ -225,11 +196,10 @@ function ResetUI() {
 	submitButton.prop("disabled", false);
 	recordButtonText.text("マイク");
 	submitButtonText.text("送信");
-	recordButton.css("background-color", "#00bcd4");
-	submitButton.css("background-color", "#00bcd4");
+	inputText.attr("placeholder", "「" + nextWord + "」から始まる言葉");
 }
 
-submitButton.click(SubmitButtonClick);
+submitButton.click(submitButtonClick);
 
 if (SpeechRecognition !== undefined) {
 	// ユーザのブラウザは音声認識に対応しています。
@@ -242,21 +212,21 @@ if (SpeechRecognition !== undefined) {
 			isWork = true;
 			recordButton.prop("disabled", true);
 			submitButton.prop("disabled", true);
-			recordButtonText.text("マイクで録音中");
-			recordButton.css("background-color", "#ff0000");
+			//recordButtonText.text("マイクで録音中");
+
 			speech.start();
 		}
 	});
 	speech.onnomatch = function () {
 		console.log("認識できませんでした");
-		say("認識できませんでした", chatBox);
+		displayBotChat("認識できませんでした", chatBox);
 		ResetUI();
 		isWork = false;
 		inputText.attr("readonly", false);
 	};
 	speech.onerror = function () {
 		console.log("認識できませんでした");
-		say("認識できませんでした", chatBox);
+		displayBotChat("認識できませんでした", chatBox);
 		ResetUI();
 		isWork = false;
 		inputText.attr("readonly", false);
@@ -264,28 +234,27 @@ if (SpeechRecognition !== undefined) {
 	//音声自動文字起こし機能
 	speech.onresult = function (e) {
 		if (!e.results[0].isFinal) {
-			var speechtext = e.results[0][0].transcript;
-			console.log(speechtext);
+			let speechText = e.results[0][0].transcript;
+			console.log(speechText);
 			inputText.attr("readonly", true);
-			inputText.val(speechtext);
+			inputText.val(speechText);
 
 			return;
 		}
 
 		recordButtonText.text("処理中");
 		submitButtonText.text("処理中");
-		submitButton.css("background-color", "#999999");
-		recordButton.css("background-color", "#999999");
+
 		console.log("リザルト");
 		speech.stop();
 
 		if (e.results[0].isFinal) {
 			console.log("聞き取り成功！");
-			var autotext = e.results[0][0].transcript;
+			let resultText = e.results[0][0].transcript;
 			console.log(e);
-			console.log(autotext); //autotextが結果
-			inputText.val(autotext);
-			Submit(autotext);
+			console.log(resultText); //autotextが結果
+			inputText.val(resultText);
+			submitButtonClick();
 		}
 	};
 } else {
@@ -298,7 +267,7 @@ if (SpeechRecognition !== undefined) {
 let words;
 let links;
 
-function siritori(user_msg) {
+function shiritori(user_msg) {
 	return new Promise(function (resolve, reject) {
 		words = [];
 		links = [];
@@ -313,7 +282,7 @@ function siritori(user_msg) {
 			console.log(words);
 			console.log(links);
 			if (words.length === 0) {
-				say("負けました", chatBox);
+				displayBotChat("負けました", chatBox);
 				console.error("強すぎException");
 				return;
 			}
@@ -512,46 +481,38 @@ function strChange(inputWord, flag) {
 	return r;
 }
 
-// function createChatBubble(text, link) {
-// 	const imageUrl = "https://via.placeholder.com/150";
-// 	const imageAlt = "no-img2";
-// 	const caption = "しりとり AI";
+function createUserChatHtml(text) {
+	return `
+		<!-- START USER CHAT -->
+		<div class="row user-chat-box">
+			<div class="chat-icon">
+				<img class="chatgpt-icon" src="images/Face-Without-Mouth-Flat-icon.png" />
+			</div>
+			<div class="chat-txt">「${text}」</div>
+		</div>
+	`;
+}
 
-// 	let messageText = `<p class="kaiwa-text">${text}</p>`;
-// 	if (link) {
-// 		messageText = `<p class="kaiwa-text"><a href="${link}">${text}</a></p>`;
-// 	}
+function displayUserChat(text) {
+	const userChatHtml = createUserChatHtml(text);
+	chatBox.append(userChatHtml);
+	obj.scrollTop = obj.scrollHeight;
+}
 
-// 	return `
-// 		<div class="kaiwa">
-// 			<figure class="kaiwa-img-left">
-// 				<img src="${imageUrl}" alt="${imageAlt}">
-// 				<figcaption class="kaiwa-img-description">${caption}</figcaption>
-// 			</figure>
-// 			<div class="kaiwa-text-right">
-// 				${messageText}
-// 			</div>
-// 		</div>`;
-// }
-
-function createChatBubbleHtml(text, link) {
+function createBotChatHtml(text, link) {
 	let textHtml = link ? `<a href="${link}">${text}</a>` : text;
 	return `
 	<!-- START GPT CHAT -->
 	<div class="row gpt-chat-box">
 		<div class="chat-icon">
-			<img class="chatgpt-icon" src="images/chatgpt-icon.png" />
+			<img class="chatgpt-icon" src="images/Smirking-Face-Flat-icon.png" />
 		</div>
 		<div class="chat-txt">${textHtml}</div>
 	</div>`;
 }
 
-function createChatBubble(text, link) {
-	return createChatBubbleHtml(text, link);
-}
-
-function say(text, element, link) {
-	const chatBubble = createChatBubble(text, link);
+function displayBotChat(text, element, link) {
+	const chatBubble = createBotChatHtml(text, link);
 	element.append(chatBubble);
 	obj.scrollTop = obj.scrollHeight;
 }
