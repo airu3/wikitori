@@ -10,7 +10,7 @@ public class StringUtilTest {
 
 	@Test
 	public void testTrimWordFromEnd() {
-		String str = "こんにちは漢字検定!";
+		String str = "&lt;漢字検定&gt;";
 		String expected = "こんにちは漢字検定";
 		String REGEX = "(?:(?!\\p{Lm})\\p{L})|\\p{N}";
 		Pattern pattern = Pattern.compile(REGEX);
@@ -71,8 +71,19 @@ public class StringUtilTest {
 
 	@Test // 最後の文字が修飾文字の場合
 	public void testProcessJapaneseWordModifier() {
-		String inputWord = "今日は漢字検定 !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\r\n" + //
-				"";
+		String inputWord = "今日は漢字検定 !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\r\n"
+				+ "\b"
+				+ "\t"
+				+ "\f"
+				+ "\n"
+				+ "\r"
+				+ "\t"
+				+ "\u000B"
+				+ "\u000C"
+				+ "\u0085"
+				+ "\u2028"
+				+ "\u2029"
+				+ "\u0009";
 		int flag = 1;
 		String[] expected = { "き", "キ" };
 		String[] actual = StringUtil.processJapaneseWord(inputWord, flag);
@@ -88,4 +99,13 @@ public class StringUtilTest {
 		assertArrayEquals(expected, actual);
 	}
 
+	@Test // sanitize
+	public void testProcessJapaneseWordSanitize() {
+		String inputWord = "今日は漢字検定\n\\n\n\n\n\n" + "";
+		StringUtil.sanitize(inputWord);
+
+		String expected = "今日は漢字検定";
+		String actual = inputWord;
+		assertEquals(expected, actual);
+	}
 }

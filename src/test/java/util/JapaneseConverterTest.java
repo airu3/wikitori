@@ -71,4 +71,11 @@ public class JapaneseConverterTest {
 		String convertedHiragana = JapaneseConverter.convertK2H(katakana);
 		assertEquals(expectedHiragana, convertedHiragana);
 	}
+
+	@Test
+	public void testConvertAllToHiragana() {
+		String input = "&lt今日は&gt!".replace("\n", "\\n");
+		String convertedHiragana = JapaneseConverter.convertAllToHiragana(input);
+		assertEquals("a", convertedHiragana);
+	}
 }
