@@ -14,14 +14,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import model.WordInfo;
+import model.TitleInfo;
 
 public class WikipediaFetcher {
 
-	public static CompletableFuture<List<WordInfo>> fetchWordsFromWikipedia(String searchTerm, int limit,
+	public static CompletableFuture<List<TitleInfo>> fetchWordInfo(String searchTerm, int limit,
 			List<String> ngWords) {
 		return CompletableFuture.supplyAsync(() -> {
-			List<WordInfo> words = new ArrayList<>();
+			List<TitleInfo> results = new ArrayList<>();
 
 			try {
 				// 検索語をURLエンコード
@@ -52,9 +52,9 @@ public class WikipediaFetcher {
 						if (!title.equals(searchTerm)) {
 							String word = title.replaceAll(" *\\([^)]*\\) *", "");
 							if (!ngWords.contains(word)) {
-								words.add(new WordInfo(word, value.get("pageid").getAsString()));
+								results.add(new TitleInfo(value.get("pageid").getAsInt(), word));
 							} else {
-								System.out.println("Word is in NG_words, not adding to words");
+								System.out.println("Word is in NG_words, not adding to results");
 							}
 						} else {
 							System.out.println("Word is the same as searchTerm, not processing");
@@ -65,7 +65,7 @@ public class WikipediaFetcher {
 				e.printStackTrace();
 			}
 
-			return words;
+			return results;
 		});
 	}
 }
