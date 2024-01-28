@@ -123,7 +123,7 @@ public class StringUtil {
 		// flag = 1: しりとりの単語の最初を取得
 		// flag = -1: しりとりの単語の最後を取得
 		String inputChar;
-		if (flag == 1) {
+		if (flag > 0) {
 			inputChar = extractFirstChar(inputWord);
 		} else {
 			inputChar = extractLastChar(inputWord);
