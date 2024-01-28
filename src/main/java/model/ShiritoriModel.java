@@ -15,6 +15,7 @@ public class ShiritoriModel {
 		List<String> words = new ArrayList<>();
 		List<String> links = new ArrayList<>();
 
+		// 最後の文字を取得
 		String[] changes = StringUtil.processJapaneseWord(userMsg, -1);
 
 		fetchWordsFromWikipedia(changes[0], words, links);
@@ -28,13 +29,13 @@ public class ShiritoriModel {
 		cpuWord = words.get(random);
 		String wikiLink = links.get(random);
 
-		if (strChange(cpuWord, -1)[0].equals("ん")) {
+		if (StringUtil.processJapaneseWord(cpuWord, -1)[0].equals("ん")) {
 			do {
 				words.remove(cpuWord);
 				random = (int) (Math.random() * words.size());
 				cpuWord = words.get(random);
 				wikiLink = links.get(random);
-			} while (strChange(cpuWord, -1)[0].equals("ん"));
+			} while (StringUtil.processJapaneseWord(cpuWord, -1)[0].equals("ん"));
 		}
 
 		return cpuWord + "," + wikiLink;
