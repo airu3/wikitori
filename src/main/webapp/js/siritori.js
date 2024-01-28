@@ -52,6 +52,7 @@ ssu.pitch = 1; // 高さを設定
 ssu.volume = 1; // 音量を設定
 
 let wordHistory = ["しりとり"];
+let score = 0;
 let cpuWord = "";
 let nextWord = "り";
 let isWork = false;
@@ -121,6 +122,48 @@ $("#shiritoriForm").on("submit", function (e) {
 	});
 });
 
+// スコアの送信を処理する関数
+$("#submitScore").click(function () {
+	let nowScore = $("#score").text(); // スコアを取得
+	let userName = "testUser"; // ユーザー名を設定（実際にはユーザーから入力を受け取る）
+
+	$.ajax({
+		url: "/submitScore", // スコアを送信するURL
+		type: "POST", // HTTPメソッド
+		data: {
+			// 送信するデータ
+			userName: userName,
+			score: nowScore,
+		},
+		success: function (data) {
+			alert("スコアが正常に送信されました。");
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			alert(
+				"スコアの送信中にエラーが発生しました: " +
+					textStatus +
+					", " +
+					errorThrown
+			);
+		},
+	});
+
+	// モーダルを閉じる
+	$("#scoreModal").modal("hide");
+});
+
+//send-scoreボタンを押したらモーダルを表示する
+$("#send-score").on("click", function () {
+	$("#scoreModal").modal("show");
+});
+
+$("#chat-btn").on("click", function (e) {
+	location.reload();
+});
+
+$("#scoreModal").on("show.bs.modal", function (event) {
+	$(".score-point").text(score);
+});
 function processResultText(text) {
 	if (nextWord !== strChange(text, 1)[0]) {
 		displayBotChat("「" + nextWord + "」から言葉を始めてね！", chatBox);
@@ -135,16 +178,40 @@ function processResultText(text) {
 
 function handleShiritoriResult(text) {
 	wordHistory.push(text);
-	shiritori(text)
-		.then(function (values) {
-			handleShiritoriSuccess(values);
-		})
-		.catch(function (error) {
-			handleShiritoriError(error);
-		})
-		.finally(function () {
-			isWork = false;
-		});
+
+	//単語の数x10点
+	score += text.length * 100;
+	//履歴の数x10点
+	score += wordHistory.length * 100;
+	//CPUの単語の数x10点
+	score += cpuWord.length * 100;
+	//テキストの最初の文字と最後の文字が同じなら+100点
+	if (strChange(text, 1)[0] === strChange(cpuWord, -1)[0]) {
+		score += 1000;
+	}
+	//履歴が10個になったらボーナス+1000点
+	if (wordHistory.length == 10) {
+		score += 1000;
+	}
+	//履歴が20個になったらボーナス+2000点
+	if (wordHistory.length == 20) {
+		score += 2000;
+	}
+
+	console.log("score", score);
+	//スコアを表示
+	document.querySelector(".score-point").textContent = score;
+
+	// shiritori(text)
+	// 	.then(function (values) {
+	// 		handleShiritoriSuccess(values);
+	// 	})
+	// 	.catch(function (error) {
+	// 		handleShiritoriError(error);
+	// 	})
+	// 	.finally(function () {
+	// 		isWork = false;
+	// 	});
 }
 
 function handleShiritoriSuccess(values) {
@@ -189,7 +256,7 @@ function submitButtonClick() {
 		displayUserChat(text);
 		obj.scrollTop = obj.scrollHeight;
 
-		//processResultText(text);
+		processResultText(text);
 	}
 }
 
