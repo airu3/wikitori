@@ -1,4 +1,4 @@
-package util;
+package api;
 
 import java.io.BufferedReader;
 
@@ -7,11 +7,17 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class KanjiToHiraganaConverter {
+public class HiraganaConverter {
 	private static final String API_URL = "https://labs.goo.ne.jp/api/hiragana";
 	private static final String API_KEY = "d5b86171fcdc098cd38e9b056f8c46c84ec367c171b29ec686f3307e0f3030ef";
 
-	public static String convertToHiragana(String inputWord) {
+	/**
+	 * 漢字をひらがなに変換
+	 * 
+	 * @param str 変換前の文字列
+	 * @return 変換後のひらがな
+	 */
+	public static String convertToHiragana(String str) {
 		try {
 			URL url = new URL(API_URL);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -20,7 +26,7 @@ public class KanjiToHiraganaConverter {
 			connection.setDoOutput(true);
 			connection.setRequestProperty("Content-Type", "application/json");
 
-			String jsonInputString = "{\"app_id\": \"" + API_KEY + "\", \"sentence\": \"" + inputWord
+			String jsonInputString = "{\"app_id\": \"" + API_KEY + "\", \"sentence\": \"" + str
 					+ "\", \"output_type\": \"hiragana\"}";
 
 			try (OutputStream os = connection.getOutputStream()) {
