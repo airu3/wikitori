@@ -100,11 +100,14 @@ $("#shiritoriForm").on("submit", function (e) {
 			// ボットの単語をHTML要素に反映させる
 			//$("#botWord").text(data.title);
 			let link = `http://ja.wikipedia.org/?curid=${data.pageid}`;
-			displayBotChat(data.title, chatBox, link);
+
+			let results = [data.title, link];
+			handleShiritoriSuccess(results);
 		},
 		error: function (xhr, status, error) {
 			// リクエストが失敗したときの処理をここに書く
 			console.error(error);
+			handleShiritoriError(error);
 		},
 		complete: function () {
 			// リクエストが完了したとき（成功・失敗に関わらず）の処理をここに書く
@@ -113,6 +116,7 @@ $("#shiritoriForm").on("submit", function (e) {
 
 			// 送信ボタンを再度有効化
 			$("#submit_btn").prop("disabled", false);
+			isWork = false;
 		},
 	});
 });
@@ -185,7 +189,7 @@ function submitButtonClick() {
 		displayUserChat(text);
 		obj.scrollTop = obj.scrollHeight;
 
-		processResultText(text);
+		//processResultText(text);
 	}
 }
 
