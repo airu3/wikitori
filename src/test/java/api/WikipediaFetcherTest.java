@@ -6,18 +6,18 @@ import java.util.concurrent.CompletableFuture;
 
 import org.junit.jupiter.api.Test;
 
-import model.WordInfo;
+import model.TitleInfo;
 
 class WikipediaFetcherTest {
 
 	@Test
 	void FetchTest() {
 		try {
-			List<CompletableFuture<List<WordInfo>>> futures = new ArrayList<>();
+			List<CompletableFuture<List<TitleInfo>>> futures = new ArrayList<>();
 
 			// Example usage with multiple searches
-			futures.add(WikipediaFetcher.fetchWordsFromWikipedia("ご", 200, new ArrayList<>()));
-			futures.add(WikipediaFetcher.fetchWordsFromWikipedia("ゴ", 200, new ArrayList<>()));
+			futures.add(WikipediaFetcher.fetchWordInfo("ご", 200, new ArrayList<>()));
+			futures.add(WikipediaFetcher.fetchWordInfo("ゴ", 200, new ArrayList<>()));
 
 			// Wait for all futures to complete
 			CompletableFuture<Void> allOf = CompletableFuture.allOf(
@@ -27,11 +27,11 @@ class WikipediaFetcherTest {
 			allOf.get();
 
 			// Process the results
-			for (CompletableFuture<List<WordInfo>> future : futures) {
-				List<WordInfo> result = future.get();
+			for (CompletableFuture<List<TitleInfo>> future : futures) {
+				List<TitleInfo> result = future.get();
 				// Handle the result as needed
-				for (WordInfo wordInfo : result) {
-					System.out.println("Page ID: " + wordInfo.getPageId() + ", Word: " + wordInfo.getWord());
+				for (TitleInfo wordInfo : result) {
+					System.out.println("Page ID: " + wordInfo.getPageId() + ", Word: " + wordInfo.getTitle());
 				}
 			}
 		} catch (Exception e) {
