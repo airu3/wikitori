@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import model.ShiritoriModel;
+import model.TitleInfo;
 
 @WebServlet("/chat")
 public class ChatController extends HttpServlet {
@@ -33,24 +34,22 @@ public class ChatController extends HttpServlet {
 		System.out.println("User Message: " + userMsg);
 
 		// セッションからしりとりの単語リストを取得
-		HttpSession session = request.getSession();
-		List<String> userMsgs = (List<String>) session.getAttribute("userMsgs");
+		// HttpSession session = request.getSession();
+		// List<String> userMsgs = (List<String>) session.getAttribute("userMsgs");
 
 		if (isValidInput(userMsg)) {
 			// しりとりの進行を行い、結果を取得
-			String result = shiritoriModel.playShiritori(userMsg);
+			TitleInfo result = shiritoriModel.playShiritori(userMsg);
 
 			// 結果をJSON形式で返す
-			String[] parts = result.split(",");
-			String jsonResponse = "{ \"word\": \"" + parts[0] + "\", \"link\": \"" + parts[1] + "\" }";
+			String jsonResponse = "{ \"title\": \"" + result.getTitle() + "\", \"pageid\": \"" + result.getPageId() + "\" }";
 
 			// チャット画面にボットの単語を画面遷移なしで送信
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			PrintWriter out = response.getWriter();
-			out.print(jsonResponse);
+			response.getWriter().print(jsonResponse);
 		} else {
-			
+
 		}
 	}
 
