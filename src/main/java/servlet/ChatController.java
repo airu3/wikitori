@@ -1,50 +1,59 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class ChatController
- */
+import model.ShiritoriModel;
+import model.TitleInfo;
+
 @WebServlet("/chat")
 public class ChatController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private ShiritoriModel shiritoriModel = new ShiritoriModel();
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public ChatController() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(
+			HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		// index.htmlにフォワード
-		request.getRequestDispatcher("index.html").forward(request, response);
+		request.getRequestDispatcher("chat.html").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// リクエストパラメータを取得
-		String word = request.getParameter("word");
-		System.out.println(word);
+		String userMsg = request.getParameter("userMsg");
+		System.out.println("User Message: " + userMsg);
 
-		// レスポンスを設定
-		response.setContentType("text/plain");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write("Received word: " + word);
+		// セッションからしりとりの単語リストを取得
+		// HttpSession session = request.getSession();
+		// List<String> userMsgs = (List<String>) session.getAttribute("userMsgs");
+
+		if (isValidInput(userMsg)) {
+			// しりとりの進行を行い、結果を取得
+			TitleInfo result = shiritoriModel.playShiritori(userMsg);
+
+			// 結果をJSON形式で返す
+			String jsonResponse = "{ \"title\": \"" + result.getTitle() + "\", \"pageid\": \"" + result.getPageId() + "\" }";
+
+			// チャット画面にボットの単語を画面遷移なしで送信
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().print(jsonResponse);
+		} else {
+
+		}
 	}
 
+	private boolean isValidInput(String userMsg) {
+		return userMsg != null && !userMsg.isEmpty();
+	}
 }

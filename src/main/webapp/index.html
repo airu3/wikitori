@@ -4,6 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Wiki しりとり AI</title>
+		<!-- normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css -->
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
@@ -107,43 +108,6 @@
 		</div>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 		<script src="js/siritori.js"></script>
-		<script>
-			// テキストエリアでエンターキーが押されたときにフォームを送信
-			$("#input_text").on("keydown", function (e) {
-				if (e.keyCode === 13) {
-					// エンターキーのキーコードは13
-					$("#shiritoriForm").submit(); // フォームを送信
-				}
-			});
-
-			// フォームの送信を検知
-			$("#shiritoriForm").on("submit", function (e) {
-				e.preventDefault(); // フォームのデフォルトの送信動作をキャンセル
-
-				$.ajax({
-					url: $(this).attr("action"), // フォームのaction属性からURLを取得
-					type: "POST", // リクエストのタイプをPOSTに設定
-					data: $(this).serialize(), // フォームのデータをシリアライズ
-					success: function (data) {
-						// リクエストが成功したときの処理をここに書く
-						console.log(data);
-					},
-					error: function (xhr, status, error) {
-						// リクエストが失敗したときの処理をここに書く
-						console.error(error);
-					},
-					complete: function () {
-						// リクエストが完了したとき（成功・失敗に関わらず）の処理をここに書く
-						// テキストエリアの内容を空にする
-						//$("#input_text").val("");
-
-						// 送信ボタンを再度有効化
-						$("#submit_btn").prop("disabled", false);
-					},
-				});
-			});
-
-			// マイクボタンを押したときの処理
-		</script>
+		<script></script>
 	</body>
 </html>
