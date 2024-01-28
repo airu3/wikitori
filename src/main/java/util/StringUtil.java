@@ -65,7 +65,7 @@ public class StringUtil {
 	 * @return 正規表現に一致するまで文字列の最後を削った文字列
 	 */
 	public static String trimWordFromEnd(String str, Pattern p) {
-		while (str.length() > 0 && !p.matcher(extractLastChar(str)).matches()) {
+		while (str != null && str.length() > 0 && !p.matcher(extractLastChar(str)).matches()) {
 			str = removeLastChar(str);
 			System.out.println("T " + str); // ログ出力
 		}
@@ -79,6 +79,10 @@ public class StringUtil {
 	 * @return 文字列の最初
 	 */
 	public static String extractFirstChar(String str) {
+		// null
+		if (str == null) {
+			return null;
+		}
 		return str.substring(0, 1);
 	}
 
@@ -89,7 +93,7 @@ public class StringUtil {
 	 * @return 文字列の最後
 	 */
 	public static String extractLastChar(String str) {
-		if (str.length() == 0) {
+		if (str == null) {
 			return "";
 		}
 		return str.substring(str.length() - 1);
@@ -102,7 +106,7 @@ public class StringUtil {
 	 * @return 最後を削除した文字列
 	 */
 	public static String removeLastChar(String str) {
-		if (str.length() == 0) {
+		if (str == null) {
 			return "";
 		}
 		return str.substring(0, str.length() - 1);
@@ -126,6 +130,7 @@ public class StringUtil {
 		}
 
 		System.out.println("Before processing, word is: " + inputWord);
+		System.out.println("Before processing, char is: " + inputChar);
 
 		// ひらがなとカタカナを
 		String[] resultChar = new String[2];
@@ -145,8 +150,11 @@ public class StringUtil {
 			// 漢字, 数字, 記号の場合
 			// 音読可能な部分までを抽出
 			Pattern p = Pattern.compile(REGEX_NOT_MODIFIER);
-			String trimmedWord = trimWordFromEnd(inputWord, p);
+			String sanitizedInputWord = sanitize(inputWord);
+			String trimmedWord = trimWordFromEnd(sanitizedInputWord, p);
 			String hiragana = JapaneseConverter.convertAllToHira(trimmedWord);
+			hiragana = trimWordFromEnd(hiragana, p);
+
 			System.out.println("After processing kanji, hiragana is: " + hiragana);
 
 			if (flag == -1) {
@@ -167,5 +175,18 @@ public class StringUtil {
 		System.out.println("Final state of resultChar is: " + Arrays.toString(resultChar));
 		return resultChar;
 	}
+	// !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
 
+	public static String sanitize(String str) {
+		return str
+				.replace("\b", "")
+				.replace("\f", "")
+				.replace("\n", "")
+				.replace("\r", "")
+				.replace("\t", "")
+				.replace("\"", "")
+				.replace("\'", "")
+				.replace("\\", "");
+
+	}
 }
