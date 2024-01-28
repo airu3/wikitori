@@ -1,5 +1,5 @@
 /api/
-/dao/
 /model/
-/servlet/
 /util/
+/dao/
+/servlet/
