@@ -131,14 +131,14 @@ public class StringUtil {
 		String[] resultChar = new String[2];
 
 		// ひらがな、カタカナ、漢字,数字,記号の場合に分けて処理
-		if (JapaneseCharConverter.isHiragana(inputChar)) {
+		if (JapaneseConverter.isHiragana(inputChar)) {
 			// ひらがなの場合
 			resultChar[0] = inputChar;
-			resultChar[1] = JapaneseCharConverter.convertH2K(inputChar);
+			resultChar[1] = JapaneseConverter.convertHiraToKata(inputChar);
 			System.out.println("After processing hiragana, resultChar is: " + Arrays.toString(resultChar));
-		} else if (JapaneseCharConverter.isKatakana(inputChar)) {
+		} else if (JapaneseConverter.isKatakana(inputChar)) {
 			// カタカナの場合
-			resultChar[0] = JapaneseCharConverter.convertK2H(inputChar);
+			resultChar[0] = JapaneseConverter.convertKataToHira(inputChar);
 			resultChar[1] = inputChar;
 			System.out.println("After processing katakana, resultChar is: " + Arrays.toString(resultChar));
 		} else {
@@ -146,10 +146,17 @@ public class StringUtil {
 			// 音読可能な部分までを抽出
 			Pattern p = Pattern.compile(REGEX_NOT_MODIFIER);
 			String trimmedWord = trimWordFromEnd(inputWord, p);
-			String hiragana = KanjiToHiraganaConverter.convertToHiragana(trimmedWord);
+			String hiragana = JapaneseConverter.convertAllToHira(trimmedWord);
+			System.out.println("After processing kanji, hiragana is: " + hiragana);
+
+			if (flag == -1) {
+				hiragana = extractLastChar(hiragana);
+			} else {
+				hiragana = extractFirstChar(hiragana);
+			}
 
 			resultChar[0] = hiragana;
-			resultChar[1] = JapaneseCharConverter.convertH2K(hiragana);
+			resultChar[1] = JapaneseConverter.convertHiraToKata(hiragana);
 			System.out.println("After processing kanji, resultChar is: " + Arrays.toString(resultChar));
 		}
 
