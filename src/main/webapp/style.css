@@ -19,7 +19,7 @@ body {
 	background-color: #fff;
 	margin: 0;
 	padding: 0;
-	color: #fff;
+	color: #000;
 
 	min-height: 100vh;
 }
@@ -196,11 +196,11 @@ small {
 	opacity: 0;
 }
 
-.checkbox-container input:checked~.checked-icon {
+.checkbox-container input:checked ~ .checked-icon {
 	opacity: 1;
 }
 
-.checkbox-container input:checked~.unchecked-icon {
+.checkbox-container input:checked ~ .unchecked-icon {
 	opacity: 0;
 }
 
