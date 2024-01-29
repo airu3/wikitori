@@ -7,126 +7,141 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ScoreDao {
-    final String URL = "jdbc:mysql://localhost:3306/shiritori";
-    final String USER = "root";
-    final String PASSWORD = "";
+	private static final String URL = "jdbc:mysql://localhost:3306/test";
+	private static final String USER = "root";
+	private static final String PASSWORD = "";
 
-    public void registerUser(String name) {
-        String sql = "INSERT INTO user (name) VALUES (?)";
+	// コネクション
+	protected Connection con = null;
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-                PreparedStatement pstmt = con.prepareStatement(sql)) {
+	// DB接続する
+	protected void connect() throws SQLException, ClassNotFoundException {
+		con = DriverManager.getConnection(URL, USER, PASSWORD);
+	}
 
-            pstmt.setString(1, name);
-            pstmt.executeUpdate();
+	// DB切断する
+	protected void disConnect() throws SQLException {
+		if (con != null) {
+			con.close();
+		}
+	}
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	public void registerUser(String name) {
+		String sql = "INSERT INTO user (name) VALUES (?)";
 
-    public void registerScore(int userId, int score) {
-        String sql = "INSERT INTO score (user_id, score) VALUES (?, ?)";
+		try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-                PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setString(1, name);
+			pstmt.executeUpdate();
 
-            pstmt.setInt(1, userId);
-            pstmt.setInt(2, score);
-            pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	public void registerScore(int userId, int score) {
+		String sql = "INSERT INTO score (user_id, score) VALUES (?, ?)";
 
-    public boolean isUserExists(String name) {
-        String sql = "SELECT * FROM user WHERE name = ?";
+		try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-                PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, userId);
+			pstmt.setInt(2, score);
+			pstmt.executeUpdate();
 
-            pstmt.setString(1, name);
-            ResultSet rs = pstmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-            if (rs.next()) {
-                return true;
-            }
+	public boolean isUserExists(String name) {
+		String sql = "SELECT * FROM user WHERE name = ?";
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-        return false;
-    }
+			pstmt.setString(1, name);
+			ResultSet rs = pstmt.executeQuery();
 
-    public int getUserScore(int userId) {
-        String sql = "SELECT score FROM score WHERE user_id = ?";
+			if (rs.next()) {
+				return true;
+			}
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-                PreparedStatement pstmt = con.prepareStatement(sql)) {
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-            pstmt.setInt(1, userId);
-            ResultSet rs = pstmt.executeQuery();
+		return false;
+	}
 
-            if (rs.next()) {
-                return rs.getInt("score");
-            }
+	public int getUserScore(int userId) {
+		String sql = "SELECT score FROM score WHERE user_id = ?";
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-        return -1;
-    }
+			pstmt.setInt(1, userId);
+			ResultSet rs = pstmt.executeQuery();
 
-    public void setScore(int userId, int score) {
-        String sql = "INSERT INTO score (user_id, score) VALUES (?, ?)";
+			if (rs.next()) {
+				return rs.getInt("score");
+			}
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-                PreparedStatement pstmt = con.prepareStatement(sql)) {
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-            pstmt.setInt(1, userId);
-            pstmt.setInt(2, score);
-            pstmt.executeUpdate();
+		return -1;
+	}
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	public void setScore(int userId, int score) {
+		String sql = "INSERT INTO score (user_id, score) VALUES (?, ?)";
 
-    public void updateScore(int userId, int score) {
-        String sql = "UPDATE score SET score = ? WHERE user_id = ?";
+		try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-                PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, userId);
+			pstmt.setInt(2, score);
+			pstmt.executeUpdate();
 
-            pstmt.setInt(1, score);
-            pstmt.setInt(2, userId);
-            pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	public void updateScore(int userId, int score) {
+		String sql = "UPDATE score SET score = ? WHERE user_id = ?";
 
-    public int getUserId(String userName) {
-        String sql = "SELECT id FROM user WHERE name = ?";
+		try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-        try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
-                PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setInt(1, score);
+			pstmt.setInt(2, userId);
+			pstmt.executeUpdate();
 
-            pstmt.setString(1, userName);
-            ResultSet rs = pstmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-            if (rs.next()) {
-                return rs.getInt("id");
-            }
+	public int getUserId(String userName) {
+		String sql = "SELECT id FROM user WHERE name = ?";
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD);
+				PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-        return -1;
-    }
+			pstmt.setString(1, userName);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				return rs.getInt("id");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return -1;
+	}
 }
