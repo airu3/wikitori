@@ -6,20 +6,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ScoreDao {
-	final String URL = "jdbc:mysql://localhost:3306/shiritori";
-	final String USER = "root";
-	final String PASSWORD = "";
+public class ScoreDao extends BaseDao {
+	private String URL = "jdbc:mysql://localhost:3306/shiritori";
+	private String USER = "root";
+	private String PASSWORD = "";
 
+	/**
+	 * コンストラクタ
+	 */
 	public ScoreDao() {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			System.out.println("Driver not found");
-			e.printStackTrace();
-		}
+		super();
 	}
 
+	/**
+	 * データベースに接続できるかどうかを返す
+	 * 
+	 * @return 接続できる場合はtrue、できない場合はfalse
+	 */
 	public boolean canConnectToDatabase() {
 		try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
 			return true;
@@ -27,9 +30,20 @@ public class ScoreDao {
 			System.out.println("Failed to connect to database");
 			e.printStackTrace();
 			return false;
+		} finally {
+			try {
+				this.disConnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
+	/**
+	 * ユーザーを登録する
+	 * 
+	 * @param name ユーザー名
+	 */
 	public void registerUser(String name) {
 		String sql = "INSERT INTO user (name) VALUES (?)";
 
@@ -41,9 +55,21 @@ public class ScoreDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				this.disConnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
+	/**
+	 * スコアを登録する
+	 * 
+	 * @param userId ユーザーID
+	 * @param score  スコア
+	 */
 	public void registerScore(int userId, int score) {
 		String sql = "INSERT INTO score (user_id, score) VALUES (?, ?)";
 
@@ -56,9 +82,21 @@ public class ScoreDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				this.disConnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
+	/**
+	 * ユーザーが存在するかどうかを返す
+	 * 
+	 * @param name ユーザー名
+	 * @return 存在する場合はtrue、存在しない場合はfalse
+	 */
 	public boolean isUserExists(String name) {
 		String sql = "SELECT * FROM user WHERE name = ?";
 
@@ -74,11 +112,24 @@ public class ScoreDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				this.disConnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 		return false;
 	}
 
+	/**
+	 * ユーザーのスコアを返す
+	 * 
+	 * @param userId ユーザーID
+	 * @return スコア
+	 */
 	public int getUserScore(int userId) {
 		String sql = "SELECT score FROM score WHERE user_id = ?";
 
@@ -94,11 +145,23 @@ public class ScoreDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				this.disConnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return -1;
 	}
 
+	/**
+	 * スコアを設定する
+	 * 
+	 * @param userId ユーザーID
+	 * @param score  スコア
+	 */
 	public void setScore(int userId, int score) {
 		String sql = "INSERT INTO score (user_id, score) VALUES (?, ?)";
 
@@ -111,9 +174,21 @@ public class ScoreDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				this.disConnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
+	/**
+	 * スコアを更新する
+	 * 
+	 * @param userId
+	 * @param score  スコア
+	 */
 	public void updateScore(int userId, int score) {
 		String sql = "UPDATE score SET score = ? WHERE user_id = ?";
 
@@ -126,9 +201,21 @@ public class ScoreDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				this.disConnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
+	/**
+	 * ユーザーIDを返す
+	 * 
+	 * @param userName ユーザー名
+	 * @return ユーザーID
+	 */
 	public int getUserId(String userName) {
 		String sql = "SELECT id FROM user WHERE name = ?";
 
@@ -144,6 +231,12 @@ public class ScoreDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				this.disConnect();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return -1;
