@@ -78,7 +78,6 @@ $("#input_text").on("keydown", function (e) {
 		isProcessing = true; // 処理開始をマークする
 
 		submitButtonClick(); // SubmitButtonClick関数を呼び出す
-		$("#shiritoriForm").submit(); // フォームを送信
 
 		// 処理が終わったら、再度キーイベントを有効にする
 		// ここでは、例として1秒後に有効にするようにしています
@@ -164,6 +163,11 @@ $("#chat-btn").on("click", function (e) {
 $("#scoreModal").on("show.bs.modal", function (event) {
 	$(".score-point").text(score);
 });
+
+/**
+ * 		入力されたテキストを処理する関数
+ * @param {*} text - 入力されたテキスト
+ */
 function processResultText(text) {
 	if (nextWord !== strChange(text, 1)[0]) {
 		displayBotChat("「" + nextWord + "」から言葉を始めてね！", chatBox);
@@ -201,6 +205,8 @@ function handleShiritoriResult(text) {
 	console.log("score", score);
 	//スコアを表示
 	document.querySelector(".score-point").textContent = score;
+
+	$("#shiritoriForm").submit(); // フォームを送信
 
 	// shiritori(text)
 	// 	.then(function (values) {
@@ -323,7 +329,7 @@ if (SpeechRecognition !== undefined) {
 			console.log("聞き取り成功！");
 			let resultText = e.results[0][0].transcript;
 			console.log(e);
-			console.log(resultText); //autotextが結果
+			console.log(resultText); //resultTextが結果
 			inputText.val(resultText);
 			submitButtonClick();
 		}
