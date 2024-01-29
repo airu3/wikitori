@@ -21,7 +21,7 @@ public class StartController extends HttpServlet {
 		if (session.getAttribute("user") != null) {
 			response.sendRedirect(request.getContextPath() + "/chat");
 		} else {
-			// ユー	ザーが未ログインの場合、通常の処理に進む
+			// ユー ザーが未ログインの場合、通常の処理に進む
 			request.getRequestDispatcher("start.html").forward(request, response);
 		}
 	}

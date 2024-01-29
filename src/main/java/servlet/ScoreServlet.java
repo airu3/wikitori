@@ -17,6 +17,8 @@ public class ScoreServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userName = request.getParameter("userName");
 		int score = Integer.parseInt(request.getParameter("score"));
+		System.out.println("User Name: " + userName);
+		System.out.println("Score: " + score);
 
 		if (!scoreDao.isUserExists(userName)) {
 			scoreDao.registerUser(userName);

@@ -128,7 +128,7 @@ $("#submitScore").click(function () {
 	let userName = "testUser"; // ユーザー名を設定（実際にはユーザーから入力を受け取る）
 
 	$.ajax({
-		url: "/submitScore", // スコアを送信するURL
+		url: "scoreUpdate", // スコアを送信するURL
 		type: "POST", // HTTPメソッド
 		data: {
 			// 送信するデータ

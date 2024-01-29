@@ -53,9 +53,12 @@
 								</button>
 							</div>
 							<div class="modal-body">
-								<p id="totalScore">Total Score: <span class="score-point">0</span></p>
-								<p>記録を送信します。</p>
-								<button id="submitScore" class="btn btn-primary">Submit</button>
+								<!-- <form id="scoreForm" action="submitScore" method="post"> -->
+									<p id="totalScore">Total Score: <span class="score-point">0</span></p>
+									<input type="hidden" name="score" value="0">
+									<p>記録を送信します。</p>
+									<button id="submitScore" class="btn btn-primary" type="submit">Submit</button>
+								<!-- </form> -->
 							</div>
 						</div>
 					</div>
@@ -166,7 +169,6 @@
 	<!-- START INTERNAL JS RESOURCES -->
 	<script src="js/siritori.js"></script>
 	<script>
-		
 
 	</script>
 </body>
