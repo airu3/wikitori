@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.ScoreDao;
 
@@ -15,7 +16,8 @@ public class ScoreServlet extends HttpServlet {
 	private ScoreDao scoreDao = new ScoreDao();
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userName = request.getParameter("userName");
+		HttpSession session = request.getSession();
+		String userName = (String) session.getAttribute("user");
 		int score = Integer.parseInt(request.getParameter("score"));
 		System.out.println("User Name: " + userName);
 		System.out.println("Score: " + score);
