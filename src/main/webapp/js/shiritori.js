@@ -587,17 +587,3 @@ function displayBotChat(text, element, link) {
 	element.append(chatBubble);
 	obj.scrollTop = obj.scrollHeight;
 }
-
-let i = 1;
-let intervalId = setInterval(function () {
-	let word = document.getElementById('word' + i);
-	if (word) {
-		word.style.opacity = 1;
-		fetchWordsFromWikipedia(word.textContent, 10, function () {
-			console.log('Fetched words for', word.textContent);
-		});
-		i++;
-	} else {
-		clearInterval(intervalId);
-	}
-}, 1000); // 1000ミリ秒（1秒）ごとに実行
