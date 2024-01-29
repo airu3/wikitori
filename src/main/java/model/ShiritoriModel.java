@@ -35,9 +35,16 @@ public class ShiritoriModel {
 				logger.info("No words found, you lose.");
 				return new TitleInfo(-1, "負けました");
 			} else {
+
 				do {
 					int index = (int) (Math.random() * futures.size());
 					CompletableFuture<List<TitleInfo>> randFuture = futures.get(index);
+
+					// 単語とそのIDをすべて出力
+					for (TitleInfo info : randFuture.get()) {
+						System.out.println(info.getPageId() + ": " + info.getTitle());
+					}
+
 					result = randFuture.get().get((int) (Math.random() * randFuture.get().size()));
 					// 選択された単語の最後が「ん」以外になるまで繰り返す
 				} while (StringUtil.processJapaneseWord(result.getTitle(), -1)[0].equals("ん"));
