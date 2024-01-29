@@ -11,22 +11,22 @@ public class ScoreDao {
 	final String USER = "root";
 	final String PASSWORD = "";
 
-	public boolean canConnectToDatabase() {
-		Connection con = null;
+	public ScoreDao() {
 		try {
-			con = DriverManager.getConnection(URL, USER, PASSWORD);
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			System.out.println("Driver not found");
+			e.printStackTrace();
+		}
+	}
+
+	public boolean canConnectToDatabase() {
+		try (Connection con = DriverManager.getConnection(URL, USER, PASSWORD)) {
 			return true;
 		} catch (SQLException e) {
+			System.out.println("Failed to connect to database");
 			e.printStackTrace();
 			return false;
-		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 
