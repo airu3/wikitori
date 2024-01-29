@@ -20,8 +20,8 @@ public class ShiritoriModel {
 			List<CompletableFuture<List<TitleInfo>>> futures = new ArrayList<>();
 
 			// Example usage with multiple searches
-			futures.add(WikipediaFetcher.fetchWordInfo(changes[0], 150, new ArrayList<>()));
-			futures.add(WikipediaFetcher.fetchWordInfo(changes[1], 150, new ArrayList<>()));
+			futures.add(WikipediaFetcher.fetchWordInfo(changes[0], 100, new ArrayList<>()));
+			futures.add(WikipediaFetcher.fetchWordInfo(changes[1], 100, new ArrayList<>()));
 
 			// Wait for all futures to complete
 			CompletableFuture<Void> allOf = CompletableFuture.allOf(
