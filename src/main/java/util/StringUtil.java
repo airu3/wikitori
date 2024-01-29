@@ -123,7 +123,7 @@ public class StringUtil {
 		// flag = 1: しりとりの単語の最初を取得
 		// flag = -1: しりとりの単語の最後を取得
 		String inputChar;
-		if (flag == 1) {
+		if (flag > 0) {
 			inputChar = extractFirstChar(inputWord);
 		} else {
 			inputChar = extractLastChar(inputWord);
@@ -177,6 +177,12 @@ public class StringUtil {
 	}
 	// !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
 
+	/**
+	 * 文字列をサニタイズする
+	 * 
+	 * @param str 文字列
+	 * @return サニタイズされた文字列
+	 */
 	public static String sanitize(String str) {
 		return str
 				.replace("\b", "")
@@ -188,5 +194,15 @@ public class StringUtil {
 				.replace("\'", "")
 				.replace("\\", "");
 
+	}
+
+	/**
+	 * 入力が有効かどうかを判定する
+	 * 
+	 * @param str 入力
+	 * @return 入力が有効かどうか
+	 */
+	public static boolean isValidInput(String str) {
+		return str != null && !str.isEmpty();
 	}
 }
