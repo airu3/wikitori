@@ -108,4 +108,5 @@ public class StringUtilTest {
 		String actual = inputWord;
 		assertEquals(expected, actual);
 	}
+
 }
