@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import api.WikipediaFetcher;
 import util.NgWordManager;
 import util.StringUtil;
+import util.NgWordManager;
 
 public class ShiritoriModel {
 	private static final Logger logger = Logger.getLogger(ShiritoriModel.class.getName());
