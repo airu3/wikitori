@@ -13,7 +13,7 @@ import util.NgWordManager;
 
 public class ShiritoriModel {
 	private static final Logger logger = Logger.getLogger(ShiritoriModel.class.getName());
-	private static final List<String> ngWords = NgWordManager.getNgWords();
+	private static List<String> ngWords = NgWordManager.getNgWords();
 
 	public TitleInfo playShiritori(String userMsg) {
 		TitleInfo result;
