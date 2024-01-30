@@ -1,10 +1,12 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NgWordManager {
-	private static ArrayList<String> ngWords;
+	private static List<String> ngWords;
 	static {
+		ngWords = new ArrayList<>();
 		addNgWord("アナル");
 		addNgWord("アダルトビデオ");
 		addNgWord("アダルトゲーム");
@@ -39,12 +41,12 @@ public class NgWordManager {
 	}
 
 	// NGワードの一覧を取得
-	public static ArrayList<String> getNgWords() {
+	public static List<String> getNgWords() {
 		return ngWords;
 	}
 
 	// NGワードの一覧を設定
-	public static void setNgWords(ArrayList<String> ngWords) {
+	public static void setNgWords(List<String> ngWords) {
 		NgWordManager.ngWords = ngWords;
 	}
 
