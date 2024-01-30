@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="ja-JP">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>wikitori</title>
 
-	<title>wikitori</title>
+		<!-- START EXTERNAL CSS RESOURCES -->
 
-	<!-- START EXTERNAL CSS RESOURCES -->
+		<!-- bootstrap -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+		/>
 
-	<!-- bootstrap -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+		<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+			rel="stylesheet"
+		/>
 
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+		<!-- START INTERNAL CSS RESOURCES -->
 
-	<!-- START INTERNAL CSS RESOURCES -->
+		<!-- favicon -->
+		<link
+			rel="shortcut icon"
+			href="images/TORII-removebg-preview.png"
+			type="image/x-icon"
+		/>
+		<!-- style -->
+		<link rel="stylesheet" href="style.css" />
+	</head>
 
-	<!-- favicon -->
-	<link rel="shortcut icon" href="images/1torii.png" type="image/x-icon" />
-	<!-- style -->
-	<link rel="stylesheet" href="style.css" />
-</head>
-
-<body>
-	<!-- START MAIN CONTAINER -->
-	<div class="container-fluid">
-		<div class="row">
-			<!-- START SIDENAV -->
-			<div class="side-nav col-lg-3 col-md-12">
-				<!-- START NEW CHAT BUTTON -->
-				<div class="row p-2">
-					<div class="chat-btn d-flex align-items-center" id="chat-btn>
-							<span class="d-block">+ New Chat</span>
+	<body>
+		<!-- START MAIN CONTAINER -->
+		<div class="container-fluid">
+			<div class="row">
+				<!-- START SIDENAV -->
+				<div class="side-nav col-lg-3 col-md-12">
+					<!-- START NEW CHAT BUTTON -->
+					<div class="row p-2">
+						<div class="chat-btn d-flex align-items-center" id="chat-btn>
+						<span class="d-block">+ New Chat</span>
 					</div>
 				</div>
 				<div class="row p-2">
@@ -43,27 +52,43 @@
 					</div>
 				</div>
 				<!-- START modal -->
-				<div class="modal fade" id="scoreModal" tabindex="-1" role="dialog" aria-labelledby="scoreModalLabel" aria-hidden="true">
+				<div
+					class="modal fade"
+					id="scoreModal"
+					tabindex="-1"
+					role="dialog"
+					aria-labelledby="scoreModalLabel"
+					aria-hidden="true"
+				>
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header bg-primary text-white">
 								<h5 class="modal-title" id="scoreModalLabel">Game Score</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<button
+									type="button"
+									class="close"
+									data-dismiss="modal"
+									aria-label="Close"
+								>
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
 							<div class="modal-body">
 								<!-- <form id="scoreForm" action="submitScore" method="post"> -->
-									<p id="totalScore">Total Score: <span class="score-point">0</span></p>
-									<input type="hidden" name="score" value="0">
-									<p>記録を送信します。</p>
-									<button id="submitScore" class="btn btn-primary" type="submit">Submit</button>
+								<p id="totalScore">
+									Total Score: <span class="score-point">0</span>
+								</p>
+								<input type="hidden" name="score" value="0" />
+								<p>記録を送信します。</p>
+								<button id="submitScore" class="btn btn-primary" type="submit">
+									Submit
+								</button>
 								<!-- </form> -->
 							</div>
 						</div>
 					</div>
 				</div>
-				
+
 				<!--  -->
 				<div class="row">
 					<div class="col-12">
@@ -100,7 +125,10 @@
 					<!-- START GPT CHAT -->
 					<div class="row gpt-chat-box">
 						<div class="chat-icon">
-							<img class="chatgpt-icon" src="images/Smirking-Face-Flat-icon.png" />
+							<img
+								class="chatgpt-icon"
+								src="images/Smirking-Face-Flat-icon.png"
+							/>
 						</div>
 						<div class="chat-txt">「しりとり」</div>
 					</div>
@@ -109,44 +137,72 @@
 				<div class="chat-input-area overflow-hidden">
 					<div class="row">
 						<div class="col-12 chat-inputs-area-inner">
-							<form action="chat" method="post" id="shiritoriForm" class="row chat-inputs-container">
-								<div class="col-auto d-flex justify-content-center align-items-center">
-									<button type="button" id="record_btn" class="btn btn-outline-primary">
+							<form
+								action="chat"
+								method="post"
+								id="shiritoriForm"
+								class="row chat-inputs-container"
+							>
+								<div
+									class="col-auto d-flex justify-content-center align-items-center"
+								>
+									<button
+										type="button"
+										id="record_btn"
+										class="btn btn-outline-primary"
+									>
 										<i class="fas fa-microphone"></i>
 									</button>
 								</div>
 								<div class="col">
-									<textarea name="userMsg" id="input_text" class="form-control"
-										placeholder="「り」から始まる言葉"></textarea>
+									<textarea
+										name="userMsg"
+										id="input_text"
+										class="form-control"
+										placeholder="「り」から始まる言葉"
+									></textarea>
 								</div>
-								<div class="col-auto d-flex justify-content-center align-items-center">
+								<div
+									class="col-auto d-flex justify-content-center align-items-center"
+								>
 									<button type="submit" class="btn btn-primary" id="submit_btn">
 										<i class="fa fa-paper-plane" aria-hidden="true"></i>
 									</button>
 								</div>
-								<div class="col-auto form-check d-flex justify-content-center align-items-center">
-									<label class="checkbox-container btn btn-secondary" style="
-												position: relative;
-												padding: 5px;
-												border-radius: 5px;
-												width: 30px;
-												height: 30px;
-											">
+								<div
+									class="col-auto form-check d-flex justify-content-center align-items-center"
+								>
+									<label
+										class="checkbox-container btn btn-secondary"
+										style="
+											position: relative;
+											padding: 5px;
+											border-radius: 5px;
+											width: 30px;
+											height: 30px;
+										"
+									>
 										<input type="checkbox" id="check" style="display: none" />
-										<i class="fas fa-volume-mute unchecked-icon" style="
-													position: absolute;
-													top: 50%;
-													left: 50%;
-													transform: translate(-50%, -50%);
-													color: #aaa;
-												"></i>
-										<i class="fas fa-volume-up checked-icon" style="
-													position: absolute;
-													top: 50%;
-													left: 50%;
-													transform: translate(-50%, -50%);
-													color: #aaa;
-												"></i>
+										<i
+											class="fas fa-volume-mute unchecked-icon"
+											style="
+												position: absolute;
+												top: 50%;
+												left: 50%;
+												transform: translate(-50%, -50%);
+												color: #aaa;
+											"
+										></i>
+										<i
+											class="fas fa-volume-up checked-icon"
+											style="
+												position: absolute;
+												top: 50%;
+												left: 50%;
+												transform: translate(-50%, -50%);
+												color: #aaa;
+											"
+										></i>
 									</label>
 								</div>
 							</form>
@@ -156,21 +212,17 @@
 				<!--  -->
 			</div>
 		</div>
-	</div>
 
-	<!-- START EXTERNAL JS RESOURCES -->
-	<!-- jquery -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<!-- material-ui -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/material-ui/5.0.0-beta.5/index.js"></script>
-	<!-- bootstrap -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+		<!-- START EXTERNAL JS RESOURCES -->
+		<!-- jquery -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<!-- material-ui -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/material-ui/5.0.0-beta.5/index.js"></script>
+		<!-- bootstrap -->
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-	<!-- START INTERNAL JS RESOURCES -->
-	<script src="js/shiritori.js"></script>
-	<script>
-
-	</script>
-</body>
-
+		<!-- START INTERNAL JS RESOURCES -->
+		<script src="js/shiritori.js"></script>
+		<script></script>
+	</body>
 </html>
