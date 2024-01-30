@@ -1,6 +1,7 @@
 package api;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -41,37 +42,52 @@ class WikipediaFetcherTest {
 	}
 
 	@Test
+
 	void FetchTest2() {
-		// ひらがなすべてを取得
-		for (String word : JapaneseConverter.createHiraganaList()) {
-			try {
-				List<CompletableFuture<List<TitleInfo>>> futures = new ArrayList<>();
+		try
 
-				// Example usage with multiple searches
-				futures.add(WikipediaFetcher.fetchWordInfo(word, 150, new ArrayList<>()));
+		{
+			// ひらがなの一覧を生成
+			String[] hiraganas = JapaneseConverter.createHiraganaList();
 
-				// futuresがすべて終了するまで待つ
-				CompletableFuture<Void> allOf = CompletableFuture.allOf(
-						futures.toArray(new CompletableFuture[0]));
+			// ひらがなごとに検索を行う
+			for (String hiragana : hiraganas) {
+				List<TitleInfo> result = WikipediaFetcher.fetchWordInfo(hiragana, 200, new ArrayList<>()).get();
 
-				// futuresをすべて終了させる
-				allOf.get();
+				// タイトルの順番をソート
+				result.sort(Comparator.comparing(TitleInfo::getTitle));
 
-				// Process the results
-				for (CompletableFuture<List<TitleInfo>> future : futures) {
-					List<TitleInfo> result = future.get();
-					// Handle the result as needed
-					for (TitleInfo wordInfo : result) {
-						System.out.printf("\t id :%8d , title : %s\n", wordInfo.getPageId(), wordInfo.getTitle());
-					}
+				// 一つのリストに結合した結果を出力
+				for (TitleInfo titleInfo : result) {
+					System.out.printf("\t id :%8d , title : %s\n", titleInfo.getPageId(), titleInfo.getTitle());
 				}
 
-				// Wait for a while before the next request
-				Thread.sleep(1000); // wait for 1 second
-			} catch (Exception e) {
-				e.printStackTrace();
+				// 適切な間隔を設定してDoS攻撃にならないようにする
+				Thread.sleep(1000); // 1秒待つ
 			}
+
+			// // カタカナの一覧を生成
+			// String[] katakanas = JapaneseConverter.createKatakanaList();
+
+			// // カタカナごとに検索を行う
+			// for (String katakana : katakanas) {
+			// List<TitleInfo> result = WikipediaFetcher.fetchWordInfo(katakana, 200, new
+			// ArrayList<>()).get();
+
+			// // タイトルの順番をソート
+			// result.sort(Comparator.comparing(TitleInfo::getTitle));
+
+			// // 一つのリストに結合した結果を出力
+			// for (TitleInfo titleInfo : result) {
+			// System.out.printf("\t id :%8d , title : %s\n", titleInfo.getPageId(),
+			// titleInfo.getTitle());
+			// }
+
+			// // 適切な間隔を設定してDoS攻撃にならないようにする
+			// Thread.sleep(1000); // 1秒待つ
+			// }
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-
 }

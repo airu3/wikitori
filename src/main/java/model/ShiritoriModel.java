@@ -13,7 +13,7 @@ import util.NgWordManager;
 
 public class ShiritoriModel {
 	private static final Logger logger = Logger.getLogger(ShiritoriModel.class.getName());
-	// private static final List<String> ngWords = NgWordManager.isNgWord(null)
+	private static final List<String> ngWords = NgWordManager.getNgWords();
 
 	public TitleInfo playShiritori(String userMsg) {
 		TitleInfo result;
@@ -23,42 +23,42 @@ public class ShiritoriModel {
 		try {
 			List<CompletableFuture<List<TitleInfo>>> futures = new ArrayList<>();
 
-			// Example usage with multiple searches
-			futures.add(WikipediaFetcher.fetchWordInfo(changes[0], 150, new ArrayList<>()));
-			futures.add(WikipediaFetcher.fetchWordInfo(changes[1], 150, new ArrayList<>()));
+			// それぞれの単語の情報を取得する
+			futures.add(WikipediaFetcher.fetchWordInfo(changes[0], 150, ngWords));
+			futures.add(WikipediaFetcher.fetchWordInfo(changes[1], 150, ngWords));
 
-			// Wait for all futures to complete
-			CompletableFuture<Void> allOf = CompletableFuture.allOf(
-					futures.toArray(new CompletableFuture[0]));
+			// すべてのCompletableFutureが完了するまで待機する
+			CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 
-			// Join all completed futures
-			allOf.get();
+			// それぞれのCompletableFutureの結果を一つのリストに結合する
+			List<TitleInfo> allResults = new ArrayList<>();
+			for (CompletableFuture<List<TitleInfo>> future : futures) {
+				allResults.addAll(future.get());
+			}
 
 			// 単語がない場合は負け
-			if (futures.get(0).get().isEmpty() && futures.get(1).get().isEmpty()) {
-				logger.info("No words found, I lose.");
+			if (allResults.isEmpty()) {
+				logger.info("No words found, you lose.");
 				return new TitleInfo(-1, "負けました");
 			} else {
-
 				do {
-					int index = (int) (Math.random() * futures.size());
-					CompletableFuture<List<TitleInfo>> randFuture = futures.get(index);
+					int index = (int) (Math.random() * allResults.size());
+					result = allResults.get(index);
 
-					// 単語とそのIDをすべて出力
-					// ソートしてから出力
-					Collections.sort(randFuture.get(),
-							Comparator.comparing(TitleInfo::getTitle, Comparator.nullsLast(Comparator.naturalOrder())));
-					for (TitleInfo info : randFuture.get()) {
-						System.out.printf("\t id :%8d , title : %s\n", info.getPageId(), info.getTitle());
+					// タイトルの順番をソート
+					allResults.sort(Comparator.comparing(TitleInfo::getTitle));
+
+					// 一つのリストに結合した結果を出力
+					for (TitleInfo titleInfo : allResults) {
+						System.out.printf("\t id :%8d , title : %s\n", titleInfo.getPageId(), titleInfo.getTitle());
 					}
-
-					result = randFuture.get().get((int) (Math.random() * randFuture.get().size()));
 					// 選択された単語の最後が「ん」以外になるまで繰り返す
 				} while (StringUtil.processJapaneseWord(result.getTitle(), -1)[0].equals("ん"));
-				logger.info("Selected word: " + result.getTitle());
+				System.out.println("選択された単語は" + result.getTitle() + "です。");
 				return result;
 			}
 
+			// 完全敗北exception
 		} catch (Exception e) {
 			logger.severe("完全敗北Exception occurred: " + e.getMessage());
 			e.printStackTrace();
