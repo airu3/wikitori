@@ -148,4 +148,30 @@ public class JapaneseConverter {
 		return HiraganaConverter.convertToHiragana(str);
 	}
 
+	/**
+	 * ひらがなの一覧を生成
+	 * 
+	 * @return String[] ひらがなの一覧
+	 */
+	public static String[] createHiraganaList() {
+		String[] hiraganaList = new String[END_HIRAGANA_CODE - START_HIRAGANA_CODE + 1];
+		for (int i = 0; i < hiraganaList.length; i++) {
+			hiraganaList[i] = String.valueOf((char) (START_HIRAGANA_CODE + i));
+		}
+		return hiraganaList;
+	}
+
+	/**
+	 * カタカナの一覧を生成
+	 * 
+	 * @return String[] カタカナの一覧
+	 */
+	public static String[] createKatakanaList() {
+		String[] katakanaList = new String[END_KATAKANA_CODE - START_KATANAKA_CODE + 1];
+		for (int i = 0; i < katakanaList.length; i++) {
+			katakanaList[i] = String.valueOf((char) (START_KATANAKA_CODE + i));
+		}
+		return katakanaList;
+	}
+
 }
