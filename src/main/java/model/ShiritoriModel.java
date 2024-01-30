@@ -1,15 +1,19 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 import api.WikipediaFetcher;
 import util.StringUtil;
+import util.NgWordManager;
 
 public class ShiritoriModel {
 	private static final Logger logger = Logger.getLogger(ShiritoriModel.class.getName());
+	// private static final List<String> ngWords = NgWordManager.isNgWord(null)
 
 	public TitleInfo playShiritori(String userMsg) {
 		TitleInfo result;
@@ -41,8 +45,11 @@ public class ShiritoriModel {
 					CompletableFuture<List<TitleInfo>> randFuture = futures.get(index);
 
 					// 単語とそのIDをすべて出力
+					// ソートしてから出力
+					Collections.sort(randFuture.get(),
+							Comparator.comparing(TitleInfo::getTitle, Comparator.nullsLast(Comparator.naturalOrder())));
 					for (TitleInfo info : randFuture.get()) {
-						System.out.printf("\t id :%8d , title : %s\n",info.getPageId(), info.getTitle());
+						System.out.printf("\t id :%8d , title : %s\n", info.getPageId(), info.getTitle());
 					}
 
 					result = randFuture.get().get((int) (Math.random() * randFuture.get().size()));
