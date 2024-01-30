@@ -1,7 +1,6 @@
 package util;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NgWordManager {
 	private static List<String> ngWords;
