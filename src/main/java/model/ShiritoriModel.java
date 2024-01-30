@@ -20,8 +20,8 @@ public class ShiritoriModel {
 			List<CompletableFuture<List<TitleInfo>>> futures = new ArrayList<>();
 
 			// Example usage with multiple searches
-			futures.add(WikipediaFetcher.fetchWordInfo(changes[0], 100, new ArrayList<>()));
-			futures.add(WikipediaFetcher.fetchWordInfo(changes[1], 100, new ArrayList<>()));
+			futures.add(WikipediaFetcher.fetchWordInfo(changes[0], 150, new ArrayList<>()));
+			futures.add(WikipediaFetcher.fetchWordInfo(changes[1], 150, new ArrayList<>()));
 
 			// Wait for all futures to complete
 			CompletableFuture<Void> allOf = CompletableFuture.allOf(
@@ -32,7 +32,7 @@ public class ShiritoriModel {
 
 			// 単語がない場合は負け
 			if (futures.get(0).get().isEmpty() && futures.get(1).get().isEmpty()) {
-				logger.info("No words found, you lose.");
+				logger.info("No words found, I lose.");
 				return new TitleInfo(-1, "負けました");
 			} else {
 
@@ -42,7 +42,7 @@ public class ShiritoriModel {
 
 					// 単語とそのIDをすべて出力
 					for (TitleInfo info : randFuture.get()) {
-						System.out.println(info.getPageId() + ": " + info.getTitle());
+						System.out.printf("\t id :%8d , title : %s\n",info.getPageId(), info.getTitle());
 					}
 
 					result = randFuture.get().get((int) (Math.random() * randFuture.get().size()));
@@ -53,9 +53,8 @@ public class ShiritoriModel {
 			}
 
 		} catch (Exception e) {
-			logger.severe("Exception occurred: " + e.getMessage());
+			logger.severe("完全敗北Exception occurred: " + e.getMessage());
 			e.printStackTrace();
-			// 完全敗北exception
 			return new TitleInfo(-1, "負けました");
 		}
 
