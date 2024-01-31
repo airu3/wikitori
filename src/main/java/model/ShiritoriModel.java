@@ -7,8 +7,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 import api.WikipediaFetcher;
-import util.StringUtil;
 import util.NgWordManager;
+import util.StringUtil;
 
 public class ShiritoriModel {
 	private static final Logger logger = Logger.getLogger(ShiritoriModel.class.getName());
@@ -56,7 +56,6 @@ public class ShiritoriModel {
 				System.out.println("選択された単語は" + result.getTitle() + "です。");
 				return result;
 			}
-
 			// 完全敗北exception
 		} catch (Exception e) {
 			logger.severe("完全敗北Exception occurred: " + e.getMessage());
