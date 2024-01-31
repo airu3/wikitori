@@ -20,21 +20,21 @@ public class HiraganaConverter {
 	public static String convertToHiragana(String str) {
 		try {
 			URL url = new URL(API_URL);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("POST");
-			connection.setConnectTimeout(10000);
-			connection.setDoOutput(true);
-			connection.setRequestProperty("Content-Type", "application/json");
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("POST");
+			con.setConnectTimeout(10000);
+			con.setDoOutput(true);
+			con.setRequestProperty("Content-Type", "application/json");
 
-			String jsonInputString = "{\"app_id\": \"" + API_KEY + "\", \"sentence\": \"" + str
+			String json = "{\"app_id\": \"" + API_KEY + "\", \"sentence\": \"" + str
 					+ "\", \"output_type\": \"hiragana\"}";
 
-			try (OutputStream os = connection.getOutputStream()) {
-				byte[] input = jsonInputString.getBytes("utf-8");
+			try (OutputStream os = con.getOutputStream()) {
+				byte[] input = json.getBytes("utf-8");
 				os.write(input, 0, input.length);
 			}
 
-			try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"))) {
 				StringBuilder response = new StringBuilder();
 				String responseLine;
 				while ((responseLine = br.readLine()) != null) {
@@ -44,7 +44,7 @@ public class HiraganaConverter {
 				// 変換後のひらがな部分だけを取り出して返す
 				return extractConvertedHiragana(response.toString());
 			} finally {
-				connection.disconnect();
+				con.disconnect();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
