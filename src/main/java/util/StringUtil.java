@@ -132,7 +132,7 @@ public class StringUtil {
 		System.out.println("Before processing, word is: " + inputWord);
 		System.out.println("Before processing, char is: " + inputChar);
 
-		// ひらがなとカタカナを
+		// ひらがなとカタカナを保存する配列
 		String[] resultChar = new String[2];
 
 		// ひらがな、カタカナ、漢字,数字,記号の場合に分けて処理
@@ -175,8 +175,8 @@ public class StringUtil {
 		System.out.println("Final state of resultChar is: " + Arrays.toString(resultChar));
 		return resultChar;
 	}
-	// !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
 
+	// !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
 	/**
 	 * 文字列をサニタイズする
 	 * 
