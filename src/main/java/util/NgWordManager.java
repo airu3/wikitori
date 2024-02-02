@@ -11,17 +11,6 @@ public class NgWordManager {
 		addNgWord("アナル");
 		addNgWord("アダルトビデオ");
 		addNgWord("アダルトゲーム");
-		addNgWord("うつ病");
-		addNgWord("うつ病の治療");
-		addNgWord("オナニー");
-		addNgWord("オナホール");
-		addNgWord("コンドーム");
-		addNgWord("ばにしゅ! 〜おっぱいの消えた王国〜");
-		addNgWord("ポルノ映画");
-		addNgWord("まんこ");
-		addNgWord("リベンジポルノ");
-		addNgWord("アダルトビデオ");
-		addNgWord("アダルトゲーム");
 		addNgWord("いじめ");
 		addNgWord("いじめるヤバイ奴");
 		addNgWord("うつ病");
@@ -30,6 +19,10 @@ public class NgWordManager {
 		addNgWord("オナニー");
 		addNgWord("オナホール");
 		addNgWord("クモ");
+		addNgWord("コンドーム");
+		addNgWord("ばにしゅ! 〜おっぱいの消えた王国〜");
+		addNgWord("ポルノ映画");
+		addNgWord("まんこ");
 		addNgWord("リベンジポルノ");
 		addNgWord("んこダイス");
 	}
