@@ -205,4 +205,5 @@ public class StringUtil {
 	public static boolean isValidInput(String str) {
 		return str != null && !str.isEmpty();
 	}
+
 }

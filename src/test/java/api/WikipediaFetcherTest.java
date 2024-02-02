@@ -1,12 +1,14 @@
 package api;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import org.junit.jupiter.api.Test;
 
 import model.TitleInfo;
+import util.JapaneseConverter;
 
 class WikipediaFetcherTest {
 
@@ -39,4 +41,53 @@ class WikipediaFetcherTest {
 		}
 	}
 
+	@Test
+
+	void FetchTest2() {
+		try
+
+		{
+			// ひらがなの一覧を生成
+			String[] hiraganas = JapaneseConverter.createHiraganaList();
+
+			// ひらがなごとに検索を行う
+			for (String hiragana : hiraganas) {
+				List<TitleInfo> result = WikipediaFetcher.fetchWordInfo(hiragana, 200, new ArrayList<>()).get();
+
+				// タイトルの順番をソート
+				result.sort(Comparator.comparing(TitleInfo::getTitle));
+
+				// 一つのリストに結合した結果を出力
+				for (TitleInfo titleInfo : result) {
+					System.out.printf("\t id :%8d , title : %s\n", titleInfo.getPageId(), titleInfo.getTitle());
+				}
+
+				// 適切な間隔を設定してDoS攻撃にならないようにする
+				Thread.sleep(1000); // 1秒待つ
+			}
+
+			// // カタカナの一覧を生成
+			// String[] katakanas = JapaneseConverter.createKatakanaList();
+
+			// // カタカナごとに検索を行う
+			// for (String katakana : katakanas) {
+			// List<TitleInfo> result = WikipediaFetcher.fetchWordInfo(katakana, 200, new
+			// ArrayList<>()).get();
+
+			// // タイトルの順番をソート
+			// result.sort(Comparator.comparing(TitleInfo::getTitle));
+
+			// // 一つのリストに結合した結果を出力
+			// for (TitleInfo titleInfo : result) {
+			// System.out.printf("\t id :%8d , title : %s\n", titleInfo.getPageId(),
+			// titleInfo.getTitle());
+			// }
+
+			// // 適切な間隔を設定してDoS攻撃にならないようにする
+			// Thread.sleep(1000); // 1秒待つ
+			// }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
