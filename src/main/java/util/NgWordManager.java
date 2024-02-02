@@ -20,6 +20,18 @@ public class NgWordManager {
 		addNgWord("ポルノ映画");
 		addNgWord("まんこ");
 		addNgWord("リベンジポルノ");
+		addNgWord("アダルトビデオ");
+		addNgWord("アダルトゲーム");
+		addNgWord("いじめ");
+		addNgWord("いじめるヤバイ奴");
+		addNgWord("うつ病");
+		addNgWord("うつ病の治療");
+		addNgWord("エロマンガ先生");
+		addNgWord("オナニー");
+		addNgWord("オナホール");
+		addNgWord("クモ");
+		addNgWord("リベンジポルノ");
+		addNgWord("んこダイス");
 	}
 
 	/**
