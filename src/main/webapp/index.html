@@ -1,266 +1,479 @@
 <html class="dark" style="color-scheme: dark" lang="ja-JP">
-	<head>
-		<meta charset="utf-8" />
-		<title>wikitori</title>
-		<!-- favicon -->
-		<link rel="shortcut icon" href="images/1torii.png" type="image/x-icon" />
-		<!-- style -->
-		<link rel="preconnect" href="https://cdn.oaistatic.com" />
+  <head>
+    <meta charset="utf-8" />
+    <title>wikitori</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="images/1torii.png" type="image/x-icon" />
+    <!-- style -->
+    <link rel="preconnect" href="https://cdn.oaistatic.com" />
 
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-buch.13189857.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-halbfett.977f1845.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-mono-buch.de677af1.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-mono-halbfett.b082e8e2.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link data-next-font="" rel="preconnect" href="/" crossorigin="anonymous" />
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/css/02f82e43283187c3.css"
-			as="style"
-		/>
-		<link
-			rel="stylesheet"
-			href="https://cdn.oaistatic.com/_next/static/css/02f82e43283187c3.css"
-			data-n-g=""
-		/>
-		<style>
-			.username-input {
-				width: 100%;
-				padding: 10px;
-				font-size: 16px;
-				border: 3px solid #3c46ff;
-				border-radius: 5px;
-				background-color: white;
-				color: black;
-				transition: border 0.3s;
-			}
+    <link
+      rel="preload"
+      href="https://cdn.oaistatic.com/_next/static/media/soehne-buch.13189857.woff2"
+      as="font"
+      crossorigin=""
+    />
+    <link
+      rel="preload"
+      href="https://cdn.oaistatic.com/_next/static/media/soehne-halbfett.977f1845.woff2"
+      as="font"
+      crossorigin=""
+    />
+    <link
+      rel="preload"
+      href="https://cdn.oaistatic.com/_next/static/media/soehne-mono-buch.de677af1.woff2"
+      as="font"
+      crossorigin=""
+    />
+    <link
+      rel="preload"
+      href="https://cdn.oaistatic.com/_next/static/media/soehne-mono-halbfett.b082e8e2.woff2"
+      as="font"
+      crossorigin=""
+    />
+    <link data-next-font="" rel="preconnect" href="/" crossorigin="anonymous" />
+    <link
+      rel="preload"
+      href="https://cdn.oaistatic.com/_next/static/css/02f82e43283187c3.css"
+      as="style"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.oaistatic.com/_next/static/css/02f82e43283187c3.css"
+      data-n-g=""
+    />
+    <style>
+      .username-input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 3px solid #3c46ff;
+        border-radius: 5px;
+        background-color: white;
+        color: black;
+        transition: border 0.3s;
+      }
 
-			.username-input:focus {
-				border-color: #0000ff;
-				outline: none;
-			}
-		</style>
+      .username-input:focus {
+        border-color: #0000ff;
+        outline: none;
+      }
+    </style>
 
-		<meta name="react-scroll-to-bottom:version" content="4.2.0" />
-	</head>
+    <meta name="react-scroll-to-bottom:version" content="4.2.0" />
+  </head>
 
-	<body class="antialiased" style="background-color: rgb(0, 0, 46)">
-		<div id="__next">
-			<script>
-				//
-				!(function () {
-					try {
-						let d = document.documentElement,
-							c = d.classList;
-						c.remove("light", "dark");
-						let e = localStorage.getItem("theme");
-						if ("system" === e || (!e && true)) {
-							let t = "(prefers-color-scheme: dark)",
-								m = window.matchMedia(t);
-							if (m.media !== t || m.matches) {
-								d.style.colorScheme = "dark";
-								c.add("dark");
-							} else {
-								d.style.colorScheme = "light";
-								c.add("light");
-							}
-						} else if (e) {
-							c.add(e || "");
-						}
-						if (e === "light" || e === "dark") d.style.colorScheme = e;
-					} catch (e) {}
-				})();
-			</script>
-			<div
-				class="flex min-h-full w-screen flex-col sm:supports-[min-height:100dvh]:min-h-[100dvh] md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]"
-			>
-				<div
-					class="relative hidden flex-1 flex-col justify-center px-5 pt-8 text-[#FE7600] dark:text-[#D292FF] md:flex md:px-6 md:py-[22px] lg:px-8"
-				>
-					<nav
-						class="left-0 top-8 flex w-full px-6 sm:absolute md:top-[22px] md:px-6 lg:px-8"
-					>
-						<h1 aria-label="">
-							<div
-								class="flex cursor-default items-center text-[20px] font-bold leading-none lg:text-[22px]"
-							>
-								<div>Wikitori <span class="font-circle">●</span></div>
-							</div>
-						</h1>
-					</nav>
-					<div
-						class="flex flex-col text-[32px] leading-[1.2] md:text-[40px]"
-						aria-hidden="true"
-					>
-						<div
-							class="absolute left-0 top-1/2 flex w-full flex-col px-5 transition-[transform,opacity] duration-500 md:pl-6 md:pr-8 lg:pl-8 lg:pr-10 opacity-100 translate-y-[calc(-50%-1em)] delay-[500ms]"
-						>
-							<div class="relative font-bold">しりとり</div>
-							<div class="relative">
-								<div
-									class="absolute left-0 top-0 max-w-[650px] transition-opacity duration-300"
-								>
-									<span class="inline transition-opacity duration-300"
-										>りんご</span
-									>
-									<span class="inline transition-opacity duration-300"
-										>ゴリラ</span
-									>
-									<span class="inline transition-opacity duration-300"
-										>ラッパ</span
-									>
-									<span class="inline transition-opacity duration-300"
-										>パンダ</span
-									>
-									<span class="inline transition-opacity duration-300"
-										>ダチョウ</span
-									>
-									<span class="inline transition-opacity duration-300"
-										>ウサギ</span
-									>
-									<span class="inline transition-opacity duration-300"
-										>ギャル</span
-									>
-									<span class="inline-block font-circle delay-[300ms]">●</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div
-					class="relative flex grow flex-col items-center justify-between bg-white px-5 py-8 text-black dark:bg-black dark:text-white sm:rounded-t-[30px] md:rounded-none md:px-6"
-				>
-					<nav
-						class="flex w-full justify-start px-6 pb-8 md:hidden md:px-6 lg:px-8"
-					>
-						<h1 aria-label="">
-							<div
-								class="flex cursor-default items-center text-[20px] font-bold leading-none lg:text-[22px]"
-							>
-								<div>ChatGPT <span class="font-circle">●</span></div>
-							</div>
-						</h1>
-					</nav>
-					<div
-						class="relative flex w-full grow flex-col items-center justify-center"
-					>
-						<h2
-							class="text-center text-[20px] leading-[1.2] md:text-[32px] md:leading-8"
-						>
-							しりとりを始めましょう
-						</h2>
-						<div class="mt-5 w-full max-w-[440px]">
-							<form
-								action="start"
-								method="post"
-								class="grid gap-x-3 gap-y-2 sm:grid-cols-2 sm:gap-y-0"
-							>
-								<input
-									type="text"
-									class="username-input"
-									id="username"
-									maxlength="8"
-									name="user"
-									placeholder="name"
-									required
-								/>
-								<button
-									class="relative flex h-12 items-center justify-center rounded-md text-center text-base font-medium bg-[#3C46FF] text-[#fff] hover:bg-[#0000FF]"
-								>
-									<div class="relative -top-[1px]">始める</div>
-								</button>
-							</form>
-						</div>
-					</div>
-					<div class="mt-10 flex flex-col justify-center">
-						<div class="flex justify-center text-gray-300 md:mb-3">
-							<div class="flex gap-3 text-xs">
-								<!-- images -->
-								<img src="images/1torii.png" alt="" width="100px" />
-							</div>
-						</div>
-						<div class="flex gap-3 py-3 text-xs text-gray-500">
-							<a>Sato「お手柔らかに」</a><span class="text-gray-600">|</span
-							><a>Yoshida「かかってこいよ」</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="absolute left-0 right-0 top-0 z-[2]"></div>
-		</div>
-		<script>
-			// プレースホルダーを管理するクラス
-			class PlaceholderManager {
-				constructor(element, placeholders) {
-					this.element = element;
-					this.placeholders = placeholders;
-					this.currentIndex = null;
-				}
+  <body class="antialiased" style="background-color: rgb(0, 0, 46)">
+    <div id="__next">
+      <script>
+        //
+        !(function () {
+          try {
+            let d = document.documentElement,
+              c = d.classList;
+            c.remove("light", "dark");
+            let e = localStorage.getItem("theme");
+            if ("system" === e || (!e && true)) {
+              let t = "(prefers-color-scheme: dark)",
+                m = window.matchMedia(t);
+              if (m.media !== t || m.matches) {
+                d.style.colorScheme = "dark";
+                c.add("dark");
+              } else {
+                d.style.colorScheme = "light";
+                c.add("light");
+              }
+            } else if (e) {
+              c.add(e || "");
+            }
+            if (e === "light" || e === "dark") d.style.colorScheme = e;
+          } catch (e) {}
+        })();
+      </script>
+      <div
+        class="flex min-h-full w-screen flex-col sm:supports-[min-height:100dvh]:min-h-[100dvh] md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]"
+      >
+        <div
+          class="relative hidden flex-1 flex-col justify-center px-5 pt-8 text-[#FE7600] dark:text-[#D292FF] md:flex md:px-6 md:py-[22px] lg:px-8"
+        >
+          <nav
+            class="left-0 top-8 flex w-full px-6 sm:absolute md:top-[22px] md:px-6 lg:px-8"
+          >
+            <h1 aria-label="">
+              <div
+                class="flex cursor-default items-center text-[20px] font-bold leading-none lg:text-[22px]"
+              >
+                <div>Wikitori <span id="word" class="font-circle">●</span></div>
+              </div>
+            </h1>
+          </nav>
+          <div
+            class="flex flex-col text-[32px] leading-[1.2] md:text-[40px]"
+            aria-hidden="true"
+          >
+            <div
+              class="absolute left-0 top-1/2 flex w-full flex-col px-5 transition-[transform,opacity] duration-500 md:pl-6 md:pr-8 lg:pl-8 lg:pr-10 opacity-100 translate-y-[calc(-50%-1em)] delay-[500ms]"
+            >
+              <div class="relative font-bold">しりとり</div>
+              <div class="relative">
+                <div
+                  class="absolute left-0 top-0 max-w-[650px] transition-opacity duration-300"
+                >
+                  <span
+                    id="word1"
+                    class="inline transition-opacity duration-300"
+                    >り</span
+                  >
+                  <span
+                    id="word2"
+                    class="inline transition-opacity duration-300"
+                  ></span>
+                  <span
+                    id="word3"
+                    class="inline transition-opacity duration-300"
+                  ></span>
+                  <span
+                    id="word4"
+                    class="inline transition-opacity duration-300"
+                  ></span>
+                  <span
+                    id="word5"
+                    class="inline transition-opacity duration-300"
+                  ></span>
+                  <span
+                    id="word6"
+                    class="inline transition-opacity duration-300"
+                  ></span>
+                  <span
+                    id="word7"
+                    class="inline transition-opacity duration-300"
+                  ></span>
+                  <span class="inline-block font-circle delay-[300ms]">●</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="relative flex grow flex-col items-center justify-between bg-white px-5 py-8 text-black dark:bg-black dark:text-white sm:rounded-t-[30px] md:rounded-none md:px-6"
+        >
+          <nav
+            class="flex w-full justify-start px-6 pb-8 md:hidden md:px-6 lg:px-8"
+          >
+            <h1 aria-label="">
+              <div
+                class="flex cursor-default items-center text-[20px] font-bold leading-none lg:text-[22px]"
+              >
+                <div>ChatGPT <span id="word" class="font-circle">●</span></div>
+              </div>
+            </h1>
+          </nav>
+          <div
+            class="relative flex w-full grow flex-col items-center justify-center"
+          >
+            <h2
+              class="text-center text-[20px] leading-[1.2] md:text-[32px] md:leading-8"
+            >
+              しりとりを始めましょう
+            </h2>
+            <div class="mt-5 w-full max-w-[440px]">
+              <form
+                action="start"
+                method="post"
+                class="grid gap-x-3 gap-y-2 sm:grid-cols-2 sm:gap-y-0"
+              >
+                <input
+                  type="text"
+                  class="username-input"
+                  id="username"
+                  maxlength="8"
+                  name="user"
+                  placeholder="name"
+                  required
+                />
+                <button
+                  class="relative flex h-12 items-center justify-center rounded-md text-center text-base font-medium bg-[#3C46FF] text-[#fff] hover:bg-[#0000FF]"
+                >
+                  <div class="relative -top-[1px]">始める</div>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="mt-10 flex flex-col justify-center">
+            <div class="flex justify-center text-gray-300 md:mb-3">
+              <div class="flex gap-3 text-xs">
+                <!-- images -->
+                <img src="images/1torii.png" alt="" width="100px" />
+              </div>
+            </div>
+            <div class="flex gap-3 py-3 text-xs text-gray-500">
+              <a>Sato「お手柔らかに」</a
+              ><span id="word" class="text-gray-600">|</span
+              ><a>Yoshida「かかってこいよ」</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="absolute left-0 right-0 top-0 z-[2]"></div>
+    </div>
 
-				// ランダムなインデックスを取得するメソッド
-				getRandomIndex() {
-					let newIndex;
-					do {
-						newIndex = Math.floor(Math.random() * this.placeholders.length);
-					} while (newIndex === this.currentIndex);
-					return newIndex;
-				}
+    <!-- cdn jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-				// プレースホルダーを設定するメソッド
-				setPlaceholder() {
-					this.currentIndex = this.getRandomIndex();
-					this.element.placeholder = this.placeholders[this.currentIndex];
-				}
+    <script>
+      let wordHistory = ["しりとり"];
+      let words;
+      let links;
+      let NG_word = [""];
 
-				// プレースホルダーを定期的に更新するメソッド
-				startUpdatingPlaceholder(interval) {
-					setInterval(() => this.setPlaceholder(), interval);
-				}
-			}
+      function fetchWordsFromWikipedia(searchTerm, limit, callback) {
+        console.log(searchTerm);
+        const url = `https://ja.wikipedia.org/w/api.php?format=json&action=query&list=prefixsearch&pssearch=${searchTerm}&pslimit=${limit}&psnamespace=0`;
 
-			// 使用例
-			let inputElement = document.querySelector(".username-input");
-			let placeholders = [
-				"Your Name.",
-				"君の名は。",
-				"お名前は？",
-				"お名前をどうぞ。",
-				"名前を入力してね。",
-				"あなたの名前は？",
-				"なまえを いれてください",
-				"なまえを いれてね",
-				"なまえは？",
-				"贅沢な名だね。",
-				"お前の名前は「ハゲ」だ。",
-				"今からお前の名前は",
-			];
+        $.ajax({
+          type: "GET",
+          timeout: 10000,
+          dataType: "jsonp",
+          url: url,
+          async: false,
+          success: function (json) {
+            console.log(json);
+            json.query.prefixsearch.forEach(processWord);
+            callback();
+          },
+        });
 
-			let placeholderManager = new PlaceholderManager(
-				inputElement,
-				placeholders
-			);
+        function processWord(value) {
+          //console.log("Processing word: ", value.title);
 
-			placeholderManager.setPlaceholder();
-			placeholderManager.startUpdatingPlaceholder(5000);
-		</script>
-	</body>
+          if (value.title !== searchTerm) {
+            let word = value.title.replace(/ *\([^)]*\) */g, "");
+            //console.log("Word after: ", word);
+
+            if (
+              NG_word.indexOf(word.slice(-1)) === -1 &&
+              wordHistory.indexOf(word) === -1
+            ) {
+              words.push(word);
+              links.push(`http://ja.wikipedia.org/?curid=${value.pageid}`);
+            } else {
+              console.log(
+                "Word is in NG_word or wordHistory, not adding to words and links"
+              );
+            }
+          } else {
+            console.log("Word is the same as searchTerm, not processing");
+          }
+        }
+      }
+
+      const hiraganaSmallToLarge = {
+        ぁ: "あ",
+        ぃ: "い",
+        ぅ: "う",
+        ぇ: "え",
+        ぉ: "お",
+        っ: "つ",
+        ゃ: "や",
+        ゅ: "ゆ",
+        ょ: "よ",
+        ゎ: "わ",
+      };
+
+      const katakanaSmallToLarge = {
+        ァ: "ア",
+        ィ: "イ",
+        ゥ: "ウ",
+        ェ: "エ",
+        ォ: "オ",
+        ヵ: "カ",
+        ヶ: "ケ",
+        ッ: "ツ",
+        ャ: "ヤ",
+        ュ: "ユ",
+        ョ: "ヨ",
+        ヮ: "ワ",
+      };
+
+      function convertSmallToLarge(char, map) {
+        return map[char] || char;
+      }
+
+      //正規表現
+      const regex = /(?!\p{Lm})\p{L}|\p{N}/u;
+
+      /**
+       * 文字列の一部を変換する関数
+       *
+       * @param {*} inputWord - 変換対象の文字列
+       * @param {*} flag - 変換する範囲を指定するパラメータ
+       * @returns {Array} - 変換後の結果を格納した配列 [ひらがな, カタカナ]
+       */
+      function strChange(inputWord, flag) {
+        // 範囲のデフォルト値を設定
+        let range;
+        if (flag === 1) {
+          range = [0, 1];
+        } else {
+          range = [-1, undefined];
+        }
+
+        let lastword;
+        lastword = strChange(word.textContent, -1)[0]; // 'var'で宣言した変数を再利用
+
+        // 指定された範囲の文字を生成する関数
+        function generateCharRange(start, end) {
+          const range = [];
+          for (let i = start.charCodeAt(0); i <= end.charCodeAt(0); i++) {
+            range.push(String.fromCharCode(i));
+          }
+          return range;
+        }
+
+        // ひらがなとカタカナの文字を生成
+        const hiragana = generateCharRange("\u3041", "\u3096"); // ひらがな
+        const katakana = generateCharRange("\u30a1", "\u30f6"); // カタカナ
+
+        let r = [];
+        let word = inputWord;
+        console.log("Before processing, word is: ", word);
+        // ひらがなの
+        console.log(
+          "word.slice(range[0], range[1])",
+          word.slice(range[0], range[1])
+        );
+        //最初の文字がひらがなかカタカナか漢字かを判定
+        if (hiragana.indexOf(word.slice(range[0], range[1])) !== -1) {
+          // ひらがなの場合
+          r.push(word.slice(range[0], range[1]));
+          r.push(katakana[hiragana.indexOf(word.slice(range[0], range[1]))]);
+          console.log("After processing hiragana, r is: ", r);
+        } else if (katakana.indexOf(word.slice(range[0], range[1])) !== -1) {
+          // カタカナの場合
+          r.push(hiragana[katakana.indexOf(word.slice(range[0], range[1]))]);
+          r.push(word.slice(range[0], range[1]));
+          console.log("After processing katakana, r is: ", r);
+        } else {
+          // 漢字, 数字, 記号の場合
+          $.ajax({
+            type: "POST",
+            timeout: 10000,
+            url: "https://labs.goo.ne.jp/api/hiragana",
+            async: false,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: JSON.stringify({
+              app_id:
+                "d5b86171fcdc098cd38e9b056f8c46c84ec367c171b29ec686f3307e0f3030ef",
+              sentence: word,
+              output_type: "hiragana",
+            }),
+          }).done(function (data) {
+            word = data.converted;
+            console.log("Converted word: ", word); // Add logging
+
+            if (range[0] === -1) {
+              // 検索範囲が後ろからの場合、正規表現を用いて条件に合致するまで文字を削る
+              let lastChar = word.slice(-1);
+              console.log("Initial last character: ", lastChar); // Add logging
+
+              if (!regex.test(lastChar)) {
+                do {
+                  word = word.slice(0, word.length - 1);
+                  console.log("Trimmed word: ", word); // Add logging
+
+                  lastChar = word.slice(-1);
+                  console.log("New last character: ", lastChar); // Add logging
+                } while (!regex.test(lastChar));
+
+                word = lastChar;
+              } else {
+                word = lastChar;
+              }
+
+              console.log("Final word: ", word); // Add logging
+            }
+
+            r.push(word.slice(range[0], range[1])); // ひらがなを r に追加
+            r.push(katakana[hiragana.indexOf(word.slice(range[0], range[1]))]); // カタカナを r に追加
+            console.log("After processing kanji, r is: ", r);
+          });
+        }
+      }
+
+      let i = 1;
+      let intervalId = setInterval(function () {
+        let word = document.getElementById("word" + i);
+        console.log("word", word);
+        if (word) {
+          word.style.opacity = 1;
+          //単語の最期を取得　strchange
+          console.log("word.textContent", word.textContent);
+          console.log("lastword", lastword);
+          fetchWordsFromWikipedia(lastword, 10, function () {
+            console.log("Fetched words for", lastword);
+          });
+          i++;
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 2000); // 1000ミリ秒（1秒）ごとに実行
+
+      // プレースホルダーを管理するクラス
+      class PlaceholderManager {
+        constructor(element, placeholders) {
+          this.element = element;
+          this.placeholders = placeholders;
+          this.currentIndex = null;
+        }
+
+        // ランダムなインデックスを取得するメソッド
+        getRandomIndex() {
+          let newIndex;
+          do {
+            newIndex = Math.floor(Math.random() * this.placeholders.length);
+          } while (newIndex === this.currentIndex);
+          return newIndex;
+        }
+
+        // プレースホルダーを設定するメソッド
+        setPlaceholder() {
+          this.currentIndex = this.getRandomIndex();
+          this.element.placeholder = this.placeholders[this.currentIndex];
+        }
+
+        // プレースホルダーを定期的に更新するメソッド
+        startUpdatingPlaceholder(interval) {
+          setInterval(() => this.setPlaceholder(), interval);
+        }
+      }
+
+      // 使用例
+      let inputElement = document.querySelector(".username-input");
+      let placeholders = [
+        "Your Name.",
+        "君の名は。",
+        "お名前は？",
+        "お名前をどうぞ。",
+        "名前を入力してね。",
+        "あなたの名前は？",
+        "なまえを いれてください",
+        "なまえを いれてね",
+        "なまえは？",
+        "贅沢な名だね。",
+        "お前の名前は「ハゲ」だ。",
+        "今からお前の名前は",
+      ];
+
+      let placeholderManager = new PlaceholderManager(
+        inputElement,
+        placeholders
+      );
+
+      placeholderManager.setPlaceholder();
+      placeholderManager.startUpdatingPlaceholder(5000);
+    </script>
+  </body>
 </html>
