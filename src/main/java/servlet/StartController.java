@@ -43,4 +43,4 @@ public class StartController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/index.html");
 		}
 	}
-}	
+}
