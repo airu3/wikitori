@@ -563,7 +563,7 @@ function createUserChatHtml(text) {
 		<!-- START USER CHAT -->
 		<div class="row user-chat-box">
 			<div class="chat-icon">
-				<img class="chatgpt-icon" src="images/Face-Without-Mouth-Flat-icon.png" />
+				<img class="chatgpt-icon" src="img/Face-Without-Mouth-Flat-icon.png" />
 			</div>
 			<div class="chat-txt">「${text}」</div>
 		</div>
@@ -582,7 +582,7 @@ function createBotChatHtml(text, link) {
 	<!-- START GPT CHAT -->
 	<div class="row gpt-chat-box">
 		<div class="chat-icon">
-			<img class="chatgpt-icon" src="images/Smirking-Face-Flat-icon.png" />
+			<img class="chatgpt-icon" src="img/Smirking-Face-Flat-icon.png" />
 		</div>
 		<div class="chat-txt">${textHtml}</div>
 	</div>`;
