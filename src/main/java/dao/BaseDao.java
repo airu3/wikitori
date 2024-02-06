@@ -28,13 +28,22 @@ public class BaseDao {
 		}
 	}
 
-	// DB接続する
+	/**
+	 * DBに接続する
+	 * 
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
 	protected void connect() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		con = DriverManager.getConnection(URL, USER, PASSWORD);
 	}
 
-	// DB切断する
+	/**
+	 * DBとの接続を切断する
+	 * 
+	 * @throws SQLException
+	 */
 	protected void disConnect() throws SQLException {
 		if (con != null) {
 			con.close();

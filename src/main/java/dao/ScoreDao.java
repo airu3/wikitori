@@ -6,6 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * スコアに関するデータベースの処理を行うクラス
+ * 
+ */
 public class ScoreDao extends BaseDao {
 	private String URL = "jdbc:mysql://localhost:3306/shiritori";
 	private String USER = "root";

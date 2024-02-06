@@ -5,7 +5,7 @@ import java.util.List;
 
 public class NgWordManager {
 	private static List<String> ngWords;
-	// wikipedia検索時に1/300の確率で見事にヒットしてしまったので追加
+	// wikipedia検索時に1/300の確率で見事にヒットしてしまったこの世の終わりみたいな単語を追加
 	static {
 		ngWords = new ArrayList<>();
 		addNgWord("アナル");
@@ -85,5 +85,4 @@ public class NgWordManager {
 	public static void setNgWords(List<String> ngWords) {
 		NgWordManager.ngWords = ngWords;
 	}
-
 }

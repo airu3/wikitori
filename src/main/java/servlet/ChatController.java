@@ -16,11 +16,22 @@ import model.ShiritoriModel;
 import model.TitleInfo;
 import util.StringUtil;
 
+/**
+ * チャット画面のコントローラー
+ * 
+ */
 @WebServlet("/chat")
 public class ChatController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ShiritoriModel shiritoriModel = new ShiritoriModel();
 
+	/**
+	 * チャット画面を表示
+	 * 
+	 * @param request  リクエスト
+	 * @param response レスポンス
+	 */
+	@Override
 	protected void doGet(
 			HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -36,6 +47,12 @@ public class ChatController extends HttpServlet {
 		request.getRequestDispatcher("chat.html").forward(request, response);
 	}
 
+	/**
+	 * チャット画面でのPOSTリクエストを処理
+	 * 
+	 * @param request  リクエスト
+	 * @param response レスポンス
+	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// リクエストパラメータを取得

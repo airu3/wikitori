@@ -16,8 +16,20 @@ import com.google.gson.JsonParser;
 
 import model.TitleInfo;
 
+/**
+ * Wikipediaの情報を取得するクラス
+ * 
+ */
 public class WikipediaFetcher {
 
+	/**
+	 * WikipediaのAPIを使用して単語の情報を取得する
+	 * 
+	 * @param searchTerm 検索語
+	 * @param limit      取得する単語の数
+	 * @param ngWords    NGワード
+	 * @return CompletableFuture<List<TitleInfo>> Wikipediaの情報を取得する
+	 */
 	public static CompletableFuture<List<TitleInfo>> fetchWordInfo(String searchTerm, int limit,
 			List<String> ngWords) {
 		return CompletableFuture.supplyAsync(() -> {

@@ -1,19 +1,38 @@
 package model;
 
+/**
+ * チャット履歴を格納するクラス
+ */
 public class ChatHistory {
 	private String speaker;
-    private String message;
+	private String message;
 
-    public ChatHistory(String speaker, String message) {
-        this.speaker = speaker;
-        this.message = message;
-    }
+	/**
+	 * コンストラクタ
+	 * 
+	 * @param speaker 発言者
+	 * @param message メッセージ
+	 */
+	public ChatHistory(String speaker, String message) {
+		this.speaker = speaker;
+		this.message = message;
+	}
 
-    public String getSpeaker() {
-        return speaker;
-    }
+	/**
+	 * 発言者を取得
+	 * 
+	 * @return 発言者
+	 */
+	public String getSpeaker() {
+		return speaker;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	/**
+	 * メッセージを取得
+	 * 
+	 * @return メッセージ
+	 */
+	public String getMessage() {
+		return message;
+	}
 }

@@ -10,11 +10,21 @@ import api.WikipediaFetcher;
 import util.NgWordManager;
 import util.StringUtil;
 
+/**
+ * しりとりのロジックを実行するクラス
+ * 
+ */
 public class ShiritoriModel {
 	private static final Logger logger = Logger.getLogger(ShiritoriModel.class.getName());
 	private static List<String> ngWords = NgWordManager.getNgWords();
 	private List<String> usedWords = new ArrayList<>(); // 既に使用した単語を保存するリスト
 
+	/**
+	 * しりとりを実行する
+	 * 
+	 * @param userMsg ユーザーのメッセージ
+	 * @return TitleInfo Wikipediaの情報を取得する
+	 */
 	public TitleInfo playShiritori(String userMsg) {
 		TitleInfo result;
 		// 最後の文字を取得

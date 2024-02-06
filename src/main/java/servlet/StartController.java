@@ -9,10 +9,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * チャット画面のコントローラー
+ * 
+ */
 @WebServlet("/start")
 public class StartController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * チャット画面を表示
+	 * 
+	 * @param request  リクエスト
+	 * @param response レスポンス
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// 初回アクセス時の処理
@@ -26,6 +36,12 @@ public class StartController extends HttpServlet {
 		}
 	}
 
+	/**
+	 * チャット画面でのPOSTリクエストを処理
+	 * 
+	 * @param request  リクエスト
+	 * @param response レスポンス
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// フォームから名前を取得
@@ -43,4 +59,4 @@ public class StartController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/index.html");
 		}
 	}
-}	
+}

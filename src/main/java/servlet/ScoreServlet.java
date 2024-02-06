@@ -11,10 +11,19 @@ import javax.servlet.http.HttpSession;
 
 import dao.ScoreDao;
 
+/**
+ * スコアを更新するサーブレット
+ */
 @WebServlet("/scoreUpdate")
 public class ScoreServlet extends HttpServlet {
 	private ScoreDao scoreDao = new ScoreDao();
 
+	/**
+	 * スコアを更新
+	 * 
+	 * @param request  リクエスト
+	 * @param response レスポンス
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String userName = (String) session.getAttribute("user");
