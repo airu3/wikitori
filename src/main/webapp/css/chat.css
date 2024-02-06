@@ -1,0 +1,274 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	display: inline-block;
+}
+
+/* クリック */
+a:active {
+	/* スケールを小さく	 */
+	transform: scale(0.95);
+	transition: all 0.1s ease;
+}
+
+body {
+	background-color: #fff;
+	margin: 0;
+	padding: 0;
+	color: #000;
+
+	min-height: 100vh;
+}
+
+.chat-btn {
+	border: 1px solid rgb(96, 95, 95);
+	border-radius: 5px;
+	color: #fff;
+	height: 40px;
+}
+
+.chat-btn:hover {
+	background-color: rgb(79, 79, 79);
+	transition: background-color 0.5s ease;
+}
+
+.gpt-model {
+	background-color: #1f2123;
+}
+
+.gpt-temperature {
+	background-color: #1f2123;
+}
+
+input[type="range"] {
+	width: 80%;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+	height: 3px;
+	margin: 10px 0;
+	width: 100%;
+	background: #c5c5d2;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+	box-shadow: 0px 0px 0px #000000;
+	border: 1px solid #ffffff;
+	height: 18px;
+	width: 18px;
+	border-radius: 25px;
+	background: #ffffff;
+	cursor: pointer;
+	/*	-webkit-appearance: none;*/
+	margin-top: -7px;
+}
+
+.side-nav {
+	background-color: #1f2123;
+	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	justify-content: space-between;
+	margin: 0px;
+	overflow: auto;
+	width: 260px;
+}
+
+.side-nav ul {
+	list-style: none;
+	padding: 0;
+	margin-top: 20px;
+}
+
+.side-nav li {
+	padding: 10px;
+	cursor: pointer;
+}
+
+.side-nav li:hover {
+	background-color: #495057;
+}
+
+.side-nav i {
+	margin-right: 10px;
+}
+
+.history-date {
+	color: #999;
+	font-size: 12px;
+	padding: 0.5rem;
+}
+
+.chat-items {
+	border-radius: 5px;
+	color: #fff;
+	height: 40px;
+}
+
+.chat-items:hover {
+	background-color: rgb(79, 79, 79);
+	transition: background-color 0.5s ease;
+}
+
+.modal-body {
+	color: #000;
+	padding: 20px;
+}
+
+.content {
+	background-color: #fff;
+	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+
+	max-height: 100vh;
+}
+
+#chat-content-area {
+	overflow: auto;
+	height: 100vh;
+	overflow-x: hidden;
+}
+
+.chat-inputs-container {
+	background-color: #fff;
+	padding: 5px;
+	border-radius: 10px;
+	box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+	display: flex;
+	max-width: 100%;
+}
+
+.chat-inputs-container textarea {
+	background-color: transparent;
+	outline: none;
+	border: none;
+	resize: none;
+}
+
+.chat-inputs-area-inner {
+	padding: 50px 200px;
+}
+
+.fa-paper-plane {
+	color: #fff;
+	cursor: pointer;
+}
+
+.chatgpt-icon {
+	width: 40px;
+}
+
+.user-chat-box {
+	padding: 20px;
+	padding-left: 150px;
+}
+
+.form-select {
+	border: 1px solid rgb(96, 95, 95);
+	height: 40px;
+	border-radius: 5px;
+}
+
+small {
+	font-size: 11px;
+	padding: 12px;
+	display: block;
+}
+
+.gpt-chat-box {
+	background-color: #fff;
+	padding: 20px;
+	padding-left: 150px;
+	color: #000;
+}
+
+.chat-icon {
+	width: 15%;
+	margin: 0;
+	padding: 0;
+}
+
+.chat-txt {
+	width: 85%;
+	margin: 0;
+	padding: 0;
+	font-size: 25px;
+}
+
+.checkbox-container {
+	position: relative;
+}
+
+.checkbox-container input {
+	display: none;
+}
+
+.checkbox-container .checked-icon,
+.checkbox-container .unchecked-icon {
+	position: absolute;
+	transition: opacity 0.3s;
+}
+
+.checkbox-container .checked-icon {
+	opacity: 0;
+}
+
+.checkbox-container input:checked ~ .checked-icon {
+	opacity: 1;
+}
+
+.checkbox-container input:checked ~ .unchecked-icon {
+	opacity: 0;
+}
+
+footer {
+	background-color: #fff;
+
+	height: 30px;
+	font-size: 11px;
+}
+
+::-webkit-scrollbar {
+	width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	background: #565869;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+@media only screen and (max-width: 768px) {
+	.user-chat-box {
+		padding-left: 20px;
+	}
+
+	.gpt-chat-box {
+		padding-left: 20px;
+	}
+
+	.chat-inputs-area-inner {
+		padding-left: 50px;
+		padding-right: 54px;
+		margin-bottom: 30px;
+	}
+}

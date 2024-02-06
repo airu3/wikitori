@@ -1,0 +1,15 @@
+.username-input {
+	width: 100%;
+	padding: 10px;
+	font-size: 16px;
+	border: 3px solid #3c46ff;
+	border-radius: 5px;
+	background-color: white;
+	color: black;
+	transition: border 0.3s;
+}
+
+.username-input:focus {
+	border-color: #0000ff;
+	outline: none;
+}
