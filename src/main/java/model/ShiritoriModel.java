@@ -13,18 +13,27 @@ import util.StringUtil;
 public class ShiritoriModel {
 	private static final Logger logger = Logger.getLogger(ShiritoriModel.class.getName());
 	private static List<String> ngWords = NgWordManager.getNgWords();
+	private List<String> usedWords = new ArrayList<>(); // 既に使用した単語を保存するリスト
 
 	public TitleInfo playShiritori(String userMsg) {
 		TitleInfo result;
 		// 最後の文字を取得
 		String[] changes = StringUtil.processJapaneseWord(userMsg, -1);
 
+		// 使用済みの単語を追加
+		usedWords.add(userMsg);
+
 		try {
 			List<CompletableFuture<List<TitleInfo>>> futures = new ArrayList<>();
 
+			// NGワードと既に使用した単語を結合
+			List<String> filterWords = new ArrayList<>();
+			filterWords.addAll(ngWords);
+			filterWords.addAll(usedWords);
+
 			// それぞれの単語の情報を取得する
-			futures.add(WikipediaFetcher.fetchWordInfo(changes[0], 150, ngWords));
-			futures.add(WikipediaFetcher.fetchWordInfo(changes[1], 150, ngWords));
+			futures.add(WikipediaFetcher.fetchWordInfo(changes[0], 5, filterWords));
+			futures.add(WikipediaFetcher.fetchWordInfo(changes[1], 5, filterWords));
 
 			// すべてのCompletableFutureが完了するまで待機する
 			CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
