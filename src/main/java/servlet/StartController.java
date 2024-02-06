@@ -22,7 +22,7 @@ public class StartController extends HttpServlet {
 			response.sendRedirect(request.getContextPath() + "/chat");
 		} else {
 			// ユー ザーが未ログインの場合、通常の処理に進む
-			request.getRequestDispatcher("index.html").forward(request, response);
+			request.getRequestDispatcher("/index.html").forward(request, response);
 		}
 	}
 
