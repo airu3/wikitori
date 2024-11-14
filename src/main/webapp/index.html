@@ -12,53 +12,68 @@
 		/>
 	</head>
 
-	<body class="h-full bg-gradient-to-r from-indigo-900 to-blue-900">
-		<div class="flex min-h-full flex-col lg:grid lg:grid-cols-2">
+	<body
+		class="h-full bg-gradient-to-br from-indigo-950 via-blue-900 to-violet-900"
+	>
+		<div class="flex min-h-full">
 			<!-- Left side -->
-			<div
-				class="relative hidden flex-1 flex-col justify-center px-5 pt-8 text-white lg:flex lg:px-8"
-			>
-				<nav class="absolute left-0 top-8 flex w-full px-8">
-					<h1 class="text-2xl font-bold">
-						Wikitori <span class="inline-block">●</span>
-					</h1>
-				</nav>
-				<div
-					class="absolute left-0 top-1/2 flex w-full -translate-y-1/2 flex-col px-8"
-				>
-					<div class="text-5xl font-bold mb-8">しりとり</div>
-					<div class="relative">
-						<div class="space-x-2 text-3xl opacity-75">
+			<div class="relative hidden w-1/2 lg:block">
+				<div class="fixed inset-y-0 left-0 w-1/2">
+					<!-- Logo/Navigation -->
+					<nav class="absolute left-0 top-0 w-full p-8">
+						<h1 class="flex items-center space-x-3">
+							<img
+								src="img/TORII-removebg-preview.png"
+								alt="Wikitori"
+								class="h-10 w-10"
+							/>
 							<span
-								id="word1"
-								class="inline-block transition-opacity duration-300"
-								>り</span
+								class="bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-2xl font-bold text-transparent"
 							>
-							<span
-								id="word2"
-								class="inline-block transition-opacity duration-300"
-							></span>
-							<span
-								id="word3"
-								class="inline-block transition-opacity duration-300"
-							></span>
-							<span
-								id="word4"
-								class="inline-block transition-opacity duration-300"
-							></span>
-							<span
-								id="word5"
-								class="inline-block transition-opacity duration-300"
-							></span>
-							<span
-								id="word6"
-								class="inline-block transition-opacity duration-300"
-							></span>
-							<span
-								id="word7"
-								class="inline-block transition-opacity duration-300"
-							></span>
-							<span class="inline-block">●</span>
+								Wikitori
+							</span>
+						</h1>
+					</nav>
+
+					<!-- Main content -->
+					<div class="flex h-full flex-col items-center justify-center px-12">
+						<div class="w-full max-w-2xl space-y-8">
+							<h2
+								class="bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-6xl font-bold text-transparent"
+							>
+								しりとり
+							</h2>
+							<p class="text-xl leading-relaxed text-indigo-200">
+								Wikipediaの知識を活用した新しいしりとりゲーム。
+								<br />
+								あなたの言葉の世界を広げましょう。
+							</p>
+							<div class="relative mt-8">
+								<div class="space-x-3 text-3xl font-light text-indigo-100/75">
+									<span
+										id="word1"
+										class="inline-block transition-opacity duration-300"
+										>り</span
+									>
+									<span
+										id="word2"
+										class="inline-block transition-opacity duration-300"
+									></span>
+									<span
+										id="word3"
+										class="inline-block transition-opacity duration-300"
+									></span>
+									<span
+										id="word4"
+										class="inline-block transition-opacity duration-300"
+									></span>
+									<span
+										id="word5"
+										class="inline-block transition-opacity duration-300"
+									></span>
+									<span class="inline-block text-indigo-400">●</span>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -66,27 +81,35 @@
 
 			<!-- Right side -->
 			<div
-				class="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20"
+				class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8"
 			>
-				<div class="mx-auto w-full max-w-sm lg:w-96">
-					<div class="text-center">
-						<h2
-							class="mt-6 text-2xl font-bold leading-9 tracking-tight text-white"
-						>
-							しりとりを始めましょう
-						</h2>
+				<div class="sm:mx-auto sm:w-full sm:max-w-md">
+					<!-- Mobile logo -->
+					<div class="lg:hidden text-center mb-8">
+						<img
+							src="img/TORII-removebg-preview.png"
+							alt="Wikitori"
+							class="mx-auto h-16 w-16"
+						/>
+						<h1 class="mt-4 text-3xl font-bold text-white">Wikitori</h1>
 					</div>
+
+					<h2
+						class="mt-6 text-center text-2xl font-semibold leading-9 tracking-tight text-white"
+					>
+						しりとりを始めましょう
+					</h2>
 
 					<div class="mt-10">
 						<form action="start" method="post" class="space-y-6">
-							<div>
+							<div class="relative">
 								<input
 									type="text"
 									id="username"
 									name="user"
 									maxlength="8"
 									required
-									class="block w-full rounded-md border-0 bg-white/5 py-2.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+									class="block w-full rounded-xl border-0 bg-white/10 px-4 py-3.5 text-white shadow-sm ring-1 ring-inset ring-white/20 transition-all duration-200 placeholder:text-white/50 focus:bg-white/15 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6"
 									placeholder="Your name"
 								/>
 							</div>
@@ -94,19 +117,28 @@
 							<div>
 								<button
 									type="submit"
-									class="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+									class="relative flex w-full justify-center rounded-xl bg-indigo-500 px-4 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 active:scale-[0.98]"
 								>
 									始める
+									<div
+										class="absolute inset-0 rounded-xl transition-all duration-200 hover:ring-2 hover:ring-white/20"
+									></div>
 								</button>
 							</div>
 						</form>
 					</div>
 
-					<div class="mt-10 text-center">
-						<img src="img/1torii.png" alt="Torii" class="mx-auto w-24 mb-4" />
-						<div class="text-sm text-gray-400">
+					<div class="mt-12 text-center">
+						<img
+							src="img/1torii.png"
+							alt="Torii"
+							class="mx-auto h-20 w-auto opacity-80"
+						/>
+						<div
+							class="mt-6 flex justify-center space-x-4 text-sm text-indigo-200"
+						>
 							<span>Sato「お手柔らかに」</span>
-							<span class="mx-2">|</span>
+							<span class="text-indigo-300/50">|</span>
 							<span>Yoshida「かかってこいよ」</span>
 						</div>
 					</div>
@@ -153,6 +185,7 @@
 				"なまえを いれてね",
 				"なまえは？",
 				"贅沢な名だね。",
+				"今からお前の名前は",
 			];
 
 			let placeholderManager = new PlaceholderManager(
