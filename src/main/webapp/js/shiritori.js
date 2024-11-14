@@ -341,232 +341,18 @@ if (SpeechRecognition !== undefined) {
 	recordButton.prop("disabled", true);
 	recordButtonText.text("非対応");
 }
-let words;
-let links;
-
-function shiritori(user_msg) {
-	return new Promise(function (resolve, reject) {
-		words = [];
-		links = [];
-		let changes = strChange(user_msg, -1);
-		let taskA = new Promise(function (resolve) {
-			fetchWordsFromWikipedia(changes[0], 50, resolve);
-		});
-		let taskB = new Promise(function (resolve) {
-			fetchWordsFromWikipedia(changes[1], 50, resolve);
-		});
-		Promise.all([taskA, taskB]).then(function () {
-			console.log(words);
-			console.log(links);
-			if (words.length === 0) {
-				displayBotChat("負けました", chatBox);
-				console.error("強すぎException");
-				return;
-			}
-			let random = Math.floor(Math.random() * words.length);
-			cpuWord = words[random];
-			let wikiLink = links[random];
-			if (strChange(cpuWord, -1)[0] === "ん") {
-				do {
-					words.splice(words.indexOf(cpuWord), words.indexOf(cpuWord));
-					random = Math.floor(Math.random() * words.length);
-					cpuWord = words[random];
-					wikiLink = links[random];
-				} while (strChange(cpuWord, -1)[0] === "ん");
-				resolve([cpuWord, wikiLink]);
-			} else {
-				resolve([cpuWord, wikiLink]);
-			}
-		});
-	});
-}
-
-let NG_word = [""];
-function fetchWordsFromWikipedia(searchTerm, limit, callback) {
-	console.log(searchTerm);
-	const url = `https://ja.wikipedia.org/w/api.php?format=json&action=query&list=prefixsearch&pssearch=${searchTerm}&pslimit=${limit}&psnamespace=0`;
-
-	$.ajax({
-		type: "GET",
-		timeout: 10000,
-		dataType: "jsonp",
-		url: url,
-		async: false,
-		success: function (json) {
-			console.log(json);
-			json.query.prefixsearch.forEach(processWord);
-			callback();
-		},
-	});
-
-	function processWord(value) {
-		//console.log("Processing word: ", value.title);
-
-		if (value.title !== searchTerm) {
-			let word = value.title.replace(/ *\([^)]*\) */g, "");
-			//console.log("Word after: ", word);
-
-			if (
-				NG_word.indexOf(word.slice(-1)) === -1 &&
-				wordHistory.indexOf(word) === -1
-			) {
-				words.push(word);
-				links.push(`http://ja.wikipedia.org/?curid=${value.pageid}`);
-			} else {
-				console.log(
-					"Word is in NG_word or wordHistory, not adding to words and links"
-				);
-			}
-		} else {
-			console.log("Word is the same as searchTerm, not processing");
-		}
-	}
-}
-
-const hiraganaSmallToLarge = {
-	ぁ: "あ",
-	ぃ: "い",
-	ぅ: "う",
-	ぇ: "え",
-	ぉ: "お",
-	っ: "つ",
-	ゃ: "や",
-	ゅ: "ゆ",
-	ょ: "よ",
-	ゎ: "わ",
-};
-
-const katakanaSmallToLarge = {
-	ァ: "ア",
-	ィ: "イ",
-	ゥ: "ウ",
-	ェ: "エ",
-	ォ: "オ",
-	ヵ: "カ",
-	ヶ: "ケ",
-	ッ: "ツ",
-	ャ: "ヤ",
-	ュ: "ユ",
-	ョ: "ヨ",
-	ヮ: "ワ",
-};
-
-function convertSmallToLarge(char, map) {
-	return map[char] || char;
-}
-
-//正規表現
-const regex = /(?!\p{Lm})\p{L}|\p{N}/u;
-
-/**
- * 文字列の一部を変換する関数
- *
- * @param {*} inputWord - 変換対象の文字列
- * @param {*} flag - 変換する範囲を指定するパラメータ
- * @returns {Array} - 変換後の結果を格納した配列 [ひらがな, カタカナ]
- */
-function strChange(inputWord, flag) {
-	// 範囲のデフォルト値を設定
-	let range;
-	if (flag === 1) {
-		range = [0, 1];
-	} else {
-		range = [-1, undefined];
-	}
-
-	// 指定された範囲の文字を生成する関数
-	function generateCharRange(start, end) {
-		const range = [];
-		for (let i = start.charCodeAt(0); i <= end.charCodeAt(0); i++) {
-			range.push(String.fromCharCode(i));
-		}
-		return range;
-	}
-
-	// ひらがなとカタカナの文字を生成
-	const hiragana = generateCharRange("\u3041", "\u3096"); // ひらがな
-	const katakana = generateCharRange("\u30a1", "\u30f6"); // カタカナ
-
-	let r = [];
-	let word = inputWord;
-	console.log("Before processing, word is: ", word);
-	// ひらがなの
-	console.log("word.slice(range[0], range[1])", word.slice(range[0], range[1]));
-	//最初の文字がひらがなかカタカナか漢字かを判定
-	if (hiragana.indexOf(word.slice(range[0], range[1])) !== -1) {
-		// ひらがなの場合
-		r.push(word.slice(range[0], range[1]));
-		r.push(katakana[hiragana.indexOf(word.slice(range[0], range[1]))]);
-		console.log("After processing hiragana, r is: ", r);
-	} else if (katakana.indexOf(word.slice(range[0], range[1])) !== -1) {
-		// カタカナの場合
-		r.push(hiragana[katakana.indexOf(word.slice(range[0], range[1]))]);
-		r.push(word.slice(range[0], range[1]));
-		console.log("After processing katakana, r is: ", r);
-	} else {
-		// 漢字, 数字, 記号の場合
-		$.ajax({
-			type: "POST",
-			timeout: 10000,
-			url: "https://labs.goo.ne.jp/api/hiragana",
-			async: false,
-			headers: {
-				"Content-Type": "application/json",
-			},
-			data: JSON.stringify({
-				app_id:
-					"d5b86171fcdc098cd38e9b056f8c46c84ec367c171b29ec686f3307e0f3030ef",
-				sentence: word,
-				output_type: "hiragana",
-			}),
-		}).done(function (data) {
-			word = data.converted;
-			console.log("Converted word: ", word); // Add logging
-
-			if (range[0] === -1) {
-				// 検索範囲が後ろからの場合、正規表現を用いて条件に合致するまで文字を削る
-				let lastChar = word.slice(-1);
-				console.log("Initial last character: ", lastChar); // Add logging
-
-				if (!regex.test(lastChar)) {
-					do {
-						word = word.slice(0, word.length - 1);
-						console.log("Trimmed word: ", word); // Add logging
-
-						lastChar = word.slice(-1);
-						console.log("New last character: ", lastChar); // Add logging
-					} while (!regex.test(lastChar));
-
-					word = lastChar;
-				} else {
-					word = lastChar;
-				}
-
-				console.log("Final word: ", word); // Add logging
-			}
-
-			r.push(word.slice(range[0], range[1])); // ひらがなを r に追加
-			r.push(katakana[hiragana.indexOf(word.slice(range[0], range[1]))]); // カタカナを r に追加
-			console.log("After processing kanji, r is: ", r);
-		});
-	}
-
-	// 小文字を大文字に変換する関数を適用
-	r[0] = convertSmallToLarge(r[0], hiraganaSmallToLarge);
-	r[1] = convertSmallToLarge(r[1], katakanaSmallToLarge);
-	console.log("Final state of r is: ", r);
-	return r;
-}
-
 function createUserChatHtml(text) {
 	return `
-		<!-- START USER CHAT -->
-		<div class="row user-chat-box">
-			<div class="chat-icon">
-				<img class="chatgpt-icon" src="img/Face-Without-Mouth-Flat-icon.png" />
+			<div class="flex items-start space-x-4 mb-6">
+					<div class="flex-shrink-0">
+							<img class="h-12 w-12 rounded-full" src="img/Face-Without-Mouth-Flat-icon.png" alt="User">
+					</div>
+					<div class="flex-1 space-y-1">
+							<div class="inline-block rounded-lg bg-indigo-50 px-6 py-4 shadow-sm">
+									<p class="text-lg text-gray-900">「${text}」</p>
+							</div>
+					</div>
 			</div>
-			<div class="chat-txt">「${text}」</div>
-		</div>
 	`;
 }
 
@@ -577,15 +363,22 @@ function displayUserChat(text) {
 }
 
 function createBotChatHtml(text, link) {
-	let textHtml = link ? `<a href="${link}">${text}</a>` : text;
+	const textContent = link
+		? `<a href="${link}" class="text-indigo-600 hover:text-indigo-500 underline">「${text}」</a>`
+		: `「${text}」`;
+
 	return `
-	<!-- START GPT CHAT -->
-	<div class="row gpt-chat-box">
-		<div class="chat-icon">
-			<img class="chatgpt-icon" src="img/Smirking-Face-Flat-icon.png" />
-		</div>
-		<div class="chat-txt">${textHtml}</div>
-	</div>`;
+			<div class="flex items-start space-x-4 mb-6">
+					<div class="flex-shrink-0">
+							<img class="h-12 w-12 rounded-full" src="img/Smirking-Face-Flat-icon.png" alt="Bot">
+					</div>
+					<div class="flex-1 space-y-1">
+							<div class="inline-block rounded-lg bg-gray-100 px-6 py-4 shadow-sm">
+									<p class="text-lg text-gray-900">${textContent}</p>
+							</div>
+					</div>
+			</div>
+	`;
 }
 
 function displayBotChat(text, element, link) {
