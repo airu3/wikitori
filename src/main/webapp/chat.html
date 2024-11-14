@@ -1,250 +1,223 @@
 <!DOCTYPE html>
-<html lang="ja-JP">
+<html lang="ja-JP" class="h-full bg-gray-50">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-		<title>wikitori</title>
-		<!-- START EXTERNAL CSS RESOURCES -->
-		<!-- bootstrap -->
+		<title>Wikitori Chat</title>
+		<script src="https://cdn.tailwindcss.com"></script>
 		<link
-			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
 			rel="stylesheet"
 		/>
-
-		<!-- font-awesome -->
-		<link
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
-			rel="stylesheet"
-		/>
-
-		<!-- START INTERNAL CSS RESOURCES -->
-
-		<!-- favicon -->
 		<link
 			rel="shortcut icon"
 			href="img/TORII-removebg-preview.png"
 			type="image/x-icon"
 		/>
-		<!-- style -->
-		<link rel="stylesheet" href="css/chat.css" />
 	</head>
 
-	<body>
-		<!-- START MAIN CONTAINER -->
-		<div class="container-fluid">
-			<div class="row">
-				<!-- START SIDENAV -->
-				<div class="side-nav col-lg-3 col-md-12">
-					<!-- START NEW CHAT BUTTON -->
-					<div class="chat-btn-container">
-						<div class="row p-2">
-							<div class="chat-btn d-flex align-items-center" id="chat-btn">
-								<span class="d-block">+ New Chat</span>
-							</div>
-						</div>
-						<!-- チャットの変更履歴 -->
-						<div class="chat-history-date">
-							<h3 class="history-date">Today</h3>
-						</div>
-						<div class="row p-2">
-							<div class="chat-items d-flex align-items-center" id="send-score">
-								<!-- ボタンにdata-toggleとdata-targetを追加 -->
-								<span
-									class="d-block"
-									data-toggle="modal"
-									data-target="#scoreModal"
+	<body class="h-full">
+		<div class="flex h-full">
+			<!-- Sidebar -->
+			<div class="hidden lg:flex lg:flex-shrink-0">
+				<div class="flex w-72 flex-col">
+					<div class="flex min-h-0 flex-1 flex-col bg-gray-800">
+						<div class="flex flex-1 flex-col overflow-y-auto pt-6 pb-4">
+							<div class="flex flex-shrink-0 items-center px-6">
+								<button
+									id="chat-btn"
+									class="w-full rounded-md bg-gray-700 px-4 py-3 text-base font-medium text-white hover:bg-gray-600 transition-colors"
 								>
-									- Score : <span id="score" class="score-point">0</span>
-								</span>
+									+ New Chat
+								</button>
 							</div>
-						</div>
-					</div>
-					<!-- START modal -->
-					<div
-						class="modal fade"
-						id="scoreModal"
-						tabindex="-1"
-						role="dialog"
-						aria-labelledby="scoreModalLabel"
-						aria-hidden="true"
-					>
-						<div class="modal-dialog" role="document">
-							<div class="modal-content">
-								<div class="modal-header bg-white border-bottom">
-									<h5 class="modal-title text-dark" id="scoreModalLabel">
-										Game Score
-									</h5>
-									<button
-										type="button"
-										class="close"
-										data-dismiss="modal"
-										aria-label="Close"
-									>
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									<div class="mb-3">
-										<p id="totalScore" class="mb-2">
-											Total score : <span class="score-point">0</span>
-										</p>
-										<input type="hidden" name="score" value="0" />
-										<p class="mb-4">記録を送信します。</p>
-									</div>
-									<div class="text-right">
-										<button
-											id="submitScore"
-											class="btn btn-primary"
-											type="submit"
-										>
-											Submit
-										</button>
-									</div>
-								</div>
+							<div class="mt-8 px-6">
+								<h3
+									class="text-sm font-semibold uppercase tracking-wider text-gray-400"
+								>
+									Today
+								</h3>
 							</div>
-						</div>
-					</div>
-
-					<!--  -->
-					<div class="row">
-						<div class="col-12">
-							<ul class="list-unstyled">
-								<!-- START SETTINGS -->
-								<li class="nav-item">
-									<a class="nav-link text-white" href="#">
-										<i class="fas fa-cog"></i> Settings
-									</a>
-								</li>
-
-								<!-- START GET HELP -->
-								<li class="nav-item">
-									<a class="nav-link text-white" href="#">
-										<i class="fas fa-question-circle"></i> Get Help
-									</a>
-								</li>
-
-								<!-- START LOG OUT -->
-								<li class="nav-item">
-									<a class="nav-link text-white" href="logout">
-										<i class="fas fa-sign-out-alt"></i> Back to Home
-									</a>
-								</li>
-							</ul>
+							<div class="mt-3 px-6">
+								<button
+									id="send-score"
+									class="w-full text-left rounded-md px-4 py-3 text-base text-gray-300 hover:bg-gray-700 transition-colors"
+								>
+									Score:
+									<span id="score" class="score-point font-medium">0</span>
+								</button>
+							</div>
+							<nav class="mt-auto space-y-1 px-6">
+								<a
+									href="#"
+									class="group flex items-center px-4 py-3 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white rounded-md transition-colors"
+								>
+									<i
+										class="fas fa-cog mr-4 text-gray-400 group-hover:text-white"
+									></i>
+									Settings
+								</a>
+								<a
+									href="#"
+									class="group flex items-center px-4 py-3 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white rounded-md transition-colors"
+								>
+									<i
+										class="fas fa-question-circle mr-4 text-gray-400 group-hover:text-white"
+									></i>
+									Help
+								</a>
+								<a
+									href="logout"
+									class="group flex items-center px-4 py-3 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white rounded-md transition-colors"
+								>
+									<i
+										class="fas fa-sign-out-alt mr-4 text-gray-400 group-hover:text-white"
+									></i>
+									Back to Home
+								</a>
+							</nav>
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<!-- START CONTENT -->
-				<div class="content p-0 pt-2 col-lg-9 col-md-12">
-					<!-- START CHAT HEADER -->
-					<div id="chat-content-area">
-						<!-- START GPT CHAT -->
-						<div class="row gpt-chat-box">
-							<div class="chat-icon">
-								<img
-									class="chatgpt-icon"
-									src="img/Smirking-Face-Flat-icon.png"
-								/>
+			<!-- Main content -->
+			<div class="flex min-w-0 flex-1 flex-col overflow-hidden bg-white">
+				<div class="relative z-0 flex flex-1 overflow-hidden">
+					<main class="relative z-0 flex-1 overflow-y-auto focus:outline-none">
+						<!-- Chat container with max width -->
+						<div class="mx-auto max-w-4xl">
+							<!-- Chat content -->
+							<div
+								id="chat-content-area"
+								class="h-[calc(100vh-120px)] overflow-y-auto px-4 py-6 sm:px-6"
+							>
+								<div class="flex items-start space-x-4 mb-6">
+									<div class="flex-shrink-0">
+										<img
+											class="h-12 w-12 rounded-full"
+											src="img/Smirking-Face-Flat-icon.png"
+											alt="Bot"
+										/>
+									</div>
+									<div class="flex-1 space-y-1">
+										<div
+											class="inline-block rounded-lg bg-gray-100 px-6 py-4 shadow-sm"
+										>
+											<p class="text-lg text-gray-900">「しりとり」</p>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="chat-txt">「しりとり」</div>
-						</div>
-					</div>
 
-					<div class="chat-input-area overflow-hidden">
-						<div class="row">
-							<div class="col-12 chat-inputs-area-inner">
-								<form
-									action="chat"
-									method="post"
-									id="shiritoriForm"
-									class="row chat-inputs-container"
-								>
-									<div
-										class="col-auto d-flex justify-content-center align-items-center"
+							<!-- Input area -->
+							<div class="border-t border-gray-200 bg-white px-4 py-4 sm:px-6">
+								<div class="mx-auto max-w-3xl">
+									<form
+										id="shiritoriForm"
+										action="chat"
+										method="post"
+										class="flex items-center space-x-4"
 									>
 										<button
 											type="button"
 											id="record_btn"
-											class="btn btn-outline-primary"
+											class="flex-shrink-0 rounded-full p-2.5 text-gray-400 hover:text-gray-500 hover:bg-gray-100 transition-colors"
 										>
-											<i class="fas fa-microphone"></i>
+											<i class="fas fa-microphone text-xl"></i>
 										</button>
-									</div>
-									<div class="col">
-										<textarea
-											name="userMsg"
-											id="input_text"
-											class="form-control"
-											placeholder="「り」から始まる言葉"
-										></textarea>
-									</div>
-									<div
-										class="col-auto d-flex justify-content-center align-items-center"
-									>
+										<div class="flex-1">
+											<textarea
+												id="input_text"
+												name="userMsg"
+												rows="1"
+												class="block w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-base text-gray-900 placeholder:text-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-shadow"
+												placeholder="「り」から始まる言葉"
+											></textarea>
+										</div>
 										<button
 											type="submit"
-											class="btn btn-primary"
 											id="submit_btn"
+											class="flex-shrink-0 rounded-full p-2.5 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 transition-colors"
 										>
-											<i class="fa fa-paper-plane" aria-hidden="true"></i>
+											<i class="fas fa-paper-plane text-xl"></i>
 										</button>
-									</div>
-									<div
-										class="col-auto form-check d-flex justify-content-center align-items-center"
-									>
 										<label
-											class="checkbox-container btn btn-secondary"
-											style="
-												position: relative;
-												padding: 5px;
-												border-radius: 5px;
-												width: 30px;
-												height: 30px;
-											"
+											class="relative inline-flex items-center flex-shrink-0"
 										>
-											<input type="checkbox" id="check" style="display: none" />
-											<i
-												class="fas fa-volume-mute unchecked-icon"
-												style="
-													position: absolute;
-													top: 50%;
-													left: 50%;
-													transform: translate(-50%, -50%);
-													color: #aaa;
-												"
-											></i>
-											<i
-												class="fas fa-volume-up checked-icon"
-												style="
-													position: absolute;
-													top: 50%;
-													left: 50%;
-													transform: translate(-50%, -50%);
-													color: #aaa;
-												"
-											></i>
+											<input type="checkbox" id="check" class="sr-only" />
+											<div
+												class="h-10 w-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors"
+											>
+												<i
+													class="fas fa-volume-mute text-xl text-gray-400 absolute unchecked-icon transition-opacity"
+												></i>
+												<i
+													class="fas fa-volume-up text-xl text-gray-400 absolute checked-icon opacity-0 transition-opacity"
+												></i>
+											</div>
 										</label>
-									</div>
-								</form>
+									</form>
+								</div>
 							</div>
 						</div>
-					</div>
-					<!--  -->
+					</main>
 				</div>
 			</div>
 		</div>
 
-		<!-- START EXTERNAL JS RESOURCES -->
-		<!-- jquery -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<!-- material-ui -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/material-ui/5.0.0-beta.5/index.js"></script>
-		<!-- bootstrap -->
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+		<!-- Score Modal -->
+		<div
+			id="scoreModal"
+			class="fixed inset-0 z-10 hidden overflow-y-auto"
+			aria-labelledby="modal-title"
+			role="dialog"
+			aria-modal="true"
+		>
+			<div
+				class="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0"
+			>
+				<div
+					class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+					aria-hidden="true"
+				></div>
+				<span
+					class="hidden sm:inline-block sm:h-screen sm:align-middle"
+					aria-hidden="true"
+					>&#8203;</span
+				>
+				<div
+					class="inline-block transform overflow-hidden rounded-xl bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6 sm:align-middle"
+				>
+					<div>
+						<h3
+							class="text-xl font-semibold leading-6 text-gray-900"
+							id="modal-title"
+						>
+							Game Score
+						</h3>
+						<div class="mt-4">
+							<p id="totalScore" class="text-base text-gray-600">
+								Total score: <span class="score-point font-medium">0</span>
+							</p>
+							<input type="hidden" name="score" value="0" />
+							<p class="mt-4 text-base text-gray-600">記録を送信します。</p>
+						</div>
+					</div>
+					<div class="mt-6">
+						<button
+							type="button"
+							id="submitScore"
+							class="inline-flex w-full justify-center rounded-lg bg-indigo-600 px-4 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors"
+						>
+							Submit
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-		<!-- START INTERNAL JS RESOURCES -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="js/shiritori.js"></script>
-		<script></script>
 	</body>
 </html>
