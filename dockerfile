@@ -1,8 +1,9 @@
-# Mavenをベースにしたビルドステージ
+# Mavenをベースにしたビルドステージ 17はJDKのバージョン
 FROM maven:3-eclipse-temurin-17 AS build
-# ワーキングディレクトリの設定
+
+# ワーキングディレクトリの設定 . . で全てのファイルをコピーする
 COPY . .
-# ビルド
+# ビルド ビルド後の成果物はtargetディレクトリに格納される
 RUN mvn clean package -Dmaven.test.skip=true
 
 # Tomcatのインストール
