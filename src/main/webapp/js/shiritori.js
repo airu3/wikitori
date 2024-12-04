@@ -461,6 +461,11 @@ function strChange(inputWord, flag) {
 	return r;
 }
 
+/**
+ * ユーザのチャットを生成する関数
+ * @param {*} text - ユーザのチャットに表示するテキスト
+ * @returns {string} - ユーザのチャットのHTML要素
+ */
 function createUserChatHtml(text) {
 	return `
 		<!-- START USER CHAT -->
@@ -473,12 +478,22 @@ function createUserChatHtml(text) {
 	`;
 }
 
+/**
+ * ユーザのチャットを表示する関数
+ * @param {*} text - ユーザのチャットに表示するテキスト
+ */
 function displayUserChat(text) {
 	const userChatHtml = createUserChatHtml(text);
 	chatBox.append(userChatHtml);
 	obj.scrollTop = obj.scrollHeight;
 }
 
+/**
+ * ボットのチャットを生成する関数
+ * @param {*} text - ボットのチャットに表示するテキスト
+ * @param {*} link - リンク
+ * @returns {string} - ボットのチャットのHTML要素
+ */
 function createBotChatHtml(text, link) {
 	let textHtml = link ? `<a href="${link}">${text}</a>` : text;
 	return `
@@ -491,6 +506,12 @@ function createBotChatHtml(text, link) {
 	</div>`;
 }
 
+/**
+ * ボットのチャットを表示する関数
+ * @param {*} text - ボットのチャットに表示するテキスト
+ * @param {*} element - チャットを表示するHTML要素
+ * @param {*} link - リンク
+ */
 function displayBotChat(text, element, link) {
 	const chatBubble = createBotChatHtml(text, link);
 	element.append(chatBubble);
