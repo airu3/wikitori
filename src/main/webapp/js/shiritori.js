@@ -65,8 +65,19 @@ const inputText = $("#input_text");
 const chatBox = $("#chat-content-area");
 
 let isProcessing = false;
+// 初期状態で送信ボタンを無効化
+submitButton.prop("disabled", true);
 
-$("#input_text").on("keydown", function (e) {
+// 入力欄の内容が変更されたときに送信ボタンの状態を更新
+inputText.on("input", function () {
+	if (inputText.val().trim() === "") {
+		submitButton.prop("disabled", true);
+	} else {
+		submitButton.prop("disabled", false);
+	}
+});
+
+inputText.on("keydown", function (e) {
 	if (e.keyCode === 13) {
 		// エンターキーのキーコードは13
 		if (isProcessing) {
@@ -86,6 +97,7 @@ $("#input_text").on("keydown", function (e) {
 		}, 1000);
 	}
 });
+
 // フォームの送信を検知
 $("#shiritoriForm").on("submit", function (e) {
 	e.preventDefault(); // フォームのデフォルトの送信動作をキャンセル
@@ -180,16 +192,19 @@ function processResultText(text) {
 	}
 }
 
+/**
+ * しりとりの結果を処理する関数
+ * @param {*} text
+ */
 function handleShiritoriResult(text) {
 	wordHistory.push(text);
-
 	//単語の数x10点
 	score += text.length * 100;
 	//履歴の数x10点
 	score += wordHistory.length * 100;
 	//CPUの単語の数x10点
 	score += cpuWord.length * 100;
-	//テキストの最初の文字と最後の文字が同じなら+100点
+	//テキストの最初の文字と最後���文字が同じなら+100点
 	if (strChange(text, 1)[0] === strChange(cpuWord, -1)[0]) {
 		score += 1000;
 	}
@@ -201,23 +216,11 @@ function handleShiritoriResult(text) {
 	if (wordHistory.length == 20) {
 		score += 2000;
 	}
-
 	console.log("score", score);
 	//スコアを表示
 	document.querySelector(".score-point").textContent = score;
 
 	$("#shiritoriForm").submit(); // フォームを送信
-
-	// shiritori(text)
-	// 	.then(function (values) {
-	// 		handleShiritoriSuccess(values);
-	// 	})
-	// 	.catch(function (error) {
-	// 		handleShiritoriError(error);
-	// 	})
-	// 	.finally(function () {
-	// 		isWork = false;
-	// 	});
 }
 
 function handleShiritoriSuccess(values) {
@@ -250,6 +253,11 @@ function handleShiritoriError(error) {
 
 function submitButtonClick() {
 	let text = inputText.val();
+	if (text.trim() === "") {
+		alert("入力欄が空です。言葉を入力してください。");
+		ResetUI();
+		return; //何もないなら関数を終了させる
+	}
 	if (text === "") {
 		ResetUI();
 		return; //何もないなら関数を終了させる
