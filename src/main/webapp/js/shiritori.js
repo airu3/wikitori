@@ -182,10 +182,10 @@ $("#scoreModal").on("show.bs.modal", function (event) {
  */
 function processResultText(text) {
 	if (nextWord !== strChange(text, 1)[0]) {
-		displayBotChat("「" + nextWord + "」から言葉を始めてね！", chatBox);
+		displayBotChat("「" + nextWord + "」から始めてね！", chatBox);
 		ResetUI();
 	} else if (wordHistory.indexOf(text) !== -1) {
-		displayBotChat("「" + text + "」は、もう使われた言葉だよ！", chatBox);
+		displayBotChat("「" + text + "」は使われているよ！", chatBox);
 		ResetUI();
 	} else {
 		handleShiritoriResult(text);
@@ -228,7 +228,7 @@ function handleShiritoriSuccess(values) {
 	let link = values[1];
 	console.log("選んだ単語", value);
 	const startWord = strChange(value, -1)[0];
-	inputText.attr("placeholder", "「" + startWord + "」から始まる言葉");
+	inputText.attr("placeholder", "「" + startWord + "」から始めてください...");
 	nextWord = startWord;
 	displayBotChat("「" + value + "」", chatBox, link);
 	wordHistory.push(value);
@@ -281,7 +281,7 @@ function ResetUI() {
 	submitButton.prop("disabled", false);
 	recordButtonText.text("マイク");
 	submitButtonText.text("送信");
-	inputText.attr("placeholder", "「" + nextWord + "」から始まる言葉");
+	inputText.attr("placeholder", "「" + nextWord + "」から始めてください...");
 }
 
 submitButton.click(submitButtonClick);
@@ -352,112 +352,7 @@ if (SpeechRecognition !== undefined) {
 let words;
 let links;
 
-function shiritori(user_msg) {
-	return new Promise(function (resolve, reject) {
-		words = [];
-		links = [];
-		let changes = strChange(user_msg, -1);
-		let taskA = new Promise(function (resolve) {
-			fetchWordsFromWikipedia(changes[0], 50, resolve);
-		});
-		let taskB = new Promise(function (resolve) {
-			fetchWordsFromWikipedia(changes[1], 50, resolve);
-		});
-		Promise.all([taskA, taskB]).then(function () {
-			console.log(words);
-			console.log(links);
-			if (words.length === 0) {
-				displayBotChat("負けました", chatBox);
-				console.error("強すぎException");
-				return;
-			}
-			let random = Math.floor(Math.random() * words.length);
-			cpuWord = words[random];
-			let wikiLink = links[random];
-			if (strChange(cpuWord, -1)[0] === "ん") {
-				do {
-					words.splice(words.indexOf(cpuWord), words.indexOf(cpuWord));
-					random = Math.floor(Math.random() * words.length);
-					cpuWord = words[random];
-					wikiLink = links[random];
-				} while (strChange(cpuWord, -1)[0] === "ん");
-				resolve([cpuWord, wikiLink]);
-			} else {
-				resolve([cpuWord, wikiLink]);
-			}
-		});
-	});
-}
-
 let NG_word = [""];
-function fetchWordsFromWikipedia(searchTerm, limit, callback) {
-	console.log(searchTerm);
-	const url = `https://ja.wikipedia.org/w/api.php?format=json&action=query&list=prefixsearch&pssearch=${searchTerm}&pslimit=${limit}&psnamespace=0`;
-
-	$.ajax({
-		type: "GET",
-		timeout: 10000,
-		dataType: "jsonp",
-		url: url,
-		async: false,
-		success: function (json) {
-			console.log(json);
-			json.query.prefixsearch.forEach(processWord);
-			callback();
-		},
-	});
-
-	function processWord(value) {
-		//console.log("Processing word: ", value.title);
-
-		if (value.title !== searchTerm) {
-			let word = value.title.replace(/ *\([^)]*\) */g, "");
-			//console.log("Word after: ", word);
-
-			if (
-				NG_word.indexOf(word.slice(-1)) === -1 &&
-				wordHistory.indexOf(word) === -1
-			) {
-				words.push(word);
-				links.push(`http://ja.wikipedia.org/?curid=${value.pageid}`);
-			} else {
-				console.log(
-					"Word is in NG_word or wordHistory, not adding to words and links"
-				);
-			}
-		} else {
-			console.log("Word is the same as searchTerm, not processing");
-		}
-	}
-}
-
-const hiraganaSmallToLarge = {
-	ぁ: "あ",
-	ぃ: "い",
-	ぅ: "う",
-	ぇ: "え",
-	ぉ: "お",
-	っ: "つ",
-	ゃ: "や",
-	ゅ: "ゆ",
-	ょ: "よ",
-	ゎ: "わ",
-};
-
-const katakanaSmallToLarge = {
-	ァ: "ア",
-	ィ: "イ",
-	ゥ: "ウ",
-	ェ: "エ",
-	ォ: "オ",
-	ヵ: "カ",
-	ヶ: "ケ",
-	ッ: "ツ",
-	ャ: "ヤ",
-	ュ: "ユ",
-	ョ: "ヨ",
-	ヮ: "ワ",
-};
 
 function convertSmallToLarge(char, map) {
 	return map[char] || char;
