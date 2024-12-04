@@ -42,8 +42,8 @@ public class ShiritoriModel {
 			filterWords.addAll(usedWords);
 
 			// それぞれの単語の情報を取得する
-			futures.add(WikipediaFetcher.fetchWordInfo(changes[0], 5, filterWords));
-			futures.add(WikipediaFetcher.fetchWordInfo(changes[1], 5, filterWords));
+			futures.add(WikipediaFetcher.fetchWordInfo(changes[0], 100, filterWords));
+			futures.add(WikipediaFetcher.fetchWordInfo(changes[1], 100, filterWords));
 
 			// すべてのCompletableFutureが完了するまで待機する
 			CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
