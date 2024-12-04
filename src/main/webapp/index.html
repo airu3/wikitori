@@ -1,215 +1,153 @@
-<html class="dark" style="color-scheme: dark" lang="ja-JP">
+<!DOCTYPE html>
+<html lang="ja-JP" class="h-full">
 	<head>
 		<meta charset="utf-8" />
-		<title>wikitori</title>
-		<!-- favicon -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Wikitori</title>
+		<script src="https://cdn.tailwindcss.com"></script>
 		<link
 			rel="shortcut icon"
 			href="img/TORII-removebg-preview.png"
 			type="image/x-icon"
 		/>
-		<!-- ex style -->
-		<link rel="preconnect" href="https://cdn.oaistatic.com" />
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-buch.13189857.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-halbfett.977f1845.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-mono-buch.de677af1.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/media/soehne-mono-halbfett.b082e8e2.woff2"
-			as="font"
-			crossorigin=""
-		/>
-		<link data-next-font="" rel="preconnect" href="/" crossorigin="anonymous" />
-		<link
-			rel="preload"
-			href="https://cdn.oaistatic.com/_next/static/css/02f82e43283187c3.css"
-			as="style"
-		/>
-		<link
-			rel="stylesheet"
-			href="https://cdn.oaistatic.com/_next/static/css/02f82e43283187c3.css"
-			data-n-g=""
-		/>
-		<!-- in style -->
-		<link rel="stylesheet" href="css/index.css" />
-		<meta name="react-scroll-to-bottom:version" content="4.2.0" />
 	</head>
 
-	<body class="antialiased" style="background-color: rgb(0, 0, 46)">
-		<div id="__next">
-			<script>
-				//
-				!(function () {
-					try {
-						let d = document.documentElement,
-							c = d.classList;
-						c.remove("light", "dark");
-						let e = localStorage.getItem("theme");
-						if ("system" === e || (!e && true)) {
-							let t = "(prefers-color-scheme: dark)",
-								m = window.matchMedia(t);
-							if (m.media !== t || m.matches) {
-								d.style.colorScheme = "dark";
-								c.add("dark");
-							} else {
-								d.style.colorScheme = "light";
-								c.add("light");
-							}
-						} else if (e) {
-							c.add(e || "");
-						}
-						if (e === "light" || e === "dark") d.style.colorScheme = e;
-					} catch (e) {}
-				})();
-			</script>
-			<div
-				class="flex min-h-full w-screen flex-col sm:supports-[min-height:100dvh]:min-h-[100dvh] md:grid md:grid-cols-2 lg:grid-cols-[60%_40%]"
-			>
-				<div
-					class="relative hidden flex-1 flex-col justify-center px-5 pt-8 text-[#FE7600] dark:text-[#D292FF] md:flex md:px-6 md:py-[22px] lg:px-8"
-				>
-					<nav
-						class="left-0 top-8 flex w-full px-6 sm:absolute md:top-[22px] md:px-6 lg:px-8"
-					>
-						<h1 aria-label="">
-							<div
-								class="flex cursor-default items-center text-[20px] font-bold leading-none lg:text-[22px]"
+	<body
+		class="h-full bg-gradient-to-br from-indigo-950 via-blue-900 to-violet-900"
+	>
+		<div class="flex min-h-full">
+			<!-- Left side -->
+			<div class="relative hidden w-1/2 lg:block">
+				<div class="fixed inset-y-0 left-0 w-1/2">
+					<!-- Logo/Navigation -->
+					<nav class="absolute left-0 top-0 w-full p-8">
+						<h1 class="flex items-center space-x-3">
+							<img
+								src="img/TORII-removebg-preview.png"
+								alt="Wikitori"
+								class="h-10 w-10"
+							/>
+							<span
+								class="bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-2xl font-bold text-transparent"
 							>
-								<div>Wikitori <span id="word" class="font-circle">●</span></div>
-							</div>
+								Wikitori
+							</span>
 						</h1>
 					</nav>
-					<div
-						class="flex flex-col text-[32px] leading-[1.2] md:text-[40px]"
-						aria-hidden="true"
-					>
-						<div
-							class="absolute left-0 top-1/2 flex w-full flex-col px-5 transition-[transform,opacity] duration-500 md:pl-6 md:pr-8 lg:pl-8 lg:pr-10 opacity-100 translate-y-[calc(-50%-1em)] delay-[500ms]"
-						>
-							<div class="relative font-bold">しりとり</div>
-							<div class="relative">
-								<div
-									class="absolute left-0 top-0 max-w-[650px] transition-opacity duration-300"
-								>
+
+					<!-- Main content -->
+					<div class="flex h-full flex-col items-center justify-center px-12">
+						<div class="w-full max-w-2xl space-y-8">
+							<h2
+								class="bg-gradient-to-r from-white to-indigo-200 bg-clip-text text-6xl font-bold text-transparent"
+							>
+								しりとり
+							</h2>
+							<p class="text-xl leading-relaxed text-indigo-200">
+								Wikipediaの知識を活用した、新しいしりとりのゲーム。
+								<br />
+								あなたの言葉の世界を広げましょう。
+							</p>
+							<div class="relative mt-8">
+								<div class="space-x-3 text-3xl font-light text-indigo-100/75">
 									<span
 										id="word1"
-										class="inline transition-opacity duration-300"
+										class="inline-block transition-opacity duration-300"
 										>り</span
 									>
 									<span
 										id="word2"
-										class="inline transition-opacity duration-300"
+										class="inline-block transition-opacity duration-300"
 									></span>
 									<span
 										id="word3"
-										class="inline transition-opacity duration-300"
+										class="inline-block transition-opacity duration-300"
 									></span>
 									<span
 										id="word4"
-										class="inline transition-opacity duration-300"
+										class="inline-block transition-opacity duration-300"
 									></span>
 									<span
 										id="word5"
-										class="inline transition-opacity duration-300"
+										class="inline-block transition-opacity duration-300"
 									></span>
-									<span
-										id="word6"
-										class="inline transition-opacity duration-300"
-									></span>
-									<span
-										id="word7"
-										class="inline transition-opacity duration-300"
-									></span>
-									<span class="inline-block font-circle delay-[300ms]">●</span>
+									<span class="inline-block text-indigo-400">●</span>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div
-					class="relative flex grow flex-col items-center justify-between bg-white px-5 py-8 text-black dark:bg-black dark:text-white sm:rounded-t-[30px] md:rounded-none md:px-6"
-				>
-					<nav
-						class="flex w-full justify-start px-6 pb-8 md:hidden md:px-6 lg:px-8"
+			</div>
+
+			<!-- Right side -->
+			<div
+				class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8"
+			>
+				<div class="sm:mx-auto sm:w-full sm:max-w-md">
+					<!-- Mobile logo -->
+					<div class="lg:hidden text-center mb-8">
+						<img
+							src="img/TORII-removebg-preview.png"
+							alt="Wikitori"
+							class="mx-auto h-16 w-16"
+						/>
+						<h1 class="mt-4 text-3xl font-bold text-white">Wikitori</h1>
+					</div>
+
+					<h2
+						class="mt-6 text-center text-2xl font-semibold leading-9 tracking-tight text-white"
 					>
-						<h1 aria-label="">
-							<div
-								class="flex cursor-default items-center text-[20px] font-bold leading-none lg:text-[22px]"
-							>
-								<div>ChatGPT <span id="word" class="font-circle">●</span></div>
-							</div>
-						</h1>
-					</nav>
-					<div
-						class="relative flex w-full grow flex-col items-center justify-center"
-					>
-						<h2
-							class="text-center text-[20px] leading-[1.2] md:text-[32px] md:leading-8"
-						>
-							しりとりを始めましょう
-						</h2>
-						<div class="mt-5 w-full max-w-[440px]">
-							<form
-								action="start"
-								method="post"
-								class="grid gap-x-3 gap-y-2 sm:grid-cols-2 sm:gap-y-0"
-							>
+						しりとりを始めましょう
+					</h2>
+
+					<div class="mt-10">
+						<form action="start" method="post" class="space-y-6">
+							<div class="relative">
 								<input
 									type="text"
-									class="username-input"
 									id="username"
-									maxlength="8"
 									name="user"
-									placeholder="name"
+									maxlength="8"
 									required
+									class="block w-full rounded-xl border-0 bg-white/10 px-4 py-3.5 text-white shadow-sm ring-1 ring-inset ring-white/20 transition-all duration-200 placeholder:text-white/50 focus:bg-white/15 focus:ring-2 focus:ring-inset focus:ring-indigo-400 sm:text-sm sm:leading-6"
+									placeholder="Your name"
 								/>
-								<button
-									class="relative flex h-12 items-center justify-center rounded-md text-center text-base font-medium bg-[#3C46FF] text-[#fff] hover:bg-[#0000FF]"
-								>
-									<div class="relative -top-[1px]">始める</div>
-								</button>
-							</form>
-						</div>
-					</div>
-					<div class="mt-10 flex flex-col justify-center">
-						<div class="flex justify-center text-gray-300 md:mb-3">
-							<div class="flex gap-3 text-xs">
-								<!-- img -->
-								<img src="img/1torii.png" alt="" width="100px" />
 							</div>
-						</div>
-						<div class="flex gap-3 py-3 text-xs text-gray-500">
-							<a>Sato「お手柔らかに」</a
-							><span id="word" class="text-gray-600">|</span
-							><a>Yoshida「かかってこいよ」</a>
+
+							<div>
+								<button
+									type="submit"
+									class="relative flex w-full justify-center rounded-xl bg-indigo-500 px-4 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 active:scale-[0.98]"
+								>
+									始める
+									<div
+										class="absolute inset-0 rounded-xl transition-all duration-200 hover:ring-2 hover:ring-white/20"
+									></div>
+								</button>
+							</div>
+						</form>
+					</div>
+
+					<div class="mt-12 text-center">
+						<img
+							src="img/1torii.png"
+							alt="Torii"
+							class="mx-auto h-20 w-auto opacity-80"
+						/>
+						<div
+							class="mt-6 flex justify-center space-x-4 text-sm text-indigo-200"
+						>
+							<span>Sato Tomoki</span>
+							<span class="text-indigo-300/50">|</span>
+							<span>Yoshida Ryuto</span>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="absolute left-0 right-0 top-0 z-[2]"></div>
 		</div>
 
-		<!-- cdn jquery -->
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 		<script>
-			// プレースホルダーを管理するクラス
 			class PlaceholderManager {
 				constructor(element, placeholders) {
 					this.element = element;
@@ -217,7 +155,6 @@
 					this.currentIndex = null;
 				}
 
-				// ランダムなインデックスを取得するメソッド
 				getRandomIndex() {
 					let newIndex;
 					do {
@@ -226,20 +163,17 @@
 					return newIndex;
 				}
 
-				// プレースホルダーを設定するメソッド
 				setPlaceholder() {
 					this.currentIndex = this.getRandomIndex();
 					this.element.placeholder = this.placeholders[this.currentIndex];
 				}
 
-				// プレースホルダーを定期的に更新するメソッド
 				startUpdatingPlaceholder(interval) {
 					setInterval(() => this.setPlaceholder(), interval);
 				}
 			}
 
-			// 使用例
-			let inputElement = document.querySelector(".username-input");
+			let inputElement = document.querySelector("#username");
 			let placeholders = [
 				"Your Name.",
 				"君の名は。",
@@ -251,15 +185,12 @@
 				"なまえを いれてね",
 				"なまえは？",
 				"贅沢な名だね。",
-				"お前の名前は「ハゲ」だ。",
-				"今からお前の名前は",
 			];
 
 			let placeholderManager = new PlaceholderManager(
 				inputElement,
 				placeholders
 			);
-
 			placeholderManager.setPlaceholder();
 			placeholderManager.startUpdatingPlaceholder(5000);
 		</script>
